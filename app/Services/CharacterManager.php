@@ -88,9 +88,8 @@ class CharacterManager extends Service
         DB::beginTransaction();
 
         try {
-            if($isMyo) $data['character_count'] = 1;
             for($i = 1; $i <= $data['character_count']; $i++) {
-                if($i > 1) {
+                if(!$isMyo && $i > 1) {
                     // If this is not the first character in a batch,
                     // pull a new number and assemble a new slug
                     $data['number'] = (new CharacterManager)->pullNumber(1);
@@ -322,7 +321,6 @@ class CharacterManager extends Service
                     ]);
             }
 
-            //($image, $dir, $name, $oldName = null, $copy = false)
             // Save image
             $this->handleImage($data['image'], $image->imageDirectory, $image->imageFileName, null, $isBatch ? true : isset($data['default_image']));
 
