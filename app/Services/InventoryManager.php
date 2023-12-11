@@ -471,6 +471,7 @@ class InventoryManager extends Service
             return $this->commitReturn(true);
         } catch(\Exception $e) { 
             $this->setError('error', $e->getMessage());
+            dd($e->getMessage());
         }
         return $this->rollbackReturn(false);
     }
