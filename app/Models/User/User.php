@@ -24,6 +24,8 @@ use App\Models\Gallery\GallerySubmission;
 use App\Models\Gallery\GalleryCollaborator;
 use App\Models\Gallery\GalleryFavorite;
 use App\Traits\Commenter;
+use App\Models\FetchQuest;
+use App\Models\FetchLog;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -571,16 +573,26 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @return int
      */
-    public function getFetchCooldownAttribute()
+    public function fetchCooldown($id)
     {
-        // Fetch log for most recent collection
-        $log = ItemLog::where('sender_id', $this->id)->where('log_type', 'Turned in for Fetch Quest')->orderBy('id', 'DESC')->first();
+        $fetch = FetchQuest::where('id', $id)->first();
+        // Fetch log for most recent fetch quest that matches this fetch quest
+        //this way each fetch can have its own CD
+        //this will also allow implementation of other things such as pets to be turned in in the future maybe since originally it only checked items
+        //i forgot to say it last time, but this bit of code comes from merc's donation shop! thank you so much merc! <3
+        $log = FetchLog::where('user_id', $this->id)
+            ->where('fetch_id', $fetch->id)
+            ->orderBy('id', 'DESC')
+            ->first();
         // If there is no log, by default, the cooldown is null
         if(!$log) return null;
+
+        $timer = $log->created_at->addMinutes($fetch->cooldown);
         // If the cooldown would already be up, it is null
-        if($log->created_at->addMinutes(60) <= Carbon::now()) return null;
+        if($timer <= Carbon::now()) return null;
         // Otherwise, calculate the remaining time
-        return $log->created_at->addMinutes(60);
+        return $timer;
+
         return null;
     }
 }

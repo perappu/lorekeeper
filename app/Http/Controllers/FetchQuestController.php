@@ -2,19 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use DB;
-use Auth;
-use Settings;
-
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
-use App\Models\Item\Item;
 use App\Models\User\User;
-use App\Models\User\UserItem;
-use App\Models\Currency\Currency;
-
 use App\Services\FetchQuestService;
+use Auth;
+use Illuminate\Http\Request;
+use App\Models\FetchQuest;
+
 class FetchQuestController extends Controller
 {
     /*
@@ -24,8 +18,8 @@ class FetchQuestController extends Controller
     |
     | Does... things
     |
-    */
-    
+     */
+
     /**
      * Shows the homepage.
      *
@@ -33,31 +27,10 @@ class FetchQuestController extends Controller
      */
     public function getIndex()
     {
-        if(Settings::get('fetch_item')) {
-            $item = Item::find(Settings::get('fetch_item'));
-        }
-        else $fetchItem = null;
-
-        if(Settings::get('fetch_currency_id')) {
-            $currency = Currency::find(Settings::get('fetch_currency_id'));
-        }
-        else $fetchCurrency = null;
-
-        if(Settings::get('fetch_reward')) {
-            $fetch_reward = Settings::get('fetch_reward');
-        }
-        else $fetchCurrency = null;
-
-        if(Settings::get('fetch_reward_max')) {
-            $fetch_reward_max = Settings::get('fetch_reward_max');
-        }
-        else $fetchCurrencymax = null;
+        $fetches = FetchQuest::active()->get();
 
         return view('fetchquests.fetch', [
-            'fetchItem' => $item,
-            'fetchCurrency' => $currency,
-            'fetchReward' => $fetch_reward,
-            'fetchRewardmax' => $fetch_reward_max
+            'fetches' => $fetches,
         ]);
     }
 
@@ -67,13 +40,15 @@ class FetchQuestController extends Controller
      * @param  integer  $id
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function postFetchQuest(Request $request, FetchQuestService $service)
+    public function postFetchQuest(Request $request, FetchQuestService $service, $id)
     {
-        if($service->completeFetchQuest($request->only(['stack_id', 'stack_quantity']), Auth::user())) {
+        if ($service->completeFetchQuest($request->only(['stack_id', 'stack_quantity']), Auth::user(), $id)) {
             flash('Fetch quest handed in succesfully!')->success();
-        }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
+
         }
         return redirect()->back();
     }

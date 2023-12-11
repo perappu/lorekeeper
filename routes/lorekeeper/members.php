@@ -204,5 +204,5 @@ Route::group(['prefix' => 'comments', 'namespace' => 'Comments'], function() {
 **************************************************************************************************/
 Route::group(['prefix' => 'fetch'], function() {
     Route::get('/', 'FetchQuestController@getIndex');
-    Route::post('/new', 'FetchQuestController@postFetchQuest');
+    Route::post('/new/{id}', 'FetchQuestController@postFetchQuest');
 });
