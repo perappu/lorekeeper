@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\FetchQuest;
 
 use App\Models\Model;
 
@@ -12,7 +12,7 @@ class FetchQuest extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'questgiver_name', 'description', 'is_active', 'has_image', 'cooldown', 'fetch_item', 'fetch_category', 'exceptions', 'currency_id', 'extras',
+        'name', 'questgiver_name', 'description', 'parsed_description', 'is_active', 'has_image', 'cooldown', 'fetch_item', 'fetch_category', 'exceptions', 'currency_id', 'extras',
     ];
 
     /**
@@ -60,6 +60,12 @@ class FetchQuest extends Model
     public function fetchCurrency()
     {
         return $this->belongsTo('App\Models\Currency\Currency', 'currency_id');
+    }
+
+    
+    public function exceptions()
+    {
+        return $this->hasMany('App\Models\FetchQuest\FetchException');
     }
 
     /**
@@ -138,40 +144,6 @@ class FetchQuest extends Model
         }
 
         return json_decode($this->attributes['extras'], true);
-    }
-
-    /**
-     * Gets the decoded output json
-     *
-     * @return array
-     */
-    public function getExceptionsAttribute()
-    {
-        $exceptions = [];
-        if ($this->output) {
-            $assets = $this->getExceptionsDataAttribute();
-
-            foreach ($assets as $type => $a) {
-                $class = getAssetModelString($type, false);
-                foreach ($a as $id => $asset) {
-                    $exceptions[] = (object) [
-                        'exception_type' => $class,
-                        'exception_id' => $id,
-                    ];
-                }
-            }
-        }
-        return $exceptions;
-    }
-
-    /**
-     * Interprets the json output and retrieves the corresponding items
-     *
-     * @return array
-     */
-    public function getExceptionsDataAttribute()
-    {
-        return parseAssetData(json_decode($this->output, true));
     }
 
 }

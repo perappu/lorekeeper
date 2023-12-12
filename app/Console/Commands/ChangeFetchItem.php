@@ -2,12 +2,9 @@
 
 namespace App\Console\Commands;
 
-use DB;
-use Settings;
-use Log;
-use Illuminate\Console\Command;
+use App\Models\FetchQuest\FetchQuest;
 use App\Models\Item\Item;
-use App\Models\FetchQuest;
+use Illuminate\Console\Command;
 
 class ChangeFetchItem extends Command
 {
@@ -45,32 +42,49 @@ class ChangeFetchItem extends Command
 
         //fetch all fetch quests so we can update them
         $fetches = FetchQuest::all();
-        foreach($fetches as $fetch){
-            //fetch the items 
+        foreach ($fetches as $fetch) {
+            //fetch the items
             //if category set, fish through that category
             //if none, pull from all items onsite
             //filter through both and remove everything in the "exception" list as well
-            if($fetch->fetch_category_id){
-                $items = Item::where('item_category_id', $fetch->fetch_category_id)->released()->get();
-            }else{
-                $items = Item::released()->where('allow_transfer', 1)->get();
+
+            $query = Item::where('allow_transfer', 1)->released()->get();
+
+            if ($fetch->exceptions->count()) {
+                foreach ($fetch->exceptions as $exception) {
+                    switch ($exception->exception_type) {
+                        case 'Item':
+                            $query->where('id', '!=', $exception->exception_id);
+                        case 'ItemCategory':
+                            $query->where('item_category_id', '!=', $exception->exception_id);
+                    }
+                }
             }
-            if(!$items->count()) throw new \Exception('There are no items to select from!');
-    
+            if ($fetch->fetch_category_id) {
+                $query->where('item_category_id', $fetch->fetch_category_id);
+            } else {
+                $query;
+            }
+            if (!$query->count()) {
+                throw new \Exception('There are no items to select from!');
+            }
+
+            $items = $query;
             //randomly select an item
             $totalWeight = $items->count();
             $roll = mt_rand(0, $totalWeight - 1);
             $result = $items[$roll]->id;
-    
-            //if the result = the current item set as the fetch, reroll until it is a new one (it's possible to get stuck in a loop if not enough items are available)
-            $setting = $fetch->fetch_category_id;
-            while($result == $setting) {
+
+            //if the result = the current item set as the fetch, reroll until it is a new one 
+            //(for anyone reading, it's possible to get stuck in an infinite loop if not enough items are available)
+            $setting = $fetch->fetch_item;
+            while ($result == $setting) {
                 $roll = mt_rand(0, $totalWeight - 1);
                 $result = $items[$roll]->id;
             }
 
             //randomize currency max/min if all set. otherwise ignore
-            if(isset($fetch->extras['reward_min_min']) && isset($fetch->extras['reward_min_max']) && isset($fetch->extras['reward_max_min']) && isset($fetch->extras['reward_max_max'])){
+            if (isset($fetch->extras['reward_min_min']) && isset($fetch->extras['reward_min_max']) && isset($fetch->extras['reward_max_min']) && isset($fetch->extras['reward_max_max'])) {
                 //start with rand the min
                 $roll2 = mt_rand($fetch->extras['reward_min_min'], $fetch->extras['reward_min_max']);
                 //rand the max
@@ -79,14 +93,14 @@ class ChangeFetchItem extends Command
                 $fetch->current_min = $roll2;
                 $fetch->current_max = $roll3;
                 $fetch->save();
-                
+
             }
-    
+
             //set the current requested item as the result
             $fetch->fetch_item = $result;
             $fetch->save();
 
         }
-        
+
     }
 }

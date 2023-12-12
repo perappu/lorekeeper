@@ -8,7 +8,7 @@ use App\Models\Item\ItemCategory;
 use App\Services\FetchQuestService;
 use Auth;
 use Illuminate\Http\Request;
-use App\Models\FetchQuest;
+use App\Models\FetchQuest\FetchQuest;
 use App\Models\Currency\Currency;
 
 class FetchQuestController extends Controller

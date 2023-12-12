@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\FetchQuest;
 
 use App\Models\Model;
 
@@ -36,8 +36,7 @@ class FetchLog extends Model
      * @var array
      */
     public static $createRules = [
-        'stock_id' => 'required',
-        'fetch_log' => 'required',
+        'fetch_id' => 'required',
     ];
 
     /**********************************************************************************************
@@ -67,7 +66,7 @@ class FetchLog extends Model
      */
     public function fetch() 
     {
-        return $this->belongsTo('App\Models\FetchQuest');
+        return $this->belongsTo('App\Models\FetchQuest\FetchQuest');
     }
 
 

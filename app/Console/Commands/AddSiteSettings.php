@@ -102,6 +102,8 @@ class AddSiteSettings extends Command
         $this->addSiteSetting('gallery_submissions_reward_currency', 0, '0: Gallery submissions do not reward currency, 1: Gallery submissions reward currency.');
 
         $this->addSiteSetting('group_currency', 1, 'ID of the group currency to award from gallery submissions (if enabled).');
+
+        $this->addSiteSetting('fetch_timer_global', 1, 'Does completing one fetch quest lock you out of all other ones? 0 = no, 1 = yes. Uses the most recent completed fetch for the timer.');
         
         $this->line("\nSite settings up to date!");
 

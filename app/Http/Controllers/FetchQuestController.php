@@ -7,7 +7,7 @@ use App\Models\User\User;
 use App\Services\FetchQuestService;
 use Auth;
 use Illuminate\Http\Request;
-use App\Models\FetchQuest;
+use App\Models\FetchQuest\FetchQuest;
 
 class FetchQuestController extends Controller
 {
@@ -31,6 +31,18 @@ class FetchQuestController extends Controller
 
         return view('fetchquests.fetch', [
             'fetches' => $fetches,
+        ]);
+    }
+
+    /**
+     * show the fetch modal
+     *
+     * @param mixed      $pet_id
+     * @param mixed|null $id
+     */
+    public function getFetchQuest($id) {
+        return view('fetchquests._submit_fetch', [
+            'fetch'     => FetchQuest::find($id),
         ]);
     }
 

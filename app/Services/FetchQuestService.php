@@ -17,50 +17,84 @@ use App\Models\Currency\Currency;
 use App\Models\User\User;
 use App\Models\User\UserItem;
 use App\Models\User\UserCurrency;
-use App\Models\FetchQuest;
+use App\Models\FetchQuest\FetchQuest;
+use App\Models\FetchQuest\FetchException;
+use App\Models\FetchQuest\FetchLog;
 
 class FetchQuestService extends Service
 {
     /**
-    * Attempts to complete the fetch quest.
-    *
-    * @param  array                        $data
-    * @param  \App\Models\User\User        $user
-    * @param  \App\Models\Item\UserItem    $stacks
-    * @return bool
-    */
-    public function completeFetchQuest($data, $user, $fetch)
+     * Attempts to complete the fetch quest.
+     *
+     * @param  array                        $data
+     * @param  \App\Models\User\User        $user
+     * @param  \App\Models\Item\UserItem    $stacks
+     * @return bool
+     */
+    public function completeFetchQuest($data, $user, $id)
     {
         DB::beginTransaction();
 
         try {
-            
-
-            $fetchItem = Settings::get('fetch_item');
-
-            $rewardqty = Settings::get('fetch_reward');
-            $rewardqtymax = Settings::get('fetch_reward_max');
-            $currency = Currency::find(Settings::get('fetch_currency_id'));
+            $fetch = FetchQuest::find($id);
+            if (!$fetch) {
+                abort(404);
+            }
 
             $user = Auth::user();
 
-            if($user->fetchCooldown) throw new \Exception("You've already completed this fetch quest!");
+            if ($user->fetchCooldown($fetch->id)) {
+                throw new \Exception("You've completed this fetch quest too soon.");
+            }
 
-            $stack = UserItem::where([['user_id', $user->id], ['item_id', $fetchItem], ['count', '>', 0]])->first();
+            $stack = UserItem::where([['user_id', $user->id], ['item_id', $fetch->fetchItem->id], ['count', '>', 0]])->first();
 
-            if(!$stack) { throw new \Exception("You don't have the item to complete this quest.");}
-    
-            if(!(new InventoryManager)->debitStack($user, 'Turned in for Fetch Quest', ['data' => ''], $stack, 1)) { throw new \Exception("Failed to turn in quest.");}
+            if (!$stack) {
+                throw new \Exception("You don't have the item to complete this quest.");
+            }
 
-                //successful turnin, so we credit the reward
-                //first we randomize it though
-                $totalWeight = $rewardqtymax;
-                $roll = mt_rand($rewardqty, $totalWeight - 1);
-                //credit now after the random shenanigans
-                if(!(new CurrencyManager)->creditCurrency(null, $user, 'Fetch Quest Reward', 'Reward for completing fetch quest', $currency, $roll)) throw new \Exception("Failed to credit currency.");   
+            if (!(new InventoryManager())->debitStack($user, 'Turned in for Fetch Quest', ['data' => ''], $stack, 1)) {
+                throw new \Exception('Failed to turn in quest.');
+            }
+
+            //successful turnin, so we credit the reward
+            //first we randomize it though
+
+            //check if all 4 currencies are set, if so, randomize the "current" value that was generated when it reset
+            //if not, randomize normally
+            if(isset($fetch->extras['reward_min_min']) &&
+            isset($fetch->extras['reward_min_max']) &&
+            isset($fetch->extras['reward_max_min']) &&
+            isset($fetch->extras['reward_max_max']) &&
+            $fetch->current_min &&
+            $fetch->current_max &&
+            $fetch->fetchCurrency && $fetch->fetchItem){
+                $roll = mt_rand($fetch->current_min, $fetch->current_max - 1);
+            }elseif(isset($fetch->extras['reward_min_min']) && isset($fetch->extras['reward_max_min']) && $fetch->fetchCurrency && $fetch->fetchItem){
+                $roll = mt_rand($fetch->extras['reward_min_min'], $fetch->extras['reward_max_min'] - 1);
+            }else{
+                throw new \Exception('Currencies weren\'t set correctly for this fetch quest. Contact an admin.');
+            }
+            
+            //credit now after the random shenanigans
+            if (!(new CurrencyManager())->creditCurrency(null, $user, 'Fetch Quest Reward', 'Reward for completing fetch quest', $fetch->fetchCurrency, $roll)) {
+                throw new \Exception('Failed to credit currency.');
+            }
+            if($fetch->questgiver_name){
+                flash($fetch->questgiver_name.' generously pays you '.$roll.' '.$fetch->fetchCurrency->name.'.')->success();
+            }else{
+                flash('You earned '.$roll.' '.$fetch->fetchCurrency->name.'.')->success();
+            }
+
+            // make a log of the fetch action.
+            $fetchLog = FetchLog::create([
+                'fetch_id' => $fetch->id,
+                'user_id' => $user->id,
+                'item_id' => $fetch->fetch_item,
+            ]);
 
             return $this->commitReturn(true);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
         return $this->rollbackReturn(false);
@@ -94,10 +128,9 @@ class FetchQuestService extends Service
             } else {
                 $data['has_image'] = 0;
             }
-            
 
             $fetchquest = FetchQuest::create($data);
-            $fetchquest->exceptions = $this->populateExceptions($data);
+            $this->populateExceptions($data, $fetchquest);
 
             //add the rewards
             $fetchquest->update([
@@ -143,7 +176,7 @@ class FetchQuestService extends Service
             }
 
             $fetchquest->update($data);
-            $fetchquest->exceptions = $this->populateExceptions($data);
+            $this->populateExceptions($data, $fetchquest);
             $fetchquest->update([
                 'extras' => json_encode([
                     'reward_min_min' => isset($data['reward_min_min']) && $data['reward_min_min'] ? $data['reward_min_min'] : null,
@@ -177,8 +210,8 @@ class FetchQuestService extends Service
             $data['fetch_category'] = null;
         }
 
-        if ((isset($data['fetch_category']) && $data['fetch_category']) && !ItemCategory::where('id', $data['fetch_category'])->exists()) {
-            throw new \Exception("The selected item category is invalid.");
+        if (isset($data['fetch_category']) && $data['fetch_category'] && !ItemCategory::where('id', $data['fetch_category'])->exists()) {
+            throw new \Exception('The selected item category is invalid.');
         }
 
         if (isset($data['description']) && $data['description']) {
@@ -211,12 +244,14 @@ class FetchQuestService extends Service
         DB::beginTransaction();
 
         try {
-
             if ($fetchquest->has_image) {
                 $this->deleteImage($fetchquest->imagePath, $fetchquest->imageFileName);
             }
 
-            DB::table('fetch_log')->where('fetch_id', $fetchquest->id)->delete();
+            DB::table('fetch_log')
+                ->where('fetch_id', $fetchquest->id)
+                ->delete();
+            $fetchquest->exceptions->delete();
             $fetchquest->delete();
 
             return $this->commitReturn(true);
@@ -227,34 +262,26 @@ class FetchQuestService extends Service
     }
 
     /**
-     * Creates the assets json from rewards
+     * Create the fetch quest exceptions list
      *
      * @param  \App\Models\Recipe\Recipe   $recipe
-     * @param  array                       $data 
+     * @param  array                       $data
      */
-    private function populateExceptions($data)
+    private function populateExceptions($data, $fetch)
     {
-        if(isset($data['exception_type'])) {
-            // The data will be stored as an asset table, json_encode()d. 
-            // First build the asset table, then prepare it for storage.
-            $assets = createAssetsArray();
-            foreach($data['exception_type'] as $key => $r) {
-                switch ($r)
-                {
-                    case 'Item':
-                        $type = 'App\Models\Item\Item';
-                        break;
-                    case 'ItemCategory':
-                        $type = 'App\Models\Item\ItemCategory';
-                        break;
-                }
-                $asset = $type::find($data['exception_id'][$key]);
-                addAsset($assets, $asset);
-            }
-            
-            return getDataReadyAssets($assets);
-        }
-        return null;
-    }
+        $fetch->exceptions()->delete();
 
+        if (isset($data['exception_type'])) {
+            foreach ($data['exception_type'] as $key => $type) {
+                if (!isset($data['exception_id'][$key])) {
+                    throw new \Exception('One of the exceptions was not specified.');
+                }
+                FetchException::create([
+                    'fetch_quest_id' => $fetch->id,
+                    'exception_type' => $type,
+                    'exception_id' => $data['exception_id'][$key],
+                ]);
+            }
+        }
+    }
 }

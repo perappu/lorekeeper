@@ -30,8 +30,6 @@ class AddMultipleFetchQuests extends Migration
             //set to null when we first make the fetch
             $table->integer('fetch_item')->unsigned()->nullable()->default(null);
             $table->integer('fetch_category')->unsigned()->nullable()->default(null);
-            //exceptions list for CHAOS MODE
-            $table->text('exceptions')->nullable()->default(null);
 
             //rewards
             $table->integer('currency_id')->unsigned()->nullable()->default(null);
@@ -49,6 +47,13 @@ class AddMultipleFetchQuests extends Migration
 
             $table->integer('item_id')->unsigned();
             $table->timestamps();
+        });
+
+        Schema::create('fetch_exceptions', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('fetch_quest_id');
+            $table->string('exception_type');
+            $table->integer('exception_id');
         });
     }
 

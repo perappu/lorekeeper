@@ -131,9 +131,9 @@
     <h3>Exceptions</h3>
     <p>You can select items or a category of item that you DO NOT want to be randomized into here.</p>
     <div class="text-right mb-3">
-        <a href="#" class="btn btn-outline-info" id="addLoot">Add Exception</a>
+        <a href="#" class="btn btn-outline-info" id="addException">Add Exception</a>
     </div>
-    <table class="table table-sm" id="lootTable">
+    <table class="table table-sm" id="exceptionTable">
         <thead>
             <tr>
                 <th width="35%">Exception Type</th>
@@ -141,28 +141,28 @@
                 <th width="10%"></th>
             </tr>
         </thead>
-        <tbody id="lootTableBody">
+        <tbody id="exceptionTableBody">
             @if ($fetchquest->exceptions)
                 @foreach ($fetchquest->exceptions as $exception)
-                    <tr class="loot-row">
-                        <td>{!! Form::select('exception_type[]', ['Item' => 'Item', 'Category' => 'Category'], $loot->exception_type, [
+                    <tr class="exception-row">
+                        <td>{!! Form::select('exception_type[]', ['Item' => 'Item', 'ItemCategory' => 'Item Category'], $exception->exception_type, [
                             'class' => 'form-control exception-type',
                             'placeholder' => 'Select Exception Type',
                         ]) !!}</td>
-                        <td class="loot-row-select">
-                            @if ($loot->exception_type == 'Item')
-                                {!! Form::select('exception_id[]', $items, $loot->exception_id, [
+                        <td class="exception-row-select">
+                            @if ($exception->exception_type == 'Item')
+                                {!! Form::select('exception_id[]', $items, $exception->exception_id, [
                                     'class' => 'form-control item-select selectize',
                                     'placeholder' => 'Select Item',
                                 ]) !!}
-                            @elseif($loot->exception_type == 'Category')
-                                {!! Form::select('exception_id[]', $currencies, $loot->exception_id, [
+                            @elseif($exception->exception_type == 'ItemCategory')
+                                {!! Form::select('exception_id[]', $categories, $exception->exception_id, [
                                     'class' => 'form-control category-select selectize',
                                     'placeholder' => 'Select Category',
                                 ]) !!}
                             @endif
                         </td>
-                        <td class="text-right"><a href="#" class="btn btn-danger remove-loot-button">Remove</a></td>
+                        <td class="text-right"><a href="#" class="btn btn-danger remove-exception-button">Remove</a></td>
                     </tr>
                 @endforeach
             @endif
@@ -175,16 +175,16 @@
 
     {!! Form::close() !!}
 
-    <div id="lootRowData" class="hide">
+    <div id="exceptionRowData" class="hide">
         <table class="table table-sm">
-            <tbody id="lootRow">
-                <tr class="loot-row">
-                    <td>{!! Form::select('exception_type[]', ['Item' => 'Item', 'Category' => 'Category'], null, [
+            <tbody id="exceptionRow">
+                <tr class="exception-row">
+                    <td>{!! Form::select('exception_type[]', ['Item' => 'Item', 'ItemCategory' => 'Item Category'], null, [
                         'class' => 'form-control exception-type',
                         'placeholder' => 'Select Exception Type',
                     ]) !!}</td>
-                    <td class="loot-row-select"></td>
-                    <td class="text-right"><a href="#" class="btn btn-danger remove-loot-button">Remove</a></td>
+                    <td class="exception-row-select"></td>
+                    <td class="text-right"><a href="#" class="btn btn-danger remove-exception-button">Remove</a></td>
                 </tr>
             </tbody>
         </table>
@@ -192,7 +192,7 @@
             'class' => 'form-control item-select',
             'placeholder' => 'Select Item',
         ]) !!}
-        {!! Form::select('exception_id[]', $currencies, null, [
+        {!! Form::select('exception_id[]', $categories, null, [
             'class' => 'form-control category-select',
             'placeholder' => 'Select Category',
         ]) !!}
@@ -209,29 +209,29 @@
 
     <script>
         $(document).ready(function() {
-            var $lootTable = $('#lootTableBody');
-            var $lootRow = $('#lootRow').find('.loot-row');
-            var $itemSelect = $('#lootRowData').find('.item-select');
-            var $categorySelect = $('#lootRowData').find('.category-select');
+            var $exceptionTable = $('#exceptionTableBody');
+            var $exceptionRow = $('#exceptionRow').find('.exception-row');
+            var $itemSelect = $('#exceptionRowData').find('.item-select');
+            var $categorySelect = $('#exceptionRowData').find('.category-select');
 
-            $('#lootTableBody .selectize').selectize();
-            attachRemoveListener($('#lootTableBody .remove-loot-button'));
+            $('#exceptionTableBody .selectize').selectize();
+            attachRemoveListener($('#exceptionTableBody .remove-exception-button'));
 
-            $('#addLoot').on('click', function(e) {
+            $('#addException').on('click', function(e) {
                 e.preventDefault();
-                var $clone = $lootRow.clone();
-                $lootTable.append($clone);
+                var $clone = $exceptionRow.clone();
+                $exceptionTable.append($clone);
                 attachExceptionTypeListener($clone.find('.exception-type'));
-                attachRemoveListener($clone.find('.remove-loot-button'));
+                attachRemoveListener($clone.find('.remove-exception-button'));
             });
 
             $('.exception-type').on('change', function(e) {
                 var val = $(this).val();
-                var $cell = $(this).parent().find('.loot-row-select');
+                var $cell = $(this).parent().find('.exception-row-select');
 
                 var $clone = null;
                 if (val == 'Item') $clone = $itemSelect.clone();
-                else if (val == 'Category') $clone = $categorySelect.clone();
+                else if (val == 'ItemCategory') $clone = $categorySelect.clone();
 
 
                 $cell.html('');
@@ -241,11 +241,11 @@
             function attachExceptionTypeListener(node) {
                 node.on('change', function(e) {
                     var val = $(this).val();
-                    var $cell = $(this).parent().parent().find('.loot-row-select');
+                    var $cell = $(this).parent().parent().find('.exception-row-select');
 
                     var $clone = null;
                     if (val == 'Item') $clone = $itemSelect.clone();
-                    else if (val == 'Category') $clone = $categorySelect.clone();
+                    else if (val == 'ItemCategory') $clone = $categorySelect.clone();
 
                     $cell.html('');
                     $cell.append($clone);
