@@ -63,6 +63,23 @@
         {!! Form::textarea('description', $fetchquest->description, ['class' => 'form-control wysiwyg']) !!}
     </div>
 
+    
+    <div class="form-group">
+        {!! Form::checkbox('is_active', 1, $fetchquest->id ? $fetchquest->is_active : 1, [
+            'class' => 'form-check-input',
+            'data-toggle' => 'toggle',
+        ]) !!}
+        {!! Form::label('is_active', 'Is Active', ['class' => 'form-check-label ml-3']) !!} {!! add_help('fetch quests that are not active will be hidden from the fetch quest list.') !!}
+    </div>
+
+
+    {!! Form::label('Cooldown') !!}{!! add_help('Cooldown before a user can complete this fetch quest again') !!}
+    {!! Form::text('cooldown', $fetchquest->cooldown ?? null, [
+        'class' => 'form-control cooldown-field',
+        'data-name' => 'cooldown',
+    ]) !!}
+    <br>
+
     <h2>Currency Reward</h2>
     <p>Set a currency max/min for the user to recieve here. In its base state, the user will recieve a random amount between
         the max and min that you set here.</p>
@@ -112,22 +129,10 @@
         </div>
     </div>
 
+    <h3>Extra Rewards</h3>
+    <p>These rewards are credited alongside the currency rewards above. When this fetch quest is completed by a user, ONE random reward from below will be selected.</p>
+    @include('widgets._loot_select', ['loots' => $fetchquest->rewards, 'showLootTables' => true, 'showRaffles' => true])
 
-    <div class="form-group">
-        {!! Form::checkbox('is_active', 1, $fetchquest->id ? $fetchquest->is_active : 1, [
-            'class' => 'form-check-input',
-            'data-toggle' => 'toggle',
-        ]) !!}
-        {!! Form::label('is_active', 'Is Active', ['class' => 'form-check-label ml-3']) !!} {!! add_help('fetch quests that are not active will be hidden from the fetch quest list.') !!}
-    </div>
-
-
-    {!! Form::label('Cooldown') !!}{!! add_help('Cooldown before a user can complete this fetch quest again') !!}
-    {!! Form::text('cooldown', $fetchquest->cooldown ?? null, [
-        'class' => 'form-control cooldown-field',
-        'data-name' => 'cooldown',
-    ]) !!}
-<br>
     <h3>Exceptions</h3>
     <p>You can select items or a category of item that you DO NOT want to be randomized into here.</p>
     <div class="text-right mb-3">
@@ -145,10 +150,15 @@
             @if ($fetchquest->exceptions)
                 @foreach ($fetchquest->exceptions as $exception)
                     <tr class="exception-row">
-                        <td>{!! Form::select('exception_type[]', ['Item' => 'Item', 'ItemCategory' => 'Item Category'], $exception->exception_type, [
-                            'class' => 'form-control exception-type',
-                            'placeholder' => 'Select Exception Type',
-                        ]) !!}</td>
+                        <td>{!! Form::select(
+                            'exception_type[]',
+                            ['Item' => 'Item', 'ItemCategory' => 'Item Category'],
+                            $exception->exception_type,
+                            [
+                                'class' => 'form-control exception-type',
+                                'placeholder' => 'Select Exception Type',
+                            ],
+                        ) !!}</td>
                         <td class="exception-row-select">
                             @if ($exception->exception_type == 'Item')
                                 {!! Form::select('exception_id[]', $items, $exception->exception_id, [
@@ -162,7 +172,8 @@
                                 ]) !!}
                             @endif
                         </td>
-                        <td class="text-right"><a href="#" class="btn btn-danger remove-exception-button">Remove</a></td>
+                        <td class="text-right"><a href="#" class="btn btn-danger remove-exception-button">Remove</a>
+                        </td>
                     </tr>
                 @endforeach
             @endif
@@ -174,6 +185,8 @@
     </div>
 
     {!! Form::close() !!}
+
+    @include('widgets._loot_select_row', ['items' => $items, 'currencies' => $currencies, 'tables' => $tables, 'raffles' => $raffles, 'showLootTables' => true, 'showRaffles' => true])
 
     <div id="exceptionRowData" class="hide">
         <table class="table table-sm">
@@ -206,6 +219,7 @@
 
 @section('scripts')
     @parent
+    @include('js._loot_js', ['showLootTables' => true, 'showRaffles' => true])
 
     <script>
         $(document).ready(function() {

@@ -1,25 +1,17 @@
 <?php namespace App\Services;
 
-use App\Services\Service;
-
-use DB;
-use Notifications;
-use Config;
-use Settings;
-use Auth;
-
-use App\Services\InventoryManager;
-use App\Services\CurrencyManager;
-
-use App\Models\Item\Item;
-use App\Models\Currency\Currency;
-
-use App\Models\User\User;
-use App\Models\User\UserItem;
-use App\Models\User\UserCurrency;
-use App\Models\FetchQuest\FetchQuest;
 use App\Models\FetchQuest\FetchException;
 use App\Models\FetchQuest\FetchLog;
+use App\Models\FetchQuest\FetchQuest;
+use App\Models\FetchQuest\FetchReward;
+use App\Models\Item\Item;
+use App\Models\User\User;
+use App\Models\User\UserItem;
+use App\Services\CurrencyManager;
+use App\Services\InventoryManager;
+use App\Services\Service;
+use Auth;
+use DB;
 
 class FetchQuestService extends Service
 {
@@ -62,28 +54,42 @@ class FetchQuestService extends Service
 
             //check if all 4 currencies are set, if so, randomize the "current" value that was generated when it reset
             //if not, randomize normally
-            if(isset($fetch->extras['reward_min_min']) &&
-            isset($fetch->extras['reward_min_max']) &&
-            isset($fetch->extras['reward_max_min']) &&
-            isset($fetch->extras['reward_max_max']) &&
-            $fetch->current_min &&
-            $fetch->current_max &&
-            $fetch->fetchCurrency && $fetch->fetchItem){
+            if (isset($fetch->extras['reward_min_min']) &&
+                isset($fetch->extras['reward_min_max']) &&
+                isset($fetch->extras['reward_max_min']) &&
+                isset($fetch->extras['reward_max_max']) &&
+                $fetch->current_min &&
+                $fetch->current_max &&
+                $fetch->fetchCurrency && $fetch->fetchItem) 
+            {
                 $roll = mt_rand($fetch->current_min, $fetch->current_max - 1);
-            }elseif(isset($fetch->extras['reward_min_min']) && isset($fetch->extras['reward_max_min']) && $fetch->fetchCurrency && $fetch->fetchItem){
+                $this->payCurrencies($user, $fetch, $roll);
+            } elseif (isset($fetch->extras['reward_min_min']) && isset($fetch->extras['reward_max_min']) && $fetch->fetchCurrency && $fetch->fetchItem) {
                 $roll = mt_rand($fetch->extras['reward_min_min'], $fetch->extras['reward_max_min'] - 1);
-            }else{
-                throw new \Exception('Currencies weren\'t set correctly for this fetch quest. Contact an admin.');
+                $this->payCurrencies($user, $fetch, $roll);
             }
-            
-            //credit now after the random shenanigans
-            if (!(new CurrencyManager())->creditCurrency(null, $user, 'Fetch Quest Reward', 'Reward for completing fetch quest', $fetch->fetchCurrency, $roll)) {
-                throw new \Exception('Failed to credit currency.');
-            }
-            if($fetch->questgiver_name){
-                flash($fetch->questgiver_name.' generously pays you '.$roll.' '.$fetch->fetchCurrency->name.'.')->success();
-            }else{
-                flash('You earned '.$roll.' '.$fetch->fetchCurrency->name.'.')->success();
+
+            //if extra rewards set
+            if($fetch->rewards){
+                $items = $fetch->rewards;
+                //randomly select an item
+                $totalWeight = $items->count();
+                $rewardroll = mt_rand(0, $totalWeight - 1);
+                $result = $items[$rewardroll];
+                dd($result);
+
+                
+                // if successful we can credit rewards
+                $logType = 'Fetch Reward';
+                $fetchData = [
+                    'data' => 'Received rewards from ' . $fetch->name . ' quest',
+                ];
+
+                if (!$rewards = fillUserAssets($result, null, $user, $logType, $fetchData)) {
+                    throw new \Exception("Failed to distribute rewards to user.");
+                }
+    
+                flash($this->getRewardsString($rewards));
             }
 
             // make a log of the fetch action.
@@ -100,11 +106,42 @@ class FetchQuestService extends Service
         return $this->rollbackReturn(false);
     }
 
+    /**
+     * credit currency
+     *
+     * @param  array                  $data
+     * @param  \App\Models\User\User  $user
+     * @return bool|\App\Models\FetchQuest\FetchQuest
+     */
+    public function payCurrencies($user, $fetch, $roll)
+    {
+        //credit now after the random shenanigans
+        if (!(new CurrencyManager())->creditCurrency(null, $user, 'Fetch Quest Reward', 'Reward for completing fetch quest', $fetch->fetchCurrency, $roll)) {
+            throw new \Exception('Failed to credit currency.');
+        }
+        if ($fetch->questgiver_name) {
+            flash($fetch->questgiver_name . ' generously pays you ' . $roll . ' ' . $fetch->fetchCurrency->name . '.')->success();
+        } else {
+            flash('You earned ' . $roll . ' ' . $fetch->fetchCurrency->name . '.')->success();
+        }
+    }
+
+     /**
+     * flash reward
+     *
+     * @param  array                  $rewards
+     * @return string
+     */
+    private function getRewardsString($rewards)
+    {
+        return 'You have received: ' . createRewardsString($rewards);
+    }
+
     /**********************************************************************************************
 
-        FETCH CREATION
+    FETCH CREATION
 
-    **********************************************************************************************/
+     **********************************************************************************************/
 
     /**
      * Creates a new fetch quest.
@@ -131,6 +168,7 @@ class FetchQuestService extends Service
 
             $fetchquest = FetchQuest::create($data);
             $this->populateExceptions($data, $fetchquest);
+            $this->populateRewards($data, $fetchquest);
 
             //add the rewards
             $fetchquest->update([
@@ -177,6 +215,8 @@ class FetchQuestService extends Service
 
             $fetchquest->update($data);
             $this->populateExceptions($data, $fetchquest);
+            $this->populateRewards($data, $fetchquest);
+
             $fetchquest->update([
                 'extras' => json_encode([
                     'reward_min_min' => isset($data['reward_min_min']) && $data['reward_min_min'] ? $data['reward_min_min'] : null,
@@ -264,7 +304,6 @@ class FetchQuestService extends Service
     /**
      * Create the fetch quest exceptions list
      *
-     * @param  \App\Models\Recipe\Recipe   $recipe
      * @param  array                       $data
      */
     private function populateExceptions($data, $fetch)
@@ -284,4 +323,27 @@ class FetchQuestService extends Service
             }
         }
     }
+
+    /**
+     * Processes user input for creating/updating fetch rewards.
+     *
+     * @param  array                      $data
+     */
+    private function populateRewards($data, $fetch)
+    {
+        // Clear the old rewards...
+        $fetch->rewards()->delete();
+
+        if (isset($data['rewardable_type'])) {
+            foreach ($data['rewardable_type'] as $key => $type) {
+                FetchReward::create([
+                    'fetch_quest_id' => $fetch->id,
+                    'rewardable_type' => $type,
+                    'rewardable_id' => $data['rewardable_id'][$key],
+                    'quantity' => $data['quantity'][$key],
+                ]);
+            }
+        }
+    }
+
 }

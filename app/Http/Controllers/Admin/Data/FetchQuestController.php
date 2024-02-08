@@ -10,6 +10,8 @@ use Auth;
 use Illuminate\Http\Request;
 use App\Models\FetchQuest\FetchQuest;
 use App\Models\Currency\Currency;
+use App\Models\Loot\LootTable;
+use App\Models\Raffle\Raffle;
 
 class FetchQuestController extends Controller
 {
@@ -50,6 +52,8 @@ class FetchQuestController extends Controller
             'items' => Item::orderBy('name')->pluck('name', 'id'),
             'categories' => ItemCategory::orderBy('name')->pluck('name', 'id'),
             'currencies' => Currency::where('is_user_owned', 1)->orderBy('sort_user', 'DESC')->pluck('name', 'id'),
+            'tables' => LootTable::orderBy('name')->pluck('name', 'id'),
+            'raffles' => Raffle::where('rolled_at', null)->where('is_active', 1)->orderBy('name')->pluck('name', 'id'),
         ]);
     }
 
@@ -71,6 +75,8 @@ class FetchQuestController extends Controller
             'items' => Item::orderBy('name')->pluck('name', 'id'),
             'categories' => ItemCategory::orderBy('name')->pluck('name', 'id'),
             'currencies' => Currency::where('is_user_owned', 1)->orderBy('sort_user', 'DESC')->pluck('name', 'id'),
+            'tables' => LootTable::orderBy('name')->pluck('name', 'id'),
+            'raffles' => Raffle::where('rolled_at', null)->where('is_active', 1)->orderBy('name')->pluck('name', 'id'),
         ]);
     }
 
@@ -86,7 +92,8 @@ class FetchQuestController extends Controller
     {
         $id ? $request->validate(FetchQuest::$updateRules) : $request->validate(FetchQuest::$createRules);
         $data = $request->only([
-            'name', 'questgiver_name', 'description', 'is_active', 'image', 'has_image', 'cooldown', 'fetch_item', 'fetch_category', 'exception_type', 'exception_id', 'currency_id', 'reward_min_min', 'reward_min_max', 'reward_max_min', 'reward_max_max',
+            'name', 'questgiver_name', 'description', 'is_active', 'image', 'has_image', 'cooldown', 'fetch_item', 'fetch_category', 
+            'exception_type', 'exception_id', 'currency_id', 'reward_min_min', 'reward_min_max', 'reward_max_min', 'reward_max_max', 'rewardable_type', 'rewardable_id', 'quantity',
         ]);
         if ($id && $service->updateFetchQuest(FetchQuest::find($id), $data, Auth::user())) {
             flash('Fetch Quest updated successfully.')->success();

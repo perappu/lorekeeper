@@ -12,7 +12,7 @@ class FetchQuest extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'questgiver_name', 'description', 'parsed_description', 'is_active', 'has_image', 'cooldown', 'fetch_item', 'fetch_category', 'exceptions', 'currency_id', 'extras',
+        'name', 'questgiver_name', 'description', 'parsed_description', 'is_active', 'has_image', 'cooldown', 'fetch_item', 'fetch_category', 'exceptions', 'currency_id', 'extras'
     ];
 
     /**
@@ -66,6 +66,11 @@ class FetchQuest extends Model
     public function exceptions()
     {
         return $this->hasMany('App\Models\FetchQuest\FetchException');
+    }
+
+    public function rewards()
+    {
+        return $this->hasMany('App\Models\FetchQuest\FetchReward');
     }
 
     /**

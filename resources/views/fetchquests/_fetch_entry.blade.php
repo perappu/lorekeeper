@@ -63,10 +63,12 @@
             $fetch->current_max &&
             $fetch->fetchCurrency &&
             !Auth::user()->fetchCooldown($fetch->id) &&
-            $fetch->fetchItem) ||
-            (isset($fetch->extras['reward_min_min']) &&
+            $fetch->fetchItem) || (isset($fetch->extras['reward_min_min']) &&
                 isset($fetch->extras['reward_max_min']) &&
                 $fetch->fetchCurrency &&
+                !Auth::user()->fetchCooldown($fetch->id) &&
+                $fetch->fetchItem) ||
+            ($fetch->rewards &&
                 !Auth::user()->fetchCooldown($fetch->id) &&
                 $fetch->fetchItem))
         <div class="text-right">
@@ -76,7 +78,7 @@
     @elseif(Auth::user()->fetchCooldown($fetch->id))
         <i>You can complete this again {!! pretty_date(Auth::user()->fetchCooldown($fetch->id)) !!}.</i>
     @else
-        <p class="text-danger">Something went wrong. Contact an admin.</p>
+        <p class="text-danger">Something went wrong. Please contact an admin.</p>
     @endif
 </div>
 

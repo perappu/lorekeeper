@@ -55,6 +55,14 @@ class AddMultipleFetchQuests extends Migration
             $table->string('exception_type');
             $table->integer('exception_id');
         });
+
+        Schema::create('fetch_rewards', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('fetch_quest_id');
+            $table->string('rewardable_type');
+            $table->integer('rewardable_id');
+            $table->integer('quantity')->unsigned();
+        });
     }
 
     /**
