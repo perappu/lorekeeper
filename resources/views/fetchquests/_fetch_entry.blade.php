@@ -45,8 +45,9 @@
         <div>{!! $fetch->fetchCurrency->display($fetch->current_min) !!} - {!! $fetch->fetchCurrency->display($fetch->current_max) !!}</div>
     @elseif(isset($fetch->extras['reward_min_min']) && isset($fetch->extras['reward_max_min']) && $fetch->fetchCurrency)
         <div>{!! $fetch->fetchCurrency->display($fetch->extras['reward_min_min']) !!} - {!! $fetch->fetchCurrency->display($fetch->extras['reward_max_min']) !!}</div>
-    @else
-        <p>There is no reward.</p>
+    @endif
+    @if ($fetch->rewards->count())
+        <strong>Additional Reward (Random)</strong>: {!! $fetch->fetchRewards() !!}
     @endif
     @if ($fetch->cooldown)
         <p><strong>Cooldown:</strong> {{ $fetch->cooldown }} minutes. </p>
@@ -63,14 +64,13 @@
             $fetch->current_max &&
             $fetch->fetchCurrency &&
             !Auth::user()->fetchCooldown($fetch->id) &&
-            $fetch->fetchItem) || (isset($fetch->extras['reward_min_min']) &&
+            $fetch->fetchItem) ||
+            (isset($fetch->extras['reward_min_min']) &&
                 isset($fetch->extras['reward_max_min']) &&
                 $fetch->fetchCurrency &&
                 !Auth::user()->fetchCooldown($fetch->id) &&
                 $fetch->fetchItem) ||
-            ($fetch->rewards &&
-                !Auth::user()->fetchCooldown($fetch->id) &&
-                $fetch->fetchItem))
+            ($fetch->rewards && !Auth::user()->fetchCooldown($fetch->id) && $fetch->fetchItem))
         <div class="text-right">
             <a href="#" class="btn btn-sm btn-primary submit-fetch" data-id="{{ $fetch->id }}"></i>Lend a
                 Hand!</a>

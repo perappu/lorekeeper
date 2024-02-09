@@ -60,8 +60,7 @@ class FetchQuestService extends Service
                 isset($fetch->extras['reward_max_max']) &&
                 $fetch->current_min &&
                 $fetch->current_max &&
-                $fetch->fetchCurrency && $fetch->fetchItem) 
-            {
+                $fetch->fetchCurrency && $fetch->fetchItem) {
                 $roll = mt_rand($fetch->current_min, $fetch->current_max - 1);
                 $this->payCurrencies($user, $fetch, $roll);
             } elseif (isset($fetch->extras['reward_min_min']) && isset($fetch->extras['reward_max_min']) && $fetch->fetchCurrency && $fetch->fetchItem) {
@@ -70,26 +69,26 @@ class FetchQuestService extends Service
             }
 
             //if extra rewards set
-            if($fetch->rewards){
+            if ($fetch->rewards) {
                 $items = $fetch->rewards;
                 //randomly select an item
                 $totalWeight = $items->count();
                 $rewardroll = mt_rand(0, $totalWeight - 1);
                 $result = $items[$rewardroll];
-                dd($result);
+                $rewards = createAssetsArray();
+                addAsset($rewards, $result->reward, $result->quantity);
 
-                
                 // if successful we can credit rewards
                 $logType = 'Fetch Reward';
                 $fetchData = [
                     'data' => 'Received rewards from ' . $fetch->name . ' quest',
                 ];
 
-                if (!$rewards = fillUserAssets($result, null, $user, $logType, $fetchData)) {
+                if (!$finalrewards = fillUserAssets($rewards, null, $user, $logType, $fetchData)) {
                     throw new \Exception("Failed to distribute rewards to user.");
                 }
-    
-                flash($this->getRewardsString($rewards));
+
+                flash($this->getRewardsString($finalrewards));
             }
 
             // make a log of the fetch action.
@@ -126,7 +125,7 @@ class FetchQuestService extends Service
         }
     }
 
-     /**
+    /**
      * flash reward
      *
      * @param  array                  $rewards

@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Admin\Data;
 
 use App\Http\Controllers\Controller;
+use App\Models\Currency\Currency;
+use App\Models\FetchQuest\FetchQuest;
 use App\Models\Item\Item;
 use App\Models\Item\ItemCategory;
+use App\Models\Loot\LootTable;
+use App\Models\Raffle\Raffle;
 use App\Services\FetchQuestService;
 use Auth;
 use Illuminate\Http\Request;
-use App\Models\FetchQuest\FetchQuest;
-use App\Models\Currency\Currency;
-use App\Models\Loot\LootTable;
-use App\Models\Raffle\Raffle;
 
 class FetchQuestController extends Controller
 {
@@ -92,7 +92,7 @@ class FetchQuestController extends Controller
     {
         $id ? $request->validate(FetchQuest::$updateRules) : $request->validate(FetchQuest::$createRules);
         $data = $request->only([
-            'name', 'questgiver_name', 'description', 'is_active', 'image', 'has_image', 'cooldown', 'fetch_item', 'fetch_category', 
+            'name', 'questgiver_name', 'description', 'is_active', 'image', 'has_image', 'cooldown', 'fetch_item', 'fetch_category',
             'exception_type', 'exception_id', 'currency_id', 'reward_min_min', 'reward_min_max', 'reward_max_min', 'reward_max_max', 'rewardable_type', 'rewardable_id', 'quantity',
         ]);
         if ($id && $service->updateFetchQuest(FetchQuest::find($id), $data, Auth::user())) {

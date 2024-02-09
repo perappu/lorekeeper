@@ -12,7 +12,7 @@ class FetchQuest extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'questgiver_name', 'description', 'parsed_description', 'is_active', 'has_image', 'cooldown', 'fetch_item', 'fetch_category', 'exceptions', 'currency_id', 'extras'
+        'name', 'questgiver_name', 'description', 'parsed_description', 'is_active', 'has_image', 'cooldown', 'fetch_item', 'fetch_category', 'exceptions', 'currency_id', 'extras',
     ];
 
     /**
@@ -62,7 +62,6 @@ class FetchQuest extends Model
         return $this->belongsTo('App\Models\Currency\Currency', 'currency_id');
     }
 
-    
     public function exceptions()
     {
         return $this->hasMany('App\Models\FetchQuest\FetchException');
@@ -149,6 +148,27 @@ class FetchQuest extends Model
         }
 
         return json_decode($this->attributes['extras'], true);
+    }
+
+    /**
+     * Creates a rewards string from an asset array.
+     *
+     * @param array $array
+     *
+     * @return string
+     */
+    public function fetchRewards()
+    {
+        if (!$this->rewards()) {
+            return null;
+        }
+
+        $rewards = [];
+        foreach ($this->rewards as $reward) {
+            $name = $reward->reward->displayName;
+            $rewards[] = $name;
+        }
+        return implode(', ', array_slice($rewards, 0, count($rewards) - 1)) . (count($rewards) > 2 ? ', and ' : ' and ') . end($rewards);
     }
 
 }
