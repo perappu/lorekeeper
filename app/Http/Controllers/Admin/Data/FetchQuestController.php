@@ -54,6 +54,7 @@ class FetchQuestController extends Controller
             'currencies' => Currency::where('is_user_owned', 1)->orderBy('sort_user', 'DESC')->pluck('name', 'id'),
             'tables' => LootTable::orderBy('name')->pluck('name', 'id'),
             'raffles' => Raffle::where('rolled_at', null)->where('is_active', 1)->orderBy('name')->pluck('name', 'id'),
+            'fetchCategories' => ['none' => 'No Category'] + ItemCategory::orderBy('name')->pluck('name', 'id')->toArray(),
         ]);
     }
 
@@ -77,6 +78,7 @@ class FetchQuestController extends Controller
             'currencies' => Currency::where('is_user_owned', 1)->orderBy('sort_user', 'DESC')->pluck('name', 'id'),
             'tables' => LootTable::orderBy('name')->pluck('name', 'id'),
             'raffles' => Raffle::where('rolled_at', null)->where('is_active', 1)->orderBy('name')->pluck('name', 'id'),
+            'fetchCategories' => ['none' => 'No Category'] + ItemCategory::orderBy('name')->pluck('name', 'id')->toArray(),
         ]);
     }
 

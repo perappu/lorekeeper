@@ -12,6 +12,7 @@ use App\Services\InventoryManager;
 use App\Services\Service;
 use Auth;
 use DB;
+use App\Models\Item\ItemCategory;
 
 class FetchQuestService extends Service
 {

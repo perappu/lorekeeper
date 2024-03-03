@@ -63,7 +63,7 @@
         {!! Form::textarea('description', $fetchquest->description, ['class' => 'form-control wysiwyg']) !!}
     </div>
 
-    
+
     <div class="form-group">
         {!! Form::checkbox('is_active', 1, $fetchquest->id ? $fetchquest->is_active : 1, [
             'class' => 'form-check-input',
@@ -130,8 +130,22 @@
     </div>
 
     <h3>Extra Rewards</h3>
-    <p>These rewards are credited alongside the currency rewards above. When this fetch quest is completed by a user, ONE random reward from below will be selected.</p>
-    @include('widgets._loot_select', ['loots' => $fetchquest->rewards, 'showLootTables' => true, 'showRaffles' => true])
+    <p>These rewards are credited alongside the currency rewards above. When this fetch quest is completed by a user, ONE
+        random reward from below will be selected.</p>
+    @include('widgets._loot_select', [
+        'loots' => $fetchquest->rewards,
+        'showLootTables' => true,
+        'showRaffles' => true,
+    ])
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                {!! Form::label('Category (Optional)') !!} {!! add_help('Optional category for items to be selected within. If this is set then it will only select items within this category and will also further filter out with the exceptions below.') !!}
+                {!! Form::select('fetch_category', $fetchCategories, $fetchquest->fetch_category, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+    </div>
 
     <h3>Exceptions</h3>
     <p>You can select items or a category of item that you DO NOT want to be randomized into here.</p>
@@ -186,7 +200,14 @@
 
     {!! Form::close() !!}
 
-    @include('widgets._loot_select_row', ['items' => $items, 'currencies' => $currencies, 'tables' => $tables, 'raffles' => $raffles, 'showLootTables' => true, 'showRaffles' => true])
+    @include('widgets._loot_select_row', [
+        'items' => $items,
+        'currencies' => $currencies,
+        'tables' => $tables,
+        'raffles' => $raffles,
+        'showLootTables' => true,
+        'showRaffles' => true,
+    ])
 
     <div id="exceptionRowData" class="hide">
         <table class="table table-sm">
