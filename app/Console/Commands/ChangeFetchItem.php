@@ -48,34 +48,34 @@ class ChangeFetchItem extends Command
             //if none, pull from all items onsite
             //filter through both and remove everything in the "exception" list as well
 
-            $query = Item::where('allow_transfer', 1)->released()->get();
+            $query = Item::where('allow_transfer', 1)->released();
 
             if ($fetch->exceptions->count()) {
                 foreach ($fetch->exceptions as $exception) {
                     switch ($exception->exception_type) {
                         case 'Item':
-                            $query->where('id', '!=', $exception->exception_id);
+                            $query->where('id', '<>', $exception->exception_id);
+                            break;
                         case 'ItemCategory':
-                            $query->where('item_category_id', '!=', $exception->exception_id);
+                            $query->where('item_category_id', '<>', $exception->exception_id);
+                            break;
                     }
                 }
             }
-            if ($fetch->fetch_category_id) {
-                $query->where('item_category_id', $fetch->fetch_category_id);
-            } else {
-                $query;
+            if ($fetch->fetch_category) {
+                $query->where('item_category_id', $fetch->fetch_category);
             }
             if (!$query->count()) {
                 throw new \Exception('There are no items to select from!');
             }
 
-            $items = $query;
+            $items = $query->get();
             //randomly select an item
             $totalWeight = $items->count();
             $roll = mt_rand(0, $totalWeight - 1);
             $result = $items[$roll]->id;
 
-            //if the result = the current item set as the fetch, reroll until it is a new one 
+            //if the result = the current item set as the fetch, reroll until it is a new one
             //(for anyone reading, it's possible to get stuck in an infinite loop if not enough items are available)
             $setting = $fetch->fetch_item;
             while ($result == $setting) {

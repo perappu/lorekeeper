@@ -11,6 +11,14 @@ return [
     //     ]),
     //     'version' => '1.0.0',
     // ],
-    
+    'fetch_quests' => [
+        'key' => 'fetch_quests',
+        'wiki_key' => 'Fetch Quests',
+        'creators' => json_encode([
+            'CH3RVB' => 'https://github.com/CH3RVB/',
+            'LostInProgres' => 'https://github.com/LostInProgres/',
+        ]),
+        'version' => '2.0.0',
+    ],
 
 ];

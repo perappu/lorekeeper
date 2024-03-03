@@ -46,9 +46,6 @@
     @elseif(isset($fetch->extras['reward_min_min']) && isset($fetch->extras['reward_max_min']) && $fetch->fetchCurrency)
         <div>{!! $fetch->fetchCurrency->display($fetch->extras['reward_min_min']) !!} - {!! $fetch->fetchCurrency->display($fetch->extras['reward_max_min']) !!}</div>
     @endif
-    @if ($fetch->rewards->count())
-        <strong>Additional Reward (Random)</strong>: {!! $fetch->fetchRewards() !!}
-    @endif
     @if ($fetch->cooldown)
         <p><strong>Cooldown:</strong> {{ $fetch->cooldown }} minutes. </p>
     @else

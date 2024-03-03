@@ -142,7 +142,7 @@
         <div class="col-md-8">
             <div class="form-group">
                 {!! Form::label('Category (Optional)') !!} {!! add_help('Optional category for items to be selected within. If this is set then it will only select items within this category and will also further filter out with the exceptions below.') !!}
-                {!! Form::select('fetch_category', $fetchCategories, $fetchquest->fetch_category, ['class' => 'form-control']) !!}
+                {!! Form::select('fetch_category', $fetchCategories, $fetchquest->fetch_category, ['class' => 'form-control categoryselectize']) !!}
             </div>
         </div>
     </div>
@@ -250,6 +250,7 @@
             var $categorySelect = $('#exceptionRowData').find('.category-select');
 
             $('#exceptionTableBody .selectize').selectize();
+            $('.categoryselectize').selectize();
             attachRemoveListener($('#exceptionTableBody .remove-exception-button'));
 
             $('#addException').on('click', function(e) {
