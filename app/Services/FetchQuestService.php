@@ -70,7 +70,7 @@ class FetchQuestService extends Service
             }
 
             //if extra rewards set
-            if ($fetch->rewards) {
+            if ($fetch->rewards->count()) {
                 $items = $fetch->rewards;
                 //randomly select an item
                 $totalWeight = $items->count();
