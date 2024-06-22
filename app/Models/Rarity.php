@@ -60,6 +60,15 @@ class Rarity extends Model {
     }
 
     /**
+     * Displays the model's name, linked to its encyclopedia page.
+     *
+     * @return string
+     */
+    public function getDisplayNameNoIconAttribute() {
+        return '<a href="'.$this->url.'" class="display-rarity" '.($this->color ? 'style="color: #'.$this->color.';"' : '').'>'.$this->name.'</a>';
+    }
+
+    /**
      * Gets the file directory containing the model's image.
      *
      * @return string
