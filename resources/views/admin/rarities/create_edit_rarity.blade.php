@@ -43,7 +43,7 @@
             </div>
         @endif
     </div>
-    
+
     <div class="form-group">
         {!! Form::label('Icon (Optional)') !!} {!! add_help('Displays next to the rarity name') !!}
         <div>{!! Form::file('icon') !!}</div>
