@@ -69,7 +69,7 @@ class RarityController extends Controller {
     public function postCreateEditRarity(Request $request, RarityService $service, $id = null) {
         $id ? $request->validate(Rarity::$updateRules) : $request->validate(Rarity::$createRules);
         $data = $request->only([
-            'name', 'color', 'description', 'image', 'remove_image', 'icon'
+            'name', 'color', 'description', 'image', 'remove_image', 'icon',
         ]);
         if ($id && $service->updateRarity(Rarity::find($id), $data, Auth::user())) {
             flash('Rarity updated successfully.')->success();

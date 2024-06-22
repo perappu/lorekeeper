@@ -96,7 +96,7 @@ class RarityService extends Service {
                 $image = $data['image'];
                 unset($data['image']);
             }
-                        
+
             $icon = null;
             if (isset($data['icon']) && $data['icon']) {
                 $data['has_icon'] = 1;
