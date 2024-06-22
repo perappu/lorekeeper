@@ -56,7 +56,7 @@ class Rarity extends Model {
      * @return string
      */
     public function getDisplayNameAttribute() {
-        return '<img src="'.$this->rarityIconUrl.'" /> <a href="'.$this->url.'" class="display-rarity" '.($this->color ? 'style="color: #'.$this->color.';"' : '').'>'.$this->name.'</a>';
+        return ' <img src="'.$this->rarityIconUrl.'" /> <a href="'.$this->url.'" class="display-rarity" '.($this->color ? 'style="color: #'.$this->color.';"' : '').'>'.$this->name.'</a>';
     }
 
     /**
