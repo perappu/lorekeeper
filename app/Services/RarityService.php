@@ -41,10 +41,24 @@ class RarityService extends Service {
                 $data['has_image'] = 0;
             }
 
+            $icon = null;
+            if (isset($data['icon']) && $data['icon']) {
+                $data['icon_hash'] = randomString(10);
+                $data['has_icon'] = 1;
+                $icon = $data['icon'];
+                unset($data['icon']);
+            } else {
+                $data['has_icon'] = 0;
+            }
+
             $rarity = Rarity::create($data);
 
             if ($image) {
                 $this->handleImage($image, $rarity->rarityImagePath, $rarity->rarityImageFileName);
+            }
+
+            if ($icon) {
+                $this->handleImage($image, $rarity->rarityImagePath, $rarity->rarityIconFileName);
             }
 
             return $this->commitReturn($rarity);
@@ -82,11 +96,23 @@ class RarityService extends Service {
                 $image = $data['image'];
                 unset($data['image']);
             }
+                        
+            $icon = null;
+            if (isset($data['icon']) && $data['icon']) {
+                $data['has_icon'] = 1;
+                $data['icon_hash'] = randomString(10);
+                $icon = $data['icon'];
+                unset($data['icon']);
+            }
 
             $rarity->update($data);
 
             if ($rarity) {
                 $this->handleImage($image, $rarity->rarityImagePath, $rarity->rarityImageFileName);
+            }
+
+            if ($icon) {
+                $this->handleImage($icon, $rarity->rarityImagePath, $rarity->rarityIconFileName);
             }
 
             return $this->commitReturn($rarity);

@@ -43,6 +43,17 @@
             </div>
         @endif
     </div>
+    
+    <div class="form-group">
+        {!! Form::label('Icon (Optional)') !!} {!! add_help('Displays next to the rarity name') !!}
+        <div>{!! Form::file('icon') !!}</div>
+        @if ($rarity->has_icon)
+            <div class="form-check">
+                {!! Form::checkbox('remove_icon', 1, false, ['class' => 'form-check-input']) !!}
+                {!! Form::label('remove_icon', 'Remove current icon', ['class' => 'form-check-label']) !!}
+            </div>
+        @endif
+    </div>
 
     <div class="form-group">
         {!! Form::label('Description (Optional)') !!}
