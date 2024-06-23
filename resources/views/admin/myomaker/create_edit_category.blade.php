@@ -25,6 +25,11 @@
         {!! Form::text('name', $category->name, ['class' => 'form-control']) !!}
     </div>
 
+    <div class="form-group">
+        {!! Form::label('Order') !!}
+        {!! Form::number('order', $category->order, ['class' => 'form-control']) !!}
+    </div>
+
     <div class="text-right">
         {!! Form::submit($category->id ? 'Edit' : 'Create', ['class' => 'btn btn-primary']) !!}
     </div>

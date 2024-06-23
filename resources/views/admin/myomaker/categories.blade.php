@@ -21,6 +21,7 @@
     <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Order</th>
                     <th></th>
                 </tr>
             </thead>
@@ -29,6 +30,9 @@
                 <tr class="sort-item" data-id="{{ $category->id }}">
                     <td>
                         {!! $category->name !!}
+                    </td>
+                    <td>
+                        {!! $category->order !!}
                     </td>
                     <td class="text-right">
                         <a href="{{ url('admin/data/myomaker/category/edit/' . $category->id) }}" class="btn btn-primary">Edit</a>

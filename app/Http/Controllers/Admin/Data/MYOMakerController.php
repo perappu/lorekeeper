@@ -188,7 +188,7 @@ class MYOMakerController extends Controller {
     public function postCreateEditMYOMakerCategory(Request $request, MYOMakerService $service, $id = null) {
         $id ? $request->validate(MYOMakerCategory::$updateRules) : $request->validate(MYOMakerCategory::$createRules);
         $data = $request->only([
-            'name'
+            'name', 'order'
         ]);
         if ($id && $service->updateMYOMakerCategory(MYOMakerCategory::find($id), $data, Auth::user())) {
             flash('Category updated successfully.')->success();

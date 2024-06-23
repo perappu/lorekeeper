@@ -12,7 +12,7 @@ class MYOMakerCategory extends Model {
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name', 'order'
     ];
 
     /**
@@ -30,6 +30,7 @@ class MYOMakerCategory extends Model {
      */
     public static $createRules = [
         'name' => 'required',
+        'order' => 'required',
     ];
 
     /**
@@ -39,6 +40,7 @@ class MYOMakerCategory extends Model {
      */
     public static $updateRules = [
         'name' => 'required',
+        'order' => 'required',
     ];
 
 }
