@@ -238,6 +238,17 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('prompts/create', 'PromptController@postCreateEditPrompt');
     Route::post('prompts/edit/{id?}', 'PromptController@postCreateEditPrompt');
     Route::post('prompts/delete/{id}', 'PromptController@postDeletePrompt');
+
+    //MYO MAKER
+    Route::get('myomaker', 'MYOMakerController@getIndex');
+    Route::get('myomaker/create', 'MYOMakerController@getCreateImage');
+    Route::get('myomaker/edit/{id}', 'MYOMakerController@getEditImage');
+    Route::get('myomaker/delete/{id}', 'MYOMakerController@getDeleteImage');
+    Route::get('myomaker/category', 'MYOMakerController@getCategoryIndex');
+    Route::get('myomaker/category/create', 'MYOMakerController@getCreateCategory');
+    Route::get('myomaker/category/edit/{id}', 'MYOMakerController@getEditCategory');
+    Route::get('myomaker/category/delete/{id}', 'MYOMakerController@getDeleteCategory');
+
 });
 
 // PAGES

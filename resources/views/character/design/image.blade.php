@@ -12,6 +12,7 @@
     <h2>Masterlist Image</h2>
 
     @if ($request->has_image)
+
         <div class="card mb-3">
             <div class="card-body bg-secondary text-white">
                 <div class="row mb-3">
@@ -61,6 +62,9 @@
     @endif
 
     @if (($request->status == 'Draft' && $request->user_id == Auth::user()->id) || ($request->status == 'Pending' && Auth::user()->hasPower('manage_characters')))
+
+        @include('character.design._image_maker')
+
         @if ($request->status == 'Draft' && $request->user_id == Auth::user()->id)
             <p>Select the image you would like to use on the masterlist and an optional thumbnail. Please only upload images that you are allowed to use AND are able to credit to the artist! Note that while staff members cannot edit your uploaded image,
                 they may choose to recrop or upload a different thumbnail.</p>

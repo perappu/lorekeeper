@@ -194,6 +194,10 @@ return [
                 'name' => 'Items',
                 'url'  => 'admin/data/items',
             ],
+            [
+                'name' => 'MYO Maker',
+                'url'  => 'admin/data/myomaker',
+            ],
         ],
     ],
     'Raffles'    => [

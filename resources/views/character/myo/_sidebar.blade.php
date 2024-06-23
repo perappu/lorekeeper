@@ -3,6 +3,7 @@
     <li class="sidebar-section">
         <div class="sidebar-section-header">Character</div>
         <div class="sidebar-item"><a href="{{ $character->url . '/profile' }}" class="{{ set_active('myo/' . $character->id . '/profile') }}">Profile</a></div>
+
     </li>
     <li class="sidebar-section">
         <div class="sidebar-section-header">History</div>
