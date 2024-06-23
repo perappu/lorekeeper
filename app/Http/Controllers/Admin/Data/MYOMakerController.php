@@ -22,8 +22,10 @@ class MYOMakerController extends Controller {
     |
     */
 
+    /******** IMAGES */
+
     /**
-     * Shows the category index.
+     * Shows the image index.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -33,6 +35,78 @@ class MYOMakerController extends Controller {
             'images' => MYOMakerImage::orderBy('name', 'DESC')->get(),
         ]);
     }
+
+        /**
+     * Shows the create category page.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getCreateMYOMakerImage() {
+        return view('admin.myomaker.create_edit_image', [
+            'image' => new MYOMakerImage,
+            'categories' => MYOMakerCategory::orderBy('name', 'DESC')->get(),
+        ]);
+    }
+
+        /**
+     * Shows the edit item category page.
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getEditMYOMakerImage($id) {
+        $image = MYOMakerImage::find($id);
+        if (!$image) {
+            abort(404);
+        }
+
+        return view('admin.myomaker.create_edit_image', [
+            'image' => $image,
+            'categories' => MYOMakerCategory::orderBy('name', 'DESC')->get(),
+        ]);
+    }
+
+        /**
+     * Gets the item category deletion modal.
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getDeleteMYOMakerImage($id) {
+        $image = MYOMakerImage::find($id);
+        if (!$image) {
+            abort(404);
+        }
+
+        return view('admin.myomaker._delete_image', [
+            'image' => $image,
+        ]);
+    }
+
+    /**
+     * Deletes an item category.
+     *
+     * @param App\Services\ItemService $service
+     * @param int                      $id
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postDeleteMYOMakerImage(Request $request, MYOMakerService $service, $id) {
+        if ($id && $service->deleteMYOMakerImage(MYOMakerImage::find($id), Auth::user())) {
+            flash('Image deleted successfully.')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
+        }
+
+        return redirect()->to('admin/data/myomaker');
+    }
+
+
+    /******** CATEGORIES */
 
     /**
      * Shows the category index.
@@ -51,7 +125,7 @@ class MYOMakerController extends Controller {
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getMYOMakerCreateCategory() {
+    public function getCreateMYOMakerCategory() {
         return view('admin.myomaker.create_edit_category', [
             'category' => new MYOMakerCategory,
         ]);
@@ -64,7 +138,7 @@ class MYOMakerController extends Controller {
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getMYOMakerEditCategory($id) {
+    public function getEditMYOMakerCategory($id) {
         $category = MYOMakerCategory::find($id);
         if (!$category) {
             abort(404);
