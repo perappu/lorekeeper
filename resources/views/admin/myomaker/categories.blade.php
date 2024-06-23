@@ -5,7 +5,7 @@
 @endsection
 
 @section('admin-content')
-{!! breadcrumbs(['Admin Panel' => 'admin', 'MYO Maker' => 'myomaker']) !!}
+{!! breadcrumbs(['Admin Panel' => 'admin', 'MYO Maker' => 'admin/data/myomaker', 'MYO Maker Categories' => 'myomaker']) !!}
 
 <h1>MYO Maker</h1>
 

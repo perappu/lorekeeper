@@ -241,13 +241,19 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
 
     //MYO MAKER
     Route::get('myomaker', 'MYOMakerController@getIndex');
-    Route::get('myomaker/create', 'MYOMakerController@getCreateImage');
-    Route::get('myomaker/edit/{id}', 'MYOMakerController@getEditImage');
-    Route::get('myomaker/delete/{id}', 'MYOMakerController@getDeleteImage');
-    Route::get('myomaker/category', 'MYOMakerController@getCategoryIndex');
-    Route::get('myomaker/category/create', 'MYOMakerController@getCreateCategory');
-    Route::get('myomaker/category/edit/{id}', 'MYOMakerController@getEditCategory');
-    Route::get('myomaker/category/delete/{id}', 'MYOMakerController@getDeleteCategory');
+    Route::get('myomaker/create', 'MYOMakerController@getCreateMYOMakerImage');
+    Route::get('myomaker/edit/{id}', 'MYOMakerController@getEditMYOMakerImage');
+    Route::get('myomaker/delete/{id}', 'MYOMakerController@getDeleteMYOMakerImage');
+    Route::post('myomaker/create', 'MYOMakerController@postCreateMYOMakerImage');
+    Route::post('myomaker/edit/{id}', 'MYOMakerController@postEditMYOMakerImage');
+    Route::post('myomaker/delete/{id}', 'MYOMakerController@postDeleteMYOMakerImage');
+    Route::get('myomaker/category', 'MYOMakerController@getMYOMakerCategoryIndex');
+    Route::get('myomaker/category/create', 'MYOMakerController@getCreateMYOMakerCategory');
+    Route::get('myomaker/category/edit/{id}', 'MYOMakerController@getEditMYOMakerCategory');
+    Route::get('myomaker/category/delete/{id}', 'MYOMakerController@getDeleteMYOMakerCategory');
+    Route::post('myomaker/category/create', 'MYOMakerController@postCreateEditMYOMakerCategory');
+    Route::post('myomaker/category/edit/{id}', 'MYOMakerController@postCreateEditMYOMakerCategory');
+    Route::post('myomaker/category/delete/{id}', 'MYOMakerController@postDeleteMYOMakerCategory');
 
 });
 

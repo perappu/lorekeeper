@@ -22,4 +22,23 @@ class MYOMakerCategory extends Model {
      */
     protected $table = 'myomaker_category';
 
+
+    /**
+     * Validation rules for image creation.
+     *
+     * @var array
+     */
+    public static $createRules = [
+        'name' => 'required',
+    ];
+
+    /**
+     * Validation rules for image updating.
+     *
+     * @var array
+     */
+    public static $updateRules = [
+        'name' => 'required',
+    ];
+
 }

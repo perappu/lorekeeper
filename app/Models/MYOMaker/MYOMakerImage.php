@@ -48,4 +48,47 @@ class MYOMakerImage extends Model {
         return $this->belongsTo(MYOMakerCategory::class, 'category_id');
     }
 
+    /**********************************************************************************************
+
+        ACCESSORS
+
+    **********************************************************************************************/
+
+
+    /**
+     * Gets the file directory containing the model's image.
+     *
+     * @return string
+     */
+    public function getImageDirectoryAttribute() {
+        return 'images/data/myomaker';
+    }
+
+    /**
+     * Gets the file name of the model's image.
+     *
+     * @return string
+     */
+    public function getImageFileNameAttribute() {
+        return $this->image;
+    }
+
+    /**
+     * Gets the path to the file directory containing the model's image.
+     *
+     * @return string
+     */
+    public function getImagePathAttribute() {
+        return public_path($this->imageDirectory);
+    }
+
+    /**
+     * Gets the URL of the model's image.
+     *
+     * @return string
+     */
+    public function getImageUrlAttribute() {
+        return asset($this->imageDirectory.'/'.$this->imageFileName);
+    }
+
 }

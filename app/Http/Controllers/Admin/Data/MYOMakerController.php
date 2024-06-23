@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\MYOMaker\MYOMakerImage;
+use App\Services\MYOMakerService;
 
 class MYOMakerController extends Controller {
     /*
@@ -38,7 +39,7 @@ class MYOMakerController extends Controller {
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCategoryIndex() {
+    public function getMYOMakerCategoryIndex() {
 
         return view('admin.myomaker.categories', [
             'categories' => MYOMakerCategory::orderBy('name', 'DESC')->get(),
@@ -50,7 +51,7 @@ class MYOMakerController extends Controller {
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateCategory() {
+    public function getMYOMakerCreateCategory() {
         return view('admin.myomaker.create_edit_category', [
             'category' => new MYOMakerCategory,
         ]);
@@ -63,7 +64,7 @@ class MYOMakerController extends Controller {
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditCategory($id) {
+    public function getMYOMakerEditCategory($id) {
         $category = MYOMakerCategory::find($id);
         if (!$category) {
             abort(404);
@@ -82,14 +83,14 @@ class MYOMakerController extends Controller {
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateEditCategory(Request $request, ItemService $service, $id = null) {
+    public function postCreateEditMYOMakerCategory(Request $request, MYOMakerService $service, $id = null) {
         $id ? $request->validate(MYOMakerCategory::$updateRules) : $request->validate(MYOMakerCategory::$createRules);
         $data = $request->only([
             'name'
         ]);
-        if ($id && $service->updateCategory(MYOMakerCategory::find($id), $data, Auth::user())) {
+        if ($id && $service->updateMYOMakerCategory(MYOMakerCategory::find($id), $data, Auth::user())) {
             flash('Category updated successfully.')->success();
-        } elseif (!$id && $category = $service->createItemCategory($data, Auth::user())) {
+        } elseif (!$id && $category = $service->createMYOMakerCategory($data, Auth::user())) {
             flash('Category created successfully.')->success();
 
             return redirect()->to('admin/data/myomaker/category/edit/'.$category->id);
@@ -109,10 +110,10 @@ class MYOMakerController extends Controller {
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getDeleteCategory($id) {
-        $category = ItemCategory::find($id);
+    public function getDeleteMYOMakerCategory($id) {
+        $category = MYOMakerCategory::find($id);
 
-        return view('admin.items._delete_item_category', [
+        return view('admin.myomaker._delete_category', [
             'category' => $category,
         ]);
     }
@@ -125,8 +126,8 @@ class MYOMakerController extends Controller {
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postDeleteCategory(Request $request, ItemService $service, $id) {
-        if ($id && $service->deleteItemCategory(ItemCategory::find($id), Auth::user())) {
+    public function postDeleteMYOMakerCategory(Request $request, MYOMakerService $service, $id) {
+        if ($id && $service->deleteMYOMakerCategory(MYOMakerCategory::find($id), Auth::user())) {
             flash('Category deleted successfully.')->success();
         } else {
             foreach ($service->errors()->getMessages()['error'] as $error) {
