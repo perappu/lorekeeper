@@ -16,6 +16,8 @@ class MYOMakerService extends Service {
     |
     */
 
+
+
     /**********************************************************************************************
 
         ITEM CATEGORIES
@@ -94,7 +96,44 @@ class MYOMakerService extends Service {
         return $this->rollbackReturn(false);
     }
 
+    /*********** IMAGES */
+
         /**
+     * Uploads a file.
+     *
+     * @param mixed $data
+     * @param mixed $user
+     *
+     * @return \App\Models\Item\MYOMakerImage|bool
+     */
+    public function updateMYOMakerImage($myomakerimage, $data, $user) {
+        DB::beginTransaction();
+
+        try {
+            $image = null;
+            if (isset($data['image']) && $data['image']) {
+                $image = $data['image'];
+                unset($data['image']);
+            }
+
+            $data['image'] = $data['category_id'].'_'.$data['id'];
+
+
+            if ($image) {
+                $this->handleImage($image, $myomakerimage->imagePath, $data['image'], null);
+            }
+
+            $myomakerimage->update($data);
+
+            return $this->commitReturn($myomakerimage);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
+    }
+
+            /**
      * Uploads a file.
      *
      * @param mixed $data
@@ -112,7 +151,9 @@ class MYOMakerService extends Service {
                 unset($data['image']);
             }
 
-            $data['image'] = $image->getClientOriginalName();
+            $hash = randomString(10);
+
+            $data['image'] = $data['category_id'].'_'.$hash.'.png';
 
             $myomakerimage = MYOMakerImage::create($data);
 
@@ -121,10 +162,11 @@ class MYOMakerService extends Service {
             }
 
             if ($image) {
-                $this->handleImage($image, $myomakerimage->imagePath, $image->getClientOriginalName(), null);
+                $this->handleImage($image, $myomakerimage->imagePath, $data['image'], null);
             }
 
             return $this->commitReturn($myomakerimage);
+
         } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }

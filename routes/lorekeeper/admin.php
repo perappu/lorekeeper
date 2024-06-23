@@ -244,8 +244,8 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::get('myomaker/create', 'MYOMakerController@getCreateMYOMakerImage');
     Route::get('myomaker/edit/{id}', 'MYOMakerController@getEditMYOMakerImage');
     Route::get('myomaker/delete/{id}', 'MYOMakerController@getDeleteMYOMakerImage');
-    Route::post('myomaker/create', 'MYOMakerController@postCreateMYOMakerImage');
-    Route::post('myomaker/edit/{id}', 'MYOMakerController@postEditMYOMakerImage');
+    Route::post('myomaker/create', 'MYOMakerController@postCreateEditMYOMakerImage');
+    Route::post('myomaker/edit/{id}', 'MYOMakerController@postCreateEditMYOMakerImage');
     Route::post('myomaker/delete/{id}', 'MYOMakerController@postDeleteMYOMakerImage');
     Route::get('myomaker/category', 'MYOMakerController@getMYOMakerCategoryIndex');
     Route::get('myomaker/category/create', 'MYOMakerController@getCreateMYOMakerCategory');

@@ -405,4 +405,13 @@ class WorldController extends Controller {
             'categories' => $query->visible(Auth::check() ? Auth::user() : null)->orderBy('sort', 'DESC')->orderBy('id')->paginate(20)->appends($request->query()),
         ]);
     }
+
+    /**
+     * Shows the index page.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getMYOMaker() {
+        return view('world.myomaker');
+    }
 }

@@ -38,7 +38,7 @@
                         {!! $image->category->name !!}
                     </td>
                     <td>
-                        {!! $image->image !!}
+                        <img src="{!! $image->imageUrl !!}" style="width: 50px">
                     </td>
                     <td class="text-right">
                         <a href="{{ url('admin/data/myomaker/edit/' . $image->id) }}" class="btn btn-primary">Edit</a>

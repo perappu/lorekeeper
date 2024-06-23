@@ -1,21 +1,25 @@
+@php
+
+$categories = \App\Models\MYOMaker\MYOMakerCategory::orderBy('id')->get();
+
+@endphp
+
 <canvas id="characterCanvas" width="500" height="500">
 
 </canvas>
 
-<select id="tail" name="tail" onmousedown="this.value='';" onchange="refreshImage();">
-    <option value='1'>One</option>
-    <option value='2'>Two</option>
-  </select>
+@foreach ($categories as $category)
+  <select id="{{$category->name}}" name="{{$category->name}}" onmousedown="this.value='';" onchange="refreshImage();">
+    @php
+    $images = \App\Models\MYOMaker\MYOMakerImage::where('category_id', $category->id)->get();
+    @endphp
 
-  <select id="head" name="head" onmousedown="this.value='';" onchange="refreshImage();">
-    <option value='1'>One</option>
-    <option value='2'>Two</option>
-  </select>
+    @foreach ($images as $image)
+      <option value='{{$image->imageUrl}}'>{{$image->name}}</option>
+    @endforeach
 
-  <select id="feet" name="feet" onmousedown="this.value='';" onchange="refreshImage();">
-    <option value='1'>One</option>
-    <option value='2'>Two</option>
   </select>
+@endforeach
 
   <button id="save" onclick="exportCanvasAsPNG('characterCanvas','test.png')">Save</button>
 
@@ -56,7 +60,7 @@
         const context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.width, canvas.height);
         for(var i = 0; i < selects.length; i++) {
-            addImage('images/' + selects[i].id + '/' + selects[i].value + '.png');
+            addImage(selects[i].value);
         }
     }
 </script>

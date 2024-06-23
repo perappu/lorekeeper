@@ -32,7 +32,7 @@ class MYOMakerController extends Controller {
     public function getIndex() {
 
         return view('admin.myomaker.index', [
-            'images' => MYOMakerImage::orderBy('name', 'DESC')->get(),
+            'images' => MYOMakerImage::orderBy('category_id', 'DESC')->get(),
         ]);
     }
 
@@ -44,7 +44,7 @@ class MYOMakerController extends Controller {
     public function getCreateMYOMakerImage() {
         return view('admin.myomaker.create_edit_image', [
             'image' => new MYOMakerImage,
-            'categories' => MYOMakerCategory::orderBy('name', 'DESC')->get(),
+            'categories'     => ['none' => 'No category'] + MYOMakerCategory::orderBy('name', 'DESC')->pluck('name', 'id')->toArray(),
         ]);
     }
 
@@ -63,7 +63,7 @@ class MYOMakerController extends Controller {
 
         return view('admin.myomaker.create_edit_image', [
             'image' => $image,
-            'categories' => MYOMakerCategory::orderBy('name', 'DESC')->get(),
+            'categories'     => ['none' => 'No category'] + MYOMakerCategory::orderBy('name', 'DESC')->pluck('name', 'id')->toArray(),
         ]);
     }
 
@@ -83,6 +83,34 @@ class MYOMakerController extends Controller {
         return view('admin.myomaker._delete_image', [
             'image' => $image,
         ]);
+    }
+
+        /**
+     * Uploads a file.
+     *
+     * @param mixed $data
+     * @param mixed $user
+     *
+     * @return bool
+     */
+    public function postCreateEditMYOMakerImage(Request $request, MYOMakerService $service, $id = null) {
+        $id ? $request->validate(MYOMakerImage::$updateRules) : $request->validate(MYOMakerImage::$createRules);
+        $data = $request->only([
+            'name', 'image', 'category_id'
+        ]);
+        if ($id && $service->updateMYOMakerImage(MYOMakerImage::find($id), $data, Auth::user())) {
+            flash('Category updated successfully.')->success();
+        } elseif (!$id && $category = $service->createMYOMakerImage($data, Auth::user())) {
+            flash('Category created successfully.')->success();
+
+            return redirect()->to('admin/data/myomaker/edit/'.$category->id);
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
+        }
+
+        return redirect()->back();
     }
 
     /**

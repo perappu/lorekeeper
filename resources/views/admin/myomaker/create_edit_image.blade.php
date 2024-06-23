@@ -47,6 +47,8 @@
 @section('scripts')
     @parent
     <script>
+        $('.selectize').selectize();
+        
         $(document).ready(function() {
             $('.delete-image-button').on('click', function(e) {
                 e.preventDefault();
