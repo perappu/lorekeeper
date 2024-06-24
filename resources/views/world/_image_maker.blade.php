@@ -44,26 +44,67 @@ $categories = \App\Models\MYOMaker\MYOMakerCategory::orderBy('order')->get();
     </div>
     @endforeach
 
-    <button id="save" class="btn btn-primary" onclick="exportCanvasAsPNG('characterCanvas','test.png')">Save</button>
+    <button id="save" class="btn btn-primary" onclick="exportCanvasAsPNG('characterCanvas','myomaker.png')">Save</button>
   </div>
   </canvas>
 </div>
 
 <script>
+  const canvas = document.getElementById("characterCanvas");
+  const ctx = canvas.getContext("2d");
 
+  function hexToHSL(H) {
+    // Convert hex to RGB first
+    let r = 0,
+      g = 0,
+      b = 0;
+    if (H.length == 4) {
+      r = "0x" + H[1] + H[1];
+      g = "0x" + H[2] + H[2];
+      b = "0x" + H[3] + H[3];
+    } else if (H.length == 7) {
+      r = "0x" + H[1] + H[2];
+      g = "0x" + H[3] + H[4];
+      b = "0x" + H[5] + H[6];
+    }
+    // Then to HSL
+    r /= 255;
+    g /= 255;
+    b /= 255;
+    let cmin = Math.min(r, g, b),
+      cmax = Math.max(r, g, b),
+      delta = cmax - cmin,
+      h = 0,
+      s = 0,
+      l = 0;
 
+    if (delta == 0)
+      h = 0;
+    else if (cmax == r)
+      h = ((g - b) / delta) % 6;
+    else if (cmax == g)
+      h = (b - r) / delta + 2;
+    else
+      h = (r - g) / delta + 4;
 
-  function HexToRGB(Hex) {
-    var Long = parseInt(Hex.replace(/^#/, ""), 16);
+    h = Math.round(h * 60);
+
+    if (h < 0)
+      h += 360;
+
+    l = (cmax + cmin) / 2;
+    s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+    s = +(s * 100).toFixed(1);
+    l = +(l * 100).toFixed(1);
+
     return {
-      R: (Long >>> 16) & 0xff,
-      G: (Long >>> 8) & 0xff,
-      B: Long & 0xff
+      H: h,
+      S: s,
+      L: l
     };
   }
 
   function exportCanvasAsPNG(id, fileName) {
-
     var canvasElement = document.getElementById(id);
 
     var MIME_TYPE = "image/png";
@@ -80,33 +121,72 @@ $categories = \App\Models\MYOMaker\MYOMakerCategory::orderBy('order')->get();
     document.body.removeChild(dlLink);
   }
 
-  function addImage(imagePath) {
-    var c = document.getElementById("characterCanvas");
-    var ctx = c.getContext("2d");
+  function addImage(imagePath, hsl) {
     var img = new Image();
-    img.onload = function() {
-      ctx.drawImage(img, 0, 0);
-    };
     img.src = imagePath;
+    ctx.drawImage(render(img, hsl), 0, 0);
   }
 
   function refreshImage() {
     var selects = document.querySelectorAll("select");
     var colors = document.querySelectorAll("input[type=text]");
-    var canvas = document.getElementById("characterCanvas");
-    const context = canvas.getContext('2d');
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     for (var i = 0; i < selects.length; i++) {
-
-      //var color = document.querySelector(`[data-colorpicker-id=['${i+1}']] input`);
-      var color = colors[i].value;
-
-      var rgb = HexToRGB(color);
-
-      console.log(rgb);
-      addImage(selects[i].value);
+      var hsl = hexToHSL(colors[i].value);
+      addImage(selects[i].value, hsl);
     }
+
   }
 
+  function render(img, color) {
 
+    var canvasTemp = document.createElement("canvas");
+    var ctxTemp = canvasTemp.getContext("2d");
+
+    canvasTemp.width = 500;
+    canvasTemp.height = 500;
+
+    ctxTemp.clearRect(0, 0, canvas.width, canvas.height);
+    ctxTemp.globalCompositeOperation = "source-over";
+    ctxTemp.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    var h = color.H;
+    var s = color.S;
+    var l = color.L;
+
+    // adjust "lightness"
+    ctxTemp.globalCompositeOperation = l < 100 ? "color-burn" : "color-dodge";
+    // for common slider, to produce a valid value for both directions
+    l = l >= 100 ? l - 100 : 100 - (100 - l);
+    ctxTemp.fillStyle = "hsl(0, 50%, " + l + "%)";
+    ctxTemp.fillRect(0, 0, canvas.width, canvas.height);
+
+    // adjust saturation
+    ctxTemp.globalCompositeOperation = "saturation";
+    ctxTemp.fillStyle = "hsl(0," + s + "%, 50%)";
+    ctxTemp.fillRect(0, 0, canvas.width, canvas.height);
+
+    // adjust hue
+    ctxTemp.globalCompositeOperation = "hue";
+    ctxTemp.fillStyle = "hsl(" + h + ",1%, 50%)";
+    ctxTemp.fillRect(0, 0, canvas.width, canvas.height);
+
+    // clip
+    ctxTemp.globalCompositeOperation = "destination-in";
+    ctxTemp.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    // reset comp. mode to default
+    ctxTemp.globalCompositeOperation = "destination-over";
+    return canvasTemp;
+  }
+
+  $(document).ready(function() {
+    var colors = document.querySelectorAll("input[type=text]");
+    for (var i = 0; i < colors.length; i++) {
+      colors[i].value = "FFFFFF";
+    }
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  });
 </script>
