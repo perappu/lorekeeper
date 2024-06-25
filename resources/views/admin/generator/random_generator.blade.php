@@ -23,21 +23,21 @@
             </thead>
             <tr>
                 @foreach ($generator->objects as $object)
-                        <td>
-                            {!! $object->text !!}
-                        </td>
-                        <td>
-                            {!! $object->link !!}
-                        </td>
-                        <td class="text-right">
-                            <a href="{{ url('admin/data/random/edit/' . $object->id) }}" class="btn btn-primary">Edit</a>
-                            <a href="#" class="btn btn-danger delete-object-button" onclick="deleteObject('{{ $object->id }}')">Delete</a>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
+                    <td>
+                        {!! $object->text !!}
+                    </td>
+                    <td>
+                        {!! $object->link !!}
+                    </td>
+                    <td class="text-right">
+                        <a href="{{ url('admin/data/random/edit/' . $object->id) }}" class="btn btn-primary">Edit</a>
+                        <a href="#" class="btn btn-danger delete-object-button" onclick="deleteObject('{{ $object->id }}')">Delete</a>
+                    </td>
+            </tr>
+    @endforeach
+    </tbody>
 
-        </table>
+    </table>
     @endif
 
 @endsection
@@ -46,7 +46,7 @@
     @parent
     <script>
         function deleteObject(id) {
-                loadModal("{{ url('admin/data/random/delete') }}/" + id, 'Delete Object');
-            }
+            loadModal("{{ url('admin/data/random/delete') }}/" + id, 'Delete Object');
+        }
     </script>
 @endsection
