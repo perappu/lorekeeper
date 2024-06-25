@@ -9,5 +9,4 @@
     <h1>MYO Maker</h1>
 
     @include('world._image_maker')
-
 @endsection
