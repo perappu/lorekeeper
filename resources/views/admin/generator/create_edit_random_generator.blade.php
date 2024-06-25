@@ -13,7 +13,7 @@
 
     <h1>{{ $generator->id ? 'Edit' : 'Create' }} Generator
         @if ($generator->id)
-            <a href="#" class="btn btn-danger float-right delete-category-button">Delete Category</a>
+            <a href="#" class="btn btn-danger float-right delete-generator-button">Delete Category</a>
         @endif
     </h1>
 

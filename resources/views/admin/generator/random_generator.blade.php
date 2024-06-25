@@ -31,6 +31,7 @@
                         </td>
                         <td class="text-right">
                             <a href="{{ url('admin/data/random/edit/' . $object->id) }}" class="btn btn-primary">Edit</a>
+                            <a href="#" class="btn btn-danger delete-object-button" onclick="deleteObject('{{ $object->id }}')">Delete</a>
                         </td>
                     </tr>
                 @endforeach
@@ -43,4 +44,9 @@
 
 @section('scripts')
     @parent
+    <script>
+        function deleteObject(id) {
+                loadModal("{{ url('admin/data/random/delete') }}/" + id, 'Delete Object');
+            }
+    </script>
 @endsection

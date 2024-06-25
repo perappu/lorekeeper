@@ -215,10 +215,10 @@ class GeneratorController extends Controller {
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getDeleteRandom($id) {
-        $random = RandomObject::find($id);
+        $object = RandomObject::find($id);
 
         return view('admin.generator._delete_object', [
-            'random' => $random,
+            'object' => $object,
         ]);
     }
 
@@ -231,6 +231,7 @@ class GeneratorController extends Controller {
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postDeleteRandom(Request $request, GeneratorService $service, $id) {
+        $generator = RandomObject::find($id)->generator->id;
         if ($id && $service->deleteRandom(RandomObject::find($id), Auth::user())) {
             flash('Object deleted successfully.')->success();
         } else {
@@ -239,7 +240,7 @@ class GeneratorController extends Controller {
             }
         }
 
-        return redirect()->to('admin/data/random');
+        return redirect()->to('admin/data/random/generator/view/'.$generator);
     }
 
 

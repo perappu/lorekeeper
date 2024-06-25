@@ -1,4 +1,4 @@
-@if ($category)
+@if ($generator)
     {!! Form::open(['url' => 'admin/data/random/generator/delete/' . $generator->id]) !!}
 
     <p>You are about to delete the generator <strong>{{ $generator->name }}</strong>. This is not reversible. If this generator has at least one object, you will not be able to delete it.</p>

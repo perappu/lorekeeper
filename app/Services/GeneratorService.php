@@ -101,6 +101,10 @@ class GeneratorService extends Service {
         DB::beginTransaction();
 
         try {
+            if (DB::table('random_objects')->where('random_generator_id', '=', $generator->id)->exists()) {
+                throw new \Exception('This generator has at least one object. Please delete the objects before deleting it.');
+            }
+
             $generator->delete();
 
             return $this->commitReturn(true);
