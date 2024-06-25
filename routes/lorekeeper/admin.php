@@ -238,6 +238,22 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('prompts/create', 'PromptController@postCreateEditPrompt');
     Route::post('prompts/edit/{id?}', 'PromptController@postCreateEditPrompt');
     Route::post('prompts/delete/{id}', 'PromptController@postDeletePrompt');
+
+    //MYO MAKER
+    Route::get('randomgenerator', 'RandomGeneratorController@getIndex');
+    Route::get('randomgenerator/create', 'RandomGeneratorController@getCreateRandom');
+    Route::get('randomgenerator/edit/{id}', 'RandomGeneratorController@getEditRandom');
+    Route::get('randomgenerator/delete/{id}', 'RandomGeneratorController@getDeleteRandom');
+    Route::post('randomgenerator/create', 'RandomGeneratorController@postCreateEditRandom');
+    Route::post('randomgenerator/edit/{id}', 'RandomGeneratorController@postCreateEditRandom');
+    Route::post('randomgenerator/delete/{id}', 'RandomGeneratorController@postDeleteRandom');
+    Route::get('randomgenerator/category', 'RandomGeneratorController@getRandomCategoryIndex');
+    Route::get('randomgenerator/category/create', 'RandomGeneratorController@getCreateRandomCategory');
+    Route::get('randomgenerator/category/edit/{id}', 'RandomGeneratorController@getEditRandomCategory');
+    Route::get('randomgenerator/category/delete/{id}', 'RandomGeneratorController@getDeleteRandomCategory');
+    Route::post('randomgenerator/category/create', 'RandomGeneratorController@postCreateEditRandomCategory');
+    Route::post('randomgenerator/category/edit/{id}', 'RandomGeneratorController@postCreateEditRandomCategory');
+    Route::post('randomgenerator/category/delete/{id}', 'RandomGeneratorController@postDeleteRandomCategory');
 });
 
 // PAGES
