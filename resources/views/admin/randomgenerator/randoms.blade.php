@@ -9,22 +9,26 @@
 
     <h1>Random Generators</h1>
 
-    <p>This is a list of shops that users can use currency to purchase from.</p>
+    <p>This is a list of the different random generators you have created. They are considered "categories", which have objects that are randomly selected within them.</p>
+    <p>Click "View" to add objects to that category.</p>
 
     <div class="text-right mb-3"><a class="btn btn-primary" href="{{ url('admin/data/randomgenerator/category/create') }}"><i class="fas fa-plus"></i> Create New Category</a></div>
     @if (!count($categories))
         <p>No categories found.</p>
     @else
-        <table class="table table-sm shop-table">
-            <tbody id="sortable" class="sortable">
+        <table class="table table-sm">
+            <thead>
+                <th>Name</th>
+                <th></th>
+            </thead>
+            <tr>
                 @foreach ($categories as $category)
-                    <tr class="sort-item" data-id="{{ $category->id }}">
                         <td>
-                            <a class="fas fa-arrows-alt-v handle mr-3" href="#"></a>
                             {!! $category->name !!}
                         </td>
                         <td class="text-right">
-                            <a href="{{ url('admin/data/randomgenerator/category/edit/' . $shop->id) }}" class="btn btn-primary">Edit</a>
+                            <a href="{{ url('admin/data/randomgenerator/category/view/' . $category->id) }}" class="btn btn-primary">View</a>
+                            <a href="{{ url('admin/data/randomgenerator/category/edit/' . $category->id) }}" class="btn btn-primary">Edit</a>
                         </td>
                     </tr>
                 @endforeach

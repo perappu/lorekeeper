@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('text');
             $table->string('link');
-            $table->integer('category_id');
+            $table->integer('random_category_id');
         });
     }
 

@@ -247,7 +247,7 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('randomgenerator/create', 'RandomGeneratorController@postCreateEditRandom');
     Route::post('randomgenerator/edit/{id}', 'RandomGeneratorController@postCreateEditRandom');
     Route::post('randomgenerator/delete/{id}', 'RandomGeneratorController@postDeleteRandom');
-    Route::get('randomgenerator/category', 'RandomGeneratorController@getRandomCategoryIndex');
+    Route::get('randomgenerator/category/view/{id}', 'RandomGeneratorController@getRandomCategoryIndex');
     Route::get('randomgenerator/category/create', 'RandomGeneratorController@getCreateRandomCategory');
     Route::get('randomgenerator/category/edit/{id}', 'RandomGeneratorController@getEditRandomCategory');
     Route::get('randomgenerator/category/delete/{id}', 'RandomGeneratorController@getDeleteRandomCategory');

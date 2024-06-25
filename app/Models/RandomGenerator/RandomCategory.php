@@ -3,6 +3,7 @@
 namespace App\Models\RandomGenerator;
 
 use App\Models\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class RandomCategory extends Model {
     /**
@@ -35,5 +36,13 @@ class RandomCategory extends Model {
     public static $rules = [
         'name' => 'required',
     ];
+
+    /**
+     * Get the comments for the blog post.
+     */
+    public function objects()
+    {
+        return $this->hasMany(RandomObject::class);
+    }
     
 }

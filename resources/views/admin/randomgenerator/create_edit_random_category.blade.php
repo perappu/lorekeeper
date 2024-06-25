@@ -7,7 +7,7 @@
 @section('admin-content')
     {!! breadcrumbs([
         'Admin Panel' => 'admin',
-        'MYO Maker Categories' => 'admin/data/randomgenerator/category',
+        'Random Generators' => 'admin/data/randomgenerator',
         ($category->id ? 'Edit' : 'Create') . ' Category' => $category->id ? 'admin/data/randomgenerator/category/edit/' . $category->id : 'admin/data/randomgenerator/category/create',
     ]) !!}
 

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin\Data;
 
 use App\Http\Controllers\Controller;
-use App\Models\Item\ItemCategory;
+use App\Models\RandomGenerator\RandomObject;
 use App\Models\RandomGenerator\RandomCategory;
-use App\Services\ItemService;
+use App\Services\RandomGeneratorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,7 +22,7 @@ class RandomGeneratorController extends Controller {
     /******** IMAGES */
 
     /**
-     * Shows the image index.
+     * Shows the main index.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -33,19 +33,22 @@ class RandomGeneratorController extends Controller {
         ]);
     }
 
-        /**
-     * Shows the image index.
+    /**
+     * Shows the index for a category.
+     * @param int $id
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getRandomCategoryIndex() {
+    public function getRandomCategoryIndex($id) {
+
+        $category = RandomCategory::find($id);
 
         return view('admin.randomgenerator.random_category', [
-            'categories' => RandomCategory::orderBy('id', 'DESC')->get(),
+            'category' => $category
         ]);
     }
 
-        /**
+    /**
      * Shows the create category page.
      *
      * @return \Illuminate\Contracts\Support\Renderable
@@ -69,7 +72,7 @@ class RandomGeneratorController extends Controller {
             abort(404);
         }
 
-        return view('admin.myomaker.create_edit_random_category', [
+        return view('admin.randomgenerator.create_edit_random_category', [
             'category' => $category,
         ]);
     }
@@ -87,9 +90,9 @@ class RandomGeneratorController extends Controller {
         $data = $request->only([
             'name'
         ]);
-        if ($id && $service->updateMYOMakerCategory(RandomCategory::find($id), $data, Auth::user())) {
+        if ($id && $service->updateRandomCategory(RandomCategory::find($id), $data, Auth::user())) {
             flash('Category updated successfully.')->success();
-        } elseif (!$id && $category = $service->createMYOMakerCategory($data, Auth::user())) {
+        } elseif (!$id && $category = $service->createRandomCategory($data, Auth::user())) {
             flash('Category created successfully.')->success();
 
             return redirect()->to('admin/data/randomgenerator/category/edit/'.$category->id);

@@ -12,7 +12,7 @@ class RandomObject extends Model {
      * @var array
      */
     protected $fillable = [
-        'text', 'link', 'category_id'
+        'text', 'link', 'random_category_id'
     ];
 
     /**
@@ -42,7 +42,7 @@ class RandomObject extends Model {
      * Get the category this object belongs to.
      */
     public function category() {
-        return $this->belongsTo(RandomCategory::class, 'character_id');
+        return $this->belongsTo(RandomCategory::class, 'random_category_id');
     }
 
 }
