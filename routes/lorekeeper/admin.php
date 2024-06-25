@@ -254,6 +254,7 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('random/generator/create', 'GeneratorController@postCreateEditRandomGenerator');
     Route::post('random/generator/edit/{id}', 'GeneratorController@postCreateEditRandomGenerator');
     Route::post('random/generator/delete/{id}', 'GeneratorController@postDeleteRandomGenerator');
+    Route::post('random/generator/sort', 'GeneratorController@postSortGenerator');
 });
 
 // PAGES

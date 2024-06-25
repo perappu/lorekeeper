@@ -5,7 +5,7 @@
 @endsection
 
 @section('admin-content')
-    {!! breadcrumbs(['Admin Panel' => 'admin', 'Random Generators' => 'admin/data/random', 'Random Category' => 'admin/data/random/generator/view' . $generator->id]) !!}
+    {!! breadcrumbs(['Admin Panel' => 'admin', 'Random Generators' => 'admin/data/random', $generator->name => 'admin/data/random/generator/view' . $generator->id]) !!}
 
     <h1>Random Generator - {!! $generator->name !!}</h1>
 

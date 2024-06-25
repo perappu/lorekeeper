@@ -73,9 +73,8 @@ class GeneratorService extends Service {
         DB::beginTransaction();
 
         try {
-            if (RandomGenerator::where('name', $data['name'])->where('id', '!=', $generator->id)->exists()) {
-                throw new \Exception('The name has already been taken.');
-            }
+
+            $data = $this->populateGeneratorData($data);
 
             $generator->update($data);
 
@@ -104,6 +103,32 @@ class GeneratorService extends Service {
             }
 
             $generator->delete();
+
+            return $this->commitReturn(true);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
+    }
+
+    /**
+     * Sorts generator order.
+     *
+     * @param array $data
+     *
+     * @return bool
+     */
+    public function sortGenerator($data) {
+        DB::beginTransaction();
+
+        try {
+            // explode the sort array and reverse it since the order is inverted
+            $sort = array_reverse(explode(',', $data));
+
+            foreach ($sort as $key => $s) {
+                RandomGenerator::where('id', $s)->update(['sort' => $key]);
+            }
 
             return $this->commitReturn(true);
         } catch (\Exception $e) {

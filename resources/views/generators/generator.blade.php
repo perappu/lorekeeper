@@ -34,7 +34,7 @@
 
             var n1 = values[Math.floor(Math.random() * values.length)];
 
-            if (n1.link == null) {
+            if (n1.link != null) {
                 document.getElementById("randomValue").innerHTML = '<a href="' + n1.link + '">' + n1.text + '</a>';
             } else {
                 document.getElementById("randomValue").innerHTML = n1.text;

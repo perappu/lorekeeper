@@ -12,14 +12,14 @@ use Illuminate\Support\Facades\Auth;
 class GeneratorController extends Controller {
     /*
     |--------------------------------------------------------------------------
-    | Admin / MYO Maker Controller
+    | Admin / Random Generator Controller
     |--------------------------------------------------------------------------
     |
-    | Handles creation/editing of myo maker categories and images.
+    | Handles creation/editing of random generators and objects.
     |
     */
 
-    /******** IMAGES */
+    /******************************************************************* GENERATORS */
 
     /**
      * Shows the main index.
@@ -28,7 +28,7 @@ class GeneratorController extends Controller {
      */
     public function getIndex() {
         return view('admin.generator.randoms', [
-            'generators' => RandomGenerator::orderBy('id', 'DESC')->get(),
+            'generators' => RandomGenerator::orderBy('sort', 'DESC')->get(),
         ]);
     }
 
@@ -90,9 +90,9 @@ class GeneratorController extends Controller {
             'name', 'description', 'image', 'remove_image', 'is_active',
         ]);
         if ($id && $service->updateRandomGenerator(RandomGenerator::find($id), $data, Auth::user())) {
-            flash('Category updated successfully.')->success();
+            flash('Generator updated successfully.')->success();
         } elseif (!$id && $category = $service->createRandomGenerator($data, Auth::user())) {
-            flash('Category created successfully.')->success();
+            flash('Generator created successfully.')->success();
 
             return redirect()->to('admin/data/random/generator/edit/'.$category->id);
         } else {
@@ -138,6 +138,25 @@ class GeneratorController extends Controller {
         }
 
         return redirect()->to('admin/data/random');
+    }
+
+    /**
+     * Sorts generators.
+     *
+     * @param App\Services\GeneratorService $service
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postSortGenerator(Request $request, GeneratorService $service) {
+        if ($service->sortGenerator($request->get('sort'))) {
+            flash('Generator order updated successfully.')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
+        }
+
+        return redirect()->back();
     }
 
     /******************************************************************* OBJECTS */

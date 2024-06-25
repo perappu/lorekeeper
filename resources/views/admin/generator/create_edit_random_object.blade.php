@@ -8,7 +8,7 @@
     {!! breadcrumbs([
         'Admin Panel' => 'admin',
         'Random Generators' => 'admin/data/random',
-        'Random Category' => 'admin/data/random/generator/view/' . $object->random_generator_id,
+        $generator->name => 'admin/data/random/generator/view/' . $generator->id,
         ($object->id ? 'Edit' : 'Create') . ' Object' => $object->id ? 'admin/data/random/edit/' . $object->id : 'admin/data/random/create',
     ]) !!}
 

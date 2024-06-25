@@ -33,7 +33,10 @@ class GeneratorController extends Controller {
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getGenerator($id) {
-        $generator = RandomGenerator::find($id);
+        $generator = RandomGenerator::where('id', $id)->where('is_active', 1)->first();
+        if (!$generator) {
+            abort(404);
+        }
         $objects = $generator->objects->toArray();
 
         return view('generators.generator', [
