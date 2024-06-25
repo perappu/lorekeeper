@@ -3,14 +3,11 @@
 namespace App\Http\Controllers\Admin\Data;
 
 use App\Http\Controllers\Controller;
-use App\Models\Item\ItemCategory;
 use App\Models\MYOMaker\MYOMakerCategory;
-use App\Services\ItemService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-
 use App\Models\MYOMaker\MYOMakerImage;
 use App\Services\MYOMakerService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MYOMakerController extends Controller {
     /*
@@ -30,25 +27,24 @@ class MYOMakerController extends Controller {
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getIndex() {
-
         return view('admin.myomaker.index', [
             'images' => MYOMakerImage::orderBy('category_id', 'DESC')->get(),
         ]);
     }
 
-        /**
+    /**
      * Shows the create category page.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getCreateMYOMakerImage() {
         return view('admin.myomaker.create_edit_image', [
-            'image' => new MYOMakerImage,
+            'image'          => new MYOMakerImage,
             'categories'     => ['none' => 'No category'] + MYOMakerCategory::orderBy('name', 'DESC')->pluck('name', 'id')->toArray(),
         ]);
     }
 
-        /**
+    /**
      * Shows the edit item category page.
      *
      * @param int $id
@@ -62,12 +58,12 @@ class MYOMakerController extends Controller {
         }
 
         return view('admin.myomaker.create_edit_image', [
-            'image' => $image,
+            'image'          => $image,
             'categories'     => ['none' => 'No category'] + MYOMakerCategory::orderBy('name', 'DESC')->pluck('name', 'id')->toArray(),
         ]);
     }
 
-        /**
+    /**
      * Gets the item category deletion modal.
      *
      * @param int $id
@@ -85,18 +81,17 @@ class MYOMakerController extends Controller {
         ]);
     }
 
-        /**
+    /**
      * Uploads a file.
      *
-     * @param mixed $data
-     * @param mixed $user
+     * @param mixed|null $id
      *
      * @return bool
      */
     public function postCreateEditMYOMakerImage(Request $request, MYOMakerService $service, $id = null) {
         $id ? $request->validate(MYOMakerImage::$updateRules) : $request->validate(MYOMakerImage::$createRules);
         $data = $request->only([
-            'name', 'image', 'category_id'
+            'name', 'image', 'category_id',
         ]);
         if ($id && $service->updateMYOMakerImage(MYOMakerImage::find($id), $data, Auth::user())) {
             flash('Category updated successfully.')->success();
@@ -133,7 +128,6 @@ class MYOMakerController extends Controller {
         return redirect()->to('admin/data/myomaker');
     }
 
-
     /******** CATEGORIES */
 
     /**
@@ -142,7 +136,6 @@ class MYOMakerController extends Controller {
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getMYOMakerCategoryIndex() {
-
         return view('admin.myomaker.categories', [
             'categories' => MYOMakerCategory::orderBy('name', 'DESC')->get(),
         ]);
@@ -188,7 +181,7 @@ class MYOMakerController extends Controller {
     public function postCreateEditMYOMakerCategory(Request $request, MYOMakerService $service, $id = null) {
         $id ? $request->validate(MYOMakerCategory::$updateRules) : $request->validate(MYOMakerCategory::$createRules);
         $data = $request->only([
-            'name', 'order'
+            'name', 'order',
         ]);
         if ($id && $service->updateMYOMakerCategory(MYOMakerCategory::find($id), $data, Auth::user())) {
             flash('Category updated successfully.')->success();
@@ -239,5 +232,4 @@ class MYOMakerController extends Controller {
 
         return redirect()->to('admin/data/myomaker');
     }
-
 }

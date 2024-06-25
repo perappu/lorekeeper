@@ -254,7 +254,6 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('myomaker/category/create', 'MYOMakerController@postCreateEditMYOMakerCategory');
     Route::post('myomaker/category/edit/{id}', 'MYOMakerController@postCreateEditMYOMakerCategory');
     Route::post('myomaker/category/delete/{id}', 'MYOMakerController@postDeleteMYOMakerCategory');
-
 });
 
 // PAGES

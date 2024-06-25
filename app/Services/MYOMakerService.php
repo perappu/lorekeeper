@@ -16,8 +16,6 @@ class MYOMakerService extends Service {
     |
     */
 
-
-
     /**********************************************************************************************
 
         ITEM CATEGORIES
@@ -51,6 +49,7 @@ class MYOMakerService extends Service {
      *
      * @param array                 $data
      * @param \App\Models\User\User $user
+     * @param mixed                 $category
      *
      * @return \App\Models\Item\MYOMakerCategory|bool
      */
@@ -58,7 +57,6 @@ class MYOMakerService extends Service {
         DB::beginTransaction();
 
         try {
-
             if (MYOMakerCategory::where('name', $data['name'])->where('id', '!=', $category->id)->exists()) {
                 throw new \Exception('The name has already been taken.');
             }
@@ -66,7 +64,6 @@ class MYOMakerService extends Service {
             $category->update($data);
 
             return $this->commitReturn($category);
-            
         } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
@@ -77,8 +74,8 @@ class MYOMakerService extends Service {
     /**
      * Deletes a category.
      *
-     * @param mixed $carousel
      * @param mixed $user
+     * @param mixed $myomakercategory
      *
      * @return bool
      */
@@ -98,11 +95,12 @@ class MYOMakerService extends Service {
 
     /*********** IMAGES */
 
-        /**
+    /**
      * Uploads a file.
      *
      * @param mixed $data
      * @param mixed $user
+     * @param mixed $myomakerimage
      *
      * @return \App\Models\Item\MYOMakerImage|bool
      */
@@ -118,7 +116,6 @@ class MYOMakerService extends Service {
 
             $data['image'] = $data['category_id'].'_'.$data['id'];
 
-
             if ($image) {
                 $this->handleImage($image, $myomakerimage->imagePath, $data['image'], null);
             }
@@ -133,7 +130,7 @@ class MYOMakerService extends Service {
         return $this->rollbackReturn(false);
     }
 
-            /**
+    /**
      * Uploads a file.
      *
      * @param mixed $data
@@ -166,7 +163,6 @@ class MYOMakerService extends Service {
             }
 
             return $this->commitReturn($myomakerimage);
-
         } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
@@ -177,8 +173,8 @@ class MYOMakerService extends Service {
     /**
      * Deletes a file.
      *
-     * @param mixed $carousel
      * @param mixed $user
+     * @param mixed $myomakerimage
      *
      * @return bool
      */
@@ -196,5 +192,4 @@ class MYOMakerService extends Service {
 
         return $this->rollbackReturn(false);
     }
-
 }

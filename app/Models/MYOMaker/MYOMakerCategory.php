@@ -5,14 +5,13 @@ namespace App\Models\MYOMaker;
 use App\Models\Model;
 
 class MYOMakerCategory extends Model {
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'order'
+        'name', 'order',
     ];
 
     /**
@@ -22,14 +21,13 @@ class MYOMakerCategory extends Model {
      */
     protected $table = 'myomaker_category';
 
-
     /**
      * Validation rules for image creation.
      *
      * @var array
      */
     public static $createRules = [
-        'name' => 'required',
+        'name'  => 'required',
         'order' => 'required',
     ];
 
@@ -39,8 +37,7 @@ class MYOMakerCategory extends Model {
      * @var array
      */
     public static $updateRules = [
-        'name' => 'required',
+        'name'  => 'required',
         'order' => 'required',
     ];
-
 }

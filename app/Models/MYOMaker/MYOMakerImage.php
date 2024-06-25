@@ -5,14 +5,13 @@ namespace App\Models\MYOMaker;
 use App\Models\Model;
 
 class MYOMakerImage extends Model {
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [ 
-        'category_id', 'image', 'name'
+    protected $fillable = [
+        'category_id', 'image', 'name',
     ];
 
     /**
@@ -28,9 +27,9 @@ class MYOMakerImage extends Model {
      * @var array
      */
     public static $createRules = [
-        'name' => 'required',
+        'name'        => 'required',
         'category_id' => 'required',
-        'image'      => 'required|mimes:jpeg,jpg,gif,png,webp|max:20000',
+        'image'       => 'required|mimes:jpeg,jpg,gif,png,webp|max:20000',
     ];
 
     /**
@@ -53,7 +52,6 @@ class MYOMakerImage extends Model {
         ACCESSORS
 
     **********************************************************************************************/
-
 
     /**
      * Gets the file directory containing the model's image.
@@ -90,5 +88,4 @@ class MYOMakerImage extends Model {
     public function getImageUrlAttribute() {
         return asset($this->imageDirectory.'/'.$this->imageFileName);
     }
-
 }
