@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Data;
 
 use App\Http\Controllers\Controller;
-use App\Models\Generator\RandomObject;
 use App\Models\Generator\RandomGenerator;
+use App\Models\Generator\RandomObject;
 use App\Services\GeneratorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +27,6 @@ class GeneratorController extends Controller {
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getIndex() {
-
         return view('admin.generator.randoms', [
             'generators' => RandomGenerator::orderBy('id', 'DESC')->get(),
         ]);
@@ -35,16 +34,16 @@ class GeneratorController extends Controller {
 
     /**
      * Shows the index for a category.
+     *
      * @param int $id
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getRandomGeneratorIndex($id) {
-
         $generator = RandomGenerator::find($id);
 
         return view('admin.generator.random_generator', [
-            'generator' => $generator
+            'generator' => $generator,
         ]);
     }
 
@@ -59,7 +58,7 @@ class GeneratorController extends Controller {
         ]);
     }
 
-        /**
+    /**
      * Shows the edit generator page.
      *
      * @param int $id
@@ -81,7 +80,7 @@ class GeneratorController extends Controller {
      * Creates or edits a generator.
      *
      * @param App\Services\GeneratorService $service
-     * @param int|null                 $id
+     * @param int|null                      $id
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -117,7 +116,7 @@ class GeneratorController extends Controller {
 
         return view('admin.generator._delete_generator', [
             'generator' => $generator,
-            
+
         ]);
     }
 
@@ -125,7 +124,7 @@ class GeneratorController extends Controller {
      * Deletes a generator.
      *
      * @param App\Services\GeneratorService $service
-     * @param int                      $id
+     * @param int                           $id
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -146,6 +145,8 @@ class GeneratorController extends Controller {
     /**
      * Shows the create object page.
      *
+     * @param mixed $id
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getCreateRandom($id) {
@@ -155,8 +156,8 @@ class GeneratorController extends Controller {
         }
 
         return view('admin.generator.create_edit_random_object', [
-            'object' => new RandomObject(),
-            'generator' => $generator
+            'object'    => new RandomObject(),
+            'generator' => $generator,
         ]);
     }
 
@@ -174,8 +175,8 @@ class GeneratorController extends Controller {
         }
 
         return view('admin.generator.create_edit_random_object', [
-            'object' => $object,
-            'generator' => $object->generator
+            'object'    => $object,
+            'generator' => $object->generator,
         ]);
     }
 
@@ -190,14 +191,14 @@ class GeneratorController extends Controller {
     public function postCreateEditRandom(Request $request, GeneratorService $service, $id = null) {
         $id ? $request->validate(RandomObject::$rules) : $request->validate(RandomObject::$rules);
         $data = $request->only([
-            'text', 'link', 'random_generator_id'
+            'text', 'link', 'random_generator_id',
         ]);
         if ($id && $service->updateRandom(RandomObject::find($id), $data, Auth::user())) {
             flash('Object updated successfully.')->success();
         } elseif (!$id && $object = $service->createRandom($data, Auth::user())) {
             flash('Object created successfully.')->success();
 
-            return redirect()->to('admin/data/random/generator/view/'.$data["random_generator_id"]);
+            return redirect()->to('admin/data/random/generator/view/'.$data['random_generator_id']);
         } else {
             foreach ($service->errors()->getMessages()['error'] as $error) {
                 flash($error)->error();
@@ -242,9 +243,4 @@ class GeneratorController extends Controller {
 
         return redirect()->to('admin/data/random/generator/view/'.$generator);
     }
-
-
-
-
-
 }

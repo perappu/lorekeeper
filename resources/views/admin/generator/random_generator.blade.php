@@ -5,13 +5,13 @@
 @endsection
 
 @section('admin-content')
-    {!! breadcrumbs(['Admin Panel' => 'admin', 'Random Generators' => 'admin/data/random', 'Random Category' => 'admin/data/random/generator/view'.$generator->id]) !!}
+    {!! breadcrumbs(['Admin Panel' => 'admin', 'Random Generators' => 'admin/data/random', 'Random Category' => 'admin/data/random/generator/view' . $generator->id]) !!}
 
     <h1>Random Generator - {!! $generator->name !!}</h1>
 
     <p>This is a list of the possible options in this generator.</p>
 
-    <div class="text-right mb-3"><a class="btn btn-primary" href="{{ url('admin/data/random/create/'.$generator->id) }}"><i class="fas fa-plus"></i> Create New Object</a></div>
+    <div class="text-right mb-3"><a class="btn btn-primary" href="{{ url('admin/data/random/create/' . $generator->id) }}"><i class="fas fa-plus"></i> Create New Object</a></div>
     @if (!count($generator->objects))
         <p>No objects found.</p>
     @else

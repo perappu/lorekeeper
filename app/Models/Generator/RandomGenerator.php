@@ -49,7 +49,6 @@ class RandomGenerator extends Model {
         'image'       => 'mimes:png',
     ];
 
-
     /**********************************************************************************************
 
         RELATIONS
@@ -59,11 +58,9 @@ class RandomGenerator extends Model {
     /**
      * Get the comments for the blog post.
      */
-    public function objects()
-    {
+    public function objects() {
         return $this->hasMany(RandomObject::class);
     }
-
 
     /**********************************************************************************************
 
@@ -119,5 +116,4 @@ class RandomGenerator extends Model {
 
         return asset($this->imageDirectory.'/'.$this->generatorImageFileName);
     }
-    
 }

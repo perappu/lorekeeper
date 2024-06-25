@@ -5,7 +5,7 @@
 @endsection
 
 @section('home-content')
-{!! breadcrumbs(['Home' => 'home', 'Generators' => 'world/generators']) !!}
+    {!! breadcrumbs(['Home' => 'home', 'Generators' => 'world/generators']) !!}
 
     <h1>
         Random Generators

@@ -8,7 +8,7 @@
     {!! breadcrumbs([
         'Admin Panel' => 'admin',
         'Random Generators' => 'admin/data/random',
-        'Random Category' => 'admin/data/random/generator/view/'.$object->random_generator_id,
+        'Random Category' => 'admin/data/random/generator/view/' . $object->random_generator_id,
         ($object->id ? 'Edit' : 'Create') . ' Object' => $object->id ? 'admin/data/random/edit/' . $object->id : 'admin/data/random/create',
     ]) !!}
 
@@ -31,15 +31,13 @@
         {!! Form::text('link', $object->link, ['class' => 'form-control']) !!}
     </div>
 
-    {{ Form::hidden('random_generator_id', $object->random_generator_id ? $object->random_generator_id : $generator->id ) }}
+    {{ Form::hidden('random_generator_id', $object->random_generator_id ? $object->random_generator_id : $generator->id) }}
 
     <div class="text-right">
         {!! Form::submit($object->id ? 'Edit' : 'Create', ['class' => 'btn btn-primary']) !!}
     </div>
 
     {!! Form::close() !!}
-
-
 @endsection
 
 @section('scripts')
