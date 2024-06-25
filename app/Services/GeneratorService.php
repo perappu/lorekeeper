@@ -34,7 +34,6 @@ class GeneratorService extends Service {
         DB::beginTransaction();
 
         try {
-
             $data = $this->populateGeneratorData($data);
 
             $image = null;
@@ -66,6 +65,7 @@ class GeneratorService extends Service {
      *
      * @param array                 $data
      * @param \App\Models\User\User $user
+     * @param mixed                 $generator
      *
      * @return \App\Models\Item\RandomGenerator|bool
      */
@@ -73,7 +73,6 @@ class GeneratorService extends Service {
         DB::beginTransaction();
 
         try {
-
             if (RandomGenerator::where('name', $data['name'])->where('id', '!=', $generator->id)->exists()) {
                 throw new \Exception('The name has already been taken.');
             }
@@ -81,7 +80,6 @@ class GeneratorService extends Service {
             $generator->update($data);
 
             return $this->commitReturn($generator);
-            
         } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
@@ -92,8 +90,8 @@ class GeneratorService extends Service {
     /**
      * Deletes a category.
      *
-     * @param mixed $carousel
      * @param mixed $user
+     * @param mixed $generator
      *
      * @return bool
      */
@@ -140,6 +138,7 @@ class GeneratorService extends Service {
      *
      * @param array                 $data
      * @param \App\Models\User\User $user
+     * @param mixed                 $object
      *
      * @return \App\Models\Item\RandomObject|bool
      */
@@ -147,11 +146,9 @@ class GeneratorService extends Service {
         DB::beginTransaction();
 
         try {
-
             $object->update($data);
 
             return $this->commitReturn($object);
-            
         } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
@@ -184,7 +181,7 @@ class GeneratorService extends Service {
     /**
      * Processes user input for creating/updating a generator.
      *
-     * @param array                 $data
+     * @param array                                 $data
      * @param \App\Models\Generator\RandomGenerator $generator
      *
      * @return array
@@ -207,5 +204,4 @@ class GeneratorService extends Service {
 
         return $data;
     }
-
 }

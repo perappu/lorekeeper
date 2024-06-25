@@ -26,19 +26,19 @@ class GeneratorController extends Controller {
     }
 
     /**
-     * Shows one generator
+     * Shows one generator.
+     *
+     * @param mixed $id
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getGenerator($id) {
-
         $generator = RandomGenerator::find($id);
         $objects = $generator->objects->toArray();
 
         return view('generators.generator', [
             'generator' => $generator,
-            'objects' => $objects
+            'objects'   => $objects,
         ]);
     }
-
 }
