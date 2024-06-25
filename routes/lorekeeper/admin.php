@@ -239,21 +239,21 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('prompts/edit/{id?}', 'PromptController@postCreateEditPrompt');
     Route::post('prompts/delete/{id}', 'PromptController@postDeletePrompt');
 
-    //MYO MAKER
-    Route::get('randomgenerator', 'RandomGeneratorController@getIndex');
-    Route::get('randomgenerator/create', 'RandomGeneratorController@getCreateRandom');
-    Route::get('randomgenerator/edit/{id}', 'RandomGeneratorController@getEditRandom');
-    Route::get('randomgenerator/delete/{id}', 'RandomGeneratorController@getDeleteRandom');
-    Route::post('randomgenerator/create', 'RandomGeneratorController@postCreateEditRandom');
-    Route::post('randomgenerator/edit/{id}', 'RandomGeneratorController@postCreateEditRandom');
-    Route::post('randomgenerator/delete/{id}', 'RandomGeneratorController@postDeleteRandom');
-    Route::get('randomgenerator/category/view/{id}', 'RandomGeneratorController@getRandomCategoryIndex');
-    Route::get('randomgenerator/category/create', 'RandomGeneratorController@getCreateRandomCategory');
-    Route::get('randomgenerator/category/edit/{id}', 'RandomGeneratorController@getEditRandomCategory');
-    Route::get('randomgenerator/category/delete/{id}', 'RandomGeneratorController@getDeleteRandomCategory');
-    Route::post('randomgenerator/category/create', 'RandomGeneratorController@postCreateEditRandomCategory');
-    Route::post('randomgenerator/category/edit/{id}', 'RandomGeneratorController@postCreateEditRandomCategory');
-    Route::post('randomgenerator/category/delete/{id}', 'RandomGeneratorController@postDeleteRandomCategory');
+    //RANDOM GENERATOR
+    Route::get('random', 'GeneratorController@getIndex');
+    Route::get('random/create/{id}', 'GeneratorController@getCreateRandom');
+    Route::get('random/edit/{id}', 'GeneratorController@getEditRandom');
+    Route::get('random/delete/{id}', 'GeneratorController@getDeleteRandom');
+    Route::post('random/create', 'GeneratorController@postCreateEditRandom');
+    Route::post('random/edit/{id}', 'GeneratorController@postCreateEditRandom');
+    Route::post('random/delete/{id}', 'GeneratorController@postDeleteRandom');
+    Route::get('random/generator/view/{id}', 'GeneratorController@getRandomGeneratorIndex');
+    Route::get('random/generator/create', 'GeneratorController@getCreateRandomGenerator');
+    Route::get('random/generator/edit/{id}', 'GeneratorController@getEditRandomGenerator');
+    Route::get('random/generator/delete/{id}', 'GeneratorController@getDeleteRandomGenerator');
+    Route::post('random/generator/create', 'GeneratorController@postCreateEditRandomGenerator');
+    Route::post('random/generator/edit/{id}', 'GeneratorController@postCreateEditRandomGenerator');
+    Route::post('random/generator/delete/{id}', 'GeneratorController@postDeleteRandomGenerator');
 });
 
 // PAGES

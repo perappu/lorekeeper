@@ -196,7 +196,7 @@ return [
             ],
             [
                 'name' => 'Random Generators',
-                'url'  => 'admin/data/randomgenerator',
+                'url'  => 'admin/data/random',
             ],
         ],
     ],

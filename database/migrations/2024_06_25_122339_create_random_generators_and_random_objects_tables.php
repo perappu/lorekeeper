@@ -11,17 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('random_categories', function (Blueprint $table) {
+        Schema::create('random_generators', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('name');
+            $table->string('hash', 20)->nullable()->default(null);
+            $table->text('description')->nullable()->default(null);
+            $table->text('parsed_description')->nullable()->default(null);
+            $table->integer('sort')->default(0);
+            $table->boolean('is_active')->default(1);
+            $table->boolean('has_image')->default(0);
         });
         Schema::create('random_objects', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('text');
-            $table->string('link');
-            $table->integer('random_category_id');
+            $table->string('link')->nullable()->default(null);
+            $table->integer('random_generator_id');
         });
     }
 
@@ -30,7 +34,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('random_categories');
+        Schema::dropIfExists('random_generators');
         Schema::dropIfExists('random_objects');
     }
 };
