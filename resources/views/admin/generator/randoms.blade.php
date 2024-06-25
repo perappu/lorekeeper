@@ -23,18 +23,18 @@
             </thead>
             <tr>
                 @foreach ($generators as $generator)
-                        <td>
-                            <a href="{{ $generator->url }}">{!! $generator->name !!}</a>
-                        </td>
-                        <td class="text-right">
-                            <a href="{{ url('admin/data/random/generator/view/' . $generator->id) }}" class="btn btn-primary">View</a>
-                            <a href="{{ url('admin/data/random/generator/edit/' . $generator->id) }}" class="btn btn-primary">Edit</a>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
+                    <td>
+                        <a href="{{ $generator->url }}">{!! $generator->name !!}</a>
+                    </td>
+                    <td class="text-right">
+                        <a href="{{ url('admin/data/random/generator/view/' . $generator->id) }}" class="btn btn-primary">View</a>
+                        <a href="{{ url('admin/data/random/generator/edit/' . $generator->id) }}" class="btn btn-primary">Edit</a>
+                    </td>
+            </tr>
+    @endforeach
+    </tbody>
 
-        </table>
+    </table>
     @endif
 
 @endsection
