@@ -11,7 +11,7 @@ class RandomGenerator extends Model {
      * @var array
      */
     protected $fillable = [
-        'name', 'sort', 'has_image', 'description', 'parsed_description', 'hash', 'is_active'
+        'name', 'sort', 'has_image', 'description', 'parsed_description', 'hash', 'is_active',
     ];
 
     /**

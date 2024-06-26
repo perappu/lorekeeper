@@ -73,7 +73,6 @@ class GeneratorService extends Service {
         DB::beginTransaction();
 
         try {
-
             $data = $this->populateGeneratorData($data);
 
             $generator->update($data);
