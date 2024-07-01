@@ -203,6 +203,14 @@ class RarityService extends Service {
             unset($data['remove_image']);
         }
 
+        if (isset($data['remove_icon'])) {
+            if ($rarity && $rarity->has_icon && $data['remove_icon']) {
+                $data['has_icon'] = 0;
+                $this->deleteImage($rarity->rarityImagePath, $rarity->rarityIconFileName);
+            }
+            unset($data['remove_icon']);
+        }
+
         return $data;
     }
 }

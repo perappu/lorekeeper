@@ -9,7 +9,7 @@ class Rarity extends Model {
      * @var array
      */
     protected $fillable = [
-        'name', 'sort', 'color', 'has_image', 'description', 'parsed_description', 'hash', 'has_icon', 'icon_hash',
+        'name', 'sort', 'color', 'has_image', 'description', 'parsed_description', 'hash', 'has_icon', 'icon_hash'
     ];
 
     /**
