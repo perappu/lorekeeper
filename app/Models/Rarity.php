@@ -9,7 +9,7 @@ class Rarity extends Model {
      * @var array
      */
     protected $fillable = [
-        'name', 'sort', 'color', 'has_image', 'description', 'parsed_description', 'hash', 'has_icon', 'icon_hash'
+        'name', 'sort', 'color', 'has_image', 'description', 'parsed_description', 'hash', 'has_icon', 'icon_hash',
     ];
 
     /**
@@ -56,13 +56,11 @@ class Rarity extends Model {
      * @return string
      */
     public function getDisplayNameAttribute() {
-
         $string = '';
 
         if ($this->has_icon) {
             $string = '<img src="'.$this->rarityIconUrl.'"/> ';
         }
-
 
         return $string.'<a href="'.$this->url.'" class="display-rarity" '.($this->color ? 'style="color: #'.$this->color.';"' : '').'>'.$this->name.'</a>';
     }
