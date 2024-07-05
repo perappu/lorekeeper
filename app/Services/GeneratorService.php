@@ -90,7 +90,6 @@ class GeneratorService extends Service {
             }
 
             return $this->commitReturn($generator);
-
         } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
