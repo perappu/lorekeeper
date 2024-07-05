@@ -87,7 +87,7 @@ class GeneratorController extends Controller {
     public function postCreateEditRandomGenerator(Request $request, GeneratorService $service, $id = null) {
         $id ? $request->validate(RandomGenerator::$updateRules) : $request->validate(RandomGenerator::$createRules);
         $data = $request->only([
-            'name', 'description', 'image', 'remove_image', 'is_active',
+            'name', 'description', 'image', 'remove_image', 'is_active', 
         ]);
         if ($id && $service->updateRandomGenerator(RandomGenerator::find($id), $data, Auth::user())) {
             flash('Generator updated successfully.')->success();
