@@ -21,7 +21,7 @@ class Game extends Model {
      *
      * @var string
      */
-    protected $table = 'shops';
+    protected $table = 'games';
     /**
      * Validation rules for creation.
      *
@@ -73,7 +73,7 @@ class Game extends Model {
      *
      * @return string
      */
-    public function getShopImageFileNameAttribute() {
+    public function getGameImageFileNameAttribute() {
         return $this->hash.$this->id.'-image.png';
     }
 
@@ -82,7 +82,7 @@ class Game extends Model {
      *
      * @return string
      */
-    public function getShopImagePathAttribute() {
+    public function getGameImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -91,12 +91,12 @@ class Game extends Model {
      *
      * @return string
      */
-    public function getShopImageUrlAttribute() {
+    public function getGameImageUrlAttribute() {
         if (!$this->has_image) {
             return null;
         }
 
-        return asset($this->imageDirectory.'/'.$this->shopImageFileName);
+        return asset($this->imageDirectory.'/'.$this->gameImageFileName);
     }
 
     /**
@@ -124,6 +124,24 @@ class Game extends Model {
      */
     public function getAdminPowerAttribute() {
         return 'edit_data';
+    }
+
+    /**
+     * Gets the admin edit URL.
+     *
+     * @return string
+     */
+    public function getFileDirectoryUrlAttribute() {
+        return url('games/'.$this->id);
+    }
+
+    /**
+     * Gets the admin edit URL.
+     *
+     * @return string
+     */
+    public function getHTMLUrlAttribute() {
+        return url('files/games/'.$this->id.'.txt');
     }
 
 }

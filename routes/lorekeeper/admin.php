@@ -238,6 +238,16 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('prompts/create', 'PromptController@postCreateEditPrompt');
     Route::post('prompts/edit/{id?}', 'PromptController@postCreateEditPrompt');
     Route::post('prompts/delete/{id}', 'PromptController@postDeletePrompt');
+
+    //GAMES
+    Route::get('games', 'GameController@getIndex');
+    Route::get('games/create', 'GameController@getCreateGame');
+    Route::get('games/edit/{id}', 'GameController@getEditGame');
+    Route::get('games/delete/{id}', 'GameController@getDeleteGame');
+    Route::post('games/create', 'GameController@postCreateEditGame');
+    Route::post('games/edit/{id?}', 'GameController@postCreateEditGame');
+    Route::post('games/delete/{id}', 'GameController@postDeleteGame');
+    Route::post('games/sort', 'GameController@postSortGame');
 });
 
 // PAGES
