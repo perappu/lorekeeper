@@ -59,12 +59,12 @@ class GameService extends Service {
         return $this->rollbackReturn(false);
     }
 
-        /**
+    /**
      * Updates a shop.
      *
-     * @param \App\Models\Game\Game $shop
      * @param array                 $data
      * @param \App\Models\User\User $user
+     * @param mixed                 $game
      *
      * @return \App\Models\game\Game|bool
      */
@@ -127,5 +127,4 @@ class GameService extends Service {
 
         return $data;
     }
-
 }

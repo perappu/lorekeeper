@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Data;
 
 use App\Http\Controllers\Controller;
-use App\Models\Game\Game;
 use App\Models\Currency\Currency;
+use App\Models\Game\Game;
 use App\Services\GameService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,14 +30,14 @@ class GameController extends Controller {
         ]);
     }
 
-        /**
+    /**
      * Shows the create game page.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getCreateGame() {
         return view('admin.games.create_game', [
-            'game' => new Game,
+            'game'       => new Game,
             'currencies' => Currency::orderBy('name')->pluck('name', 'id'),
         ]);
     }
@@ -61,7 +61,7 @@ class GameController extends Controller {
         ]);
     }
 
-        /**
+    /**
      * Creates or edits a game.
      *
      * @param App\Services\GameService $service
@@ -72,7 +72,7 @@ class GameController extends Controller {
     public function postCreateEditGame(Request $request, GameService $service, $id = null) {
         $id ? $request->validate(Game::$updateRules) : $request->validate(Game::$createRules);
         $data = $request->only([
-            'name', 'description', 'image', 'remove_image', 'is_active', 'currency_id', 'currency_cap', 'score_ratio'
+            'name', 'description', 'image', 'remove_image', 'is_active', 'currency_id', 'currency_cap', 'score_ratio',
         ]);
         if ($id && $service->updateGame(Game::find($id), $data, Auth::user())) {
             flash('Game updated successfully.')->success();
@@ -88,5 +88,4 @@ class GameController extends Controller {
 
         return redirect()->back();
     }
-
 }
