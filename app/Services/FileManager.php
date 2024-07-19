@@ -183,5 +183,4 @@ class FileManager extends Service {
 
         return true;
     }
-
 }

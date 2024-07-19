@@ -5,11 +5,10 @@ namespace App\Http\Controllers\Admin\Data;
 use App\Http\Controllers\Controller;
 use App\Models\Currency\Currency;
 use App\Models\Game\Game;
+use App\Services\GameFileManager;
 use App\Services\GameService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Services\GameFileManager;
-use Log;
 
 class GameController extends Controller {
     /*
@@ -80,6 +79,7 @@ class GameController extends Controller {
             flash('Game updated successfully.')->success();
         } elseif (!$id && $game = $service->createGame($data, Auth::user())) {
             flash('Game created successfully.')->success();
+
             return redirect()->to('admin/data/games/edit/'.$game->id);
         } else {
             foreach ($service->errors()->getMessages()['error'] as $error) {
@@ -131,11 +131,11 @@ class GameController extends Controller {
      * Uploads a file to the files directory.
      *
      * @param App\Services\GameFileManager $service
+     * @param mixed                        $id
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postUploadGameFile($id, Request $request, GameFileManager $service) {
-
         $game = Game::find($id);
         if (!$game) {
             abort(404);
@@ -156,9 +156,7 @@ class GameController extends Controller {
                 }
             }
         }
+
         return redirect()->back();
     }
-
-
-
 }

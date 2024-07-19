@@ -173,11 +173,10 @@ class GameFileManager extends Service {
 
     /**
      * Uploads a file to an arbitrary public path location.
-     * added by Games Room extension so that we can upload to a directory outside of /files/ or /images/
+     * added by Games Room extension so that we can upload to a directory outside of /files/ or /images/.
      *
-     * @param string $oldDir
-     * @param string $newDir
-     * @param string $name
+     * @param mixed $file
+     * @param mixed $dir
      *
      * @return bool
      */
@@ -191,5 +190,4 @@ class GameFileManager extends Service {
 
         return true;
     }
-
 }

@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Currency\Currency;
 use App\Models\Game\Game;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class GameController extends Controller {
     /*
@@ -28,7 +25,7 @@ class GameController extends Controller {
         ]);
     }
 
-       /**
+    /**
      * Shows a shop.
      *
      * @param int $id

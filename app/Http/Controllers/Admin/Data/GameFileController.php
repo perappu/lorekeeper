@@ -3,20 +3,20 @@
 namespace App\Http\Controllers\Admin\Data;
 
 use App\Http\Controllers\Controller;
+use App\Models\Game\Game;
 use App\Services\GameFileManager;
 use Illuminate\Http\Request;
-use App\Models\Game\Game;
 
 class GameFileController extends Controller {
     /**
      * Shows the files index.
      *
-     * @param string $folder
+     * @param mixed      $id
+     * @param mixed|null $folderName
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getGameFileIndex($id, $folderName = null) {
-
         $game = Game::find($id);
         if (!$game) {
             abort(404);
@@ -46,21 +46,21 @@ class GameFileController extends Controller {
             }
         }
 
-        if($folderName != null) {
+        if ($folderName != null) {
             $folder = $game->filesDirectory.'/'.$folderName;
             $isRoot = false;
         } else {
             $folder = $game->filesDirectory;
             $isRoot = true;
         }
-        
+
         return view('admin.games.game_files', [
-            'isRoot' => $isRoot,
-            'folder'  => $folder,
+            'isRoot'     => $isRoot,
+            'folder'     => $folder,
             'folderName' => $folderName,
-            'folders' => glob(public_path().$game->filesDirectory.'/*', GLOB_ONLYDIR),
-            'files'   => $fileList,
-            'game'    => $game
+            'folders'    => glob(public_path().$game->filesDirectory.'/*', GLOB_ONLYDIR),
+            'files'      => $fileList,
+            'game'       => $game,
         ]);
     }
 
@@ -68,6 +68,7 @@ class GameFileController extends Controller {
      * Creates a new directory in the files directory.
      *
      * @param App\Services\GameFileManager $service
+     * @param mixed                        $id
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -76,7 +77,7 @@ class GameFileController extends Controller {
         if (!$game) {
             abort(404);
         }
-        
+
         $request->validate(['name' => 'required|alpha_dash']);
 
         if ($service->createDirectory(public_path().$game->filesDirectory.'/'.$request->get('name'))) {
@@ -94,11 +95,11 @@ class GameFileController extends Controller {
      * Moves a file in the files directory.
      *
      * @param App\Services\GameFileManager $service
+     * @param mixed                        $id
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postMoveFile($id, Request $request, GameFileManager $service) {
-
         $game = Game::find($id);
         if (!$game) {
             abort(404);
@@ -107,7 +108,7 @@ class GameFileController extends Controller {
         $request->validate(['destination' => 'required']);
         $oldDir = $request->get('folder');
         $newDir = $request->get('destination');
-        
+
         if ($service->moveFile(
             public_path().'/files'.($oldDir ? '/'.$oldDir : ''),
             public_path().'/files'.($newDir != 'root' ? '/'.$newDir : ''),
@@ -127,11 +128,11 @@ class GameFileController extends Controller {
      * Renames a file in the files directory.
      *
      * @param App\Services\GameFileManager $service
+     * @param mixed                        $id
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postRenameFile($id, Request $request, GameFileManager $service) {
-
         $game = Game::find($id);
         if (!$game) {
             abort(404);
@@ -157,11 +158,11 @@ class GameFileController extends Controller {
      * Deletes a file in the files directory.
      *
      * @param App\Services\GameFileManager $service
+     * @param mixed                        $id
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postDeleteFile($id, Request $request, GameFileManager $service) {
-
         $game = Game::find($id);
         if (!$game) {
             abort(404);
@@ -186,11 +187,11 @@ class GameFileController extends Controller {
      * Uploads a file to the files directory.
      *
      * @param App\Services\GameFileManager $service
+     * @param mixed                        $id
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postUploadFile($id, Request $request, GameFileManager $service) {
-
         $game = Game::find($id);
         if (!$game) {
             abort(404);
@@ -216,6 +217,7 @@ class GameFileController extends Controller {
      * Renames a directory in the files directory.
      *
      * @param App\Services\GameFileManager $service
+     * @param mixed                        $id
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -247,6 +249,7 @@ class GameFileController extends Controller {
      * Deletes a directory in the files directory.
      *
      * @param App\Services\GameFileManager $service
+     * @param mixed                        $id
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -272,7 +275,6 @@ class GameFileController extends Controller {
         return redirect()->to('admin/files');
     }
 
-
     /**
      * Uploads a site image file.
      *
@@ -296,5 +298,4 @@ class GameFileController extends Controller {
 
         return redirect()->back();
     }
-
 }

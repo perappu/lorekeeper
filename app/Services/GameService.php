@@ -4,8 +4,6 @@ namespace App\Services;
 
 use App\Models\game\game;
 use Illuminate\Support\Facades\DB;
-use App\Services\GameFileManager;
-use Log;
 
 class GameService extends Service {
     /*
@@ -108,7 +106,7 @@ class GameService extends Service {
         return $this->rollbackReturn(false);
     }
 
-        /**
+    /**
      * Deletes a game.
      *
      * @param \App\Models\Game\Game $game
@@ -168,6 +166,4 @@ class GameService extends Service {
 
         return $data;
     }
-
-
 }

@@ -126,7 +126,7 @@ class Game extends Model {
     }
 
     /**
-     * Gets the file directory for the game
+     * Gets the file directory for the game.
      *
      * @return string
      */
@@ -135,7 +135,7 @@ class Game extends Model {
     }
 
     /**
-     * Gets the directory where arbitrary game files are stored
+     * Gets the directory where arbitrary game files are stored.
      *
      * @return string
      */
@@ -144,7 +144,7 @@ class Game extends Model {
     }
 
     /**
-     * Gets  directory where arbitrary game files are stored, but as an absolute url
+     * Gets  directory where arbitrary game files are stored, but as an absolute url.
      *
      * @return string
      */
@@ -153,7 +153,7 @@ class Game extends Model {
     }
 
     /**
-     * Gets the absolute URL of the game's main HTML file
+     * Gets the absolute URL of the game's main HTML file.
      *
      * @return string
      */
