@@ -78,7 +78,7 @@
 
     <h4>HTML</h4>
 
-    {!! Form::open(['url' => 'admin/data/games/file/'.$game->id.'/upload', 'id' => 'uploadForm', 'class' => 'file-form', 'files' => true]) !!}
+    {!! Form::open(['url' => 'admin/data/games/file/' . $game->id . '/upload', 'id' => 'uploadForm', 'class' => 'file-form', 'files' => true]) !!}
     <p>Select a file to upload. (Maximum size {{ min(ini_get('upload_max_filesize'), ini_get('post_max_size')) }}B.)</p>
     <div class="row mb-4">
         <div class="col-6">
@@ -99,7 +99,6 @@
     <p>If a specific file structure is needed, such as for certain game engines, please use FTP to upload the files.</p>
 
     <a href="/admin/data/games/files/{{ $game->id }}" class="btn btn-primary float-right">Upload Files</a>
-
 @endsection
 
 @section('scripts')

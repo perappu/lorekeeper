@@ -7,7 +7,7 @@
 @section('admin-content')
     {!! breadcrumbs(['Admin Panel' => 'admin', 'Games' => 'admin/data/games'] + ($isRoot ? [$folder => 'admin/files/' . $folder] : ['Game File Manager' => ''])) !!}
 
-    <h1>Game File Manager / {!! !$isRoot ? $game->name . ' / Files / ' . $folderName . ' <a href="' . url('admin/data/games/files/'.$game->id) . '" class="btn btn-success float-right">Back to Root</a>' : $game->name.' / Files' !!}</h1>
+    <h1>Game File Manager / {!! !$isRoot ? $game->name . ' / Files / ' . $folderName . ' <a href="' . url('admin/data/games/files/' . $game->id) . '" class="btn btn-success float-right">Back to Root</a>' : $game->name . ' / Files' !!}</h1>
 
     <p>This manager allows you to upload files onto your server and create folders up to one level deep. Note that a folder containing files cannot be renamed or deleted.</p>
     <p><b>Files and folders uploaded manually via FTP may not appear.</b> This is due to a limitation with Lorekeeper's file manager, as it only shows folders one level deep.</p>
@@ -65,7 +65,7 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        {!! Form::open(['url' => 'admin/data/games/files/'.$game->id.'/folder/rename', 'id' => 'renameFolderForm', 'class' => 'folder-form']) !!}
+                        {!! Form::open(['url' => 'admin/data/games/files/' . $game->id . '/folder/rename', 'id' => 'renameFolderForm', 'class' => 'folder-form']) !!}
                         <p>This will rename the folder. Folders containing files cannot be renamed. Use alphanumeric characters and dashes/underscores only.</p>
                         <div class="form-group">
                             {!! Form::label('name', 'New Name') !!}
@@ -76,7 +76,7 @@
                         </div>
                         {!! Form::hidden('folder', $folder, ['class' => 'edit-folder']) !!}
                         {!! Form::close() !!}
-                        {!! Form::open(['url' => 'admin/data/games/files/'.$game->id.'/folder/delete', 'id' => 'deleteFolderForm', 'class' => 'folder-form']) !!}
+                        {!! Form::open(['url' => 'admin/data/games/files/' . $game->id . '/folder/delete', 'id' => 'deleteFolderForm', 'class' => 'folder-form']) !!}
                         <p>This will permanently delete <strong>{{ $folder }}</strong>. Are you sure?</p>
                         <div class="text-right">
                             {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
@@ -96,7 +96,7 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        {!! Form::open(['url' => 'admin/data/games/files/'.$game->id.'/folder/create']) !!}
+                        {!! Form::open(['url' => 'admin/data/games/files/' . $game->id . '/folder/create']) !!}
                         <p>This will create a new folder in the root folder. Use alphanumeric characters and dashes/underscores only.</p>
                         <div class="form-group">
                             {!! Form::label('name', 'Folder Name') !!}
@@ -121,7 +121,7 @@
                 </div>
                 <div class="modal-body">
                     {{-- Move a file --}}
-                    {!! Form::open(['url' => 'admin/data/games/files/'.$game->id.'/move', 'id' => 'moveForm', 'class' => 'file-form']) !!}
+                    {!! Form::open(['url' => 'admin/data/games/files/' . $game->id . '/move', 'id' => 'moveForm', 'class' => 'file-form']) !!}
                     <p>This will move the file. If a file exists in the destination folder with the same name, it will be overwritten.</p>
                     <div class="form-group">
                         {!! Form::label('folder', 'Destination Folder') !!}
@@ -141,7 +141,7 @@
                     {!! Form::close() !!}
 
                     {{-- Rename a file --}}
-                    {!! Form::open(['url' => 'admin/data/games/files/'.$game->id.'/rename', 'id' => 'renameForm', 'class' => 'file-form']) !!}
+                    {!! Form::open(['url' => 'admin/data/games/files/' . $game->id . '/rename', 'id' => 'renameForm', 'class' => 'file-form']) !!}
                     <p>This will rename the file. If a file exists in the same folder with the same name, it will be overwritten.</p>
                     <p>Use alphanumeric characters and dashes/underscores only. Include the file extension as well - you can change the file extension, but this is not recommended.</p>
                     <div class="form-group">
@@ -156,7 +156,7 @@
                     {!! Form::close() !!}
 
                     {{-- Delete a file --}}
-                    {!! Form::open(['url' => 'admin/data/games/files/'.$game->id.'/delete', 'id' => 'deleteForm', 'class' => 'file-form']) !!}
+                    {!! Form::open(['url' => 'admin/data/games/files/' . $game->id . '/delete', 'id' => 'deleteForm', 'class' => 'file-form']) !!}
                     <p>This will permanently delete <strong id="deleteFilename"></strong>. Are you sure?</p>
                     <div class="text-right">
                         {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
@@ -166,7 +166,7 @@
                     {!! Form::close() !!}
 
                     {{-- Upload a file --}}
-                    {!! Form::open(['url' => 'admin/data/games/files/'.$game->id.'/upload', 'id' => 'uploadForm', 'class' => 'file-form', 'files' => true]) !!}
+                    {!! Form::open(['url' => 'admin/data/games/files/' . $game->id . '/upload', 'id' => 'uploadForm', 'class' => 'file-form', 'files' => true]) !!}
                     <p>Select a file to upload. (Maximum size {{ min(ini_get('upload_max_filesize'), ini_get('post_max_size')) }}B.)</p>
                     <div id="fileList">
                         <div class="d-flex mb-2">

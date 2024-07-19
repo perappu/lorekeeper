@@ -13,14 +13,13 @@
     </h1>
 
     <div id="includedContent"></div>
-    
 @endsection
 
 @section('scripts')
-@parent
-<script>
-    $(function() {
-        $("#includedContent").load("{{ asset($game->htmlUrl) }}");
-    });
-</script>
+    @parent
+    <script>
+        $(function() {
+            $("#includedContent").load("{{ asset($game->htmlUrl) }}");
+        });
+    </script>
 @endsection
