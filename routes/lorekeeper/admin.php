@@ -248,6 +248,16 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('games/edit/{id?}', 'GameController@postCreateEditGame');
     Route::post('games/delete/{id}', 'GameController@postDeleteGame');
     Route::post('games/sort', 'GameController@postSortGame');
+    Route::post('games/file/{id}/upload/', 'GameController@postUploadGameFile');
+
+    Route::get('games/files/{id}/{folder?}', 'GameFileController@getGameFileIndex');
+    Route::post('games/files/{id}/upload', 'GameFileController@postUploadFile');
+    Route::post('games/files/{id}/move', 'GameFileController@postMoveFile');
+    Route::post('games/files/{id}/rename', 'GameFileController@postRenameFile');
+    Route::post('games/files/{id}/delete', 'GameFileController@postDeleteFile');
+    Route::post('games/files/{id}/folder/create', 'GameFileController@postCreateFolder');
+    Route::post('games/files/{id}/folder/delete', 'GameFileController@postDeleteFolder');
+    Route::post('games/files/{id}/folder/rename', 'GameFileController@postRenameFolder');
 });
 
 // PAGES

@@ -73,17 +73,17 @@
 
     <h3>FOR DEVELOPERS</h3>
 
-    <p><b>For non-developers:</b> Someone who has created a game will give you the file to upload into these fields. Please be careful who you accept files from -- this puts arbitrary HTML and scripts on your website.</p>
+    <p><b>For non-developers:</b> Someone who has created a game will give you the file to upload into these fields. <b>Please be careful who you accept files from. This puts arbitrary HTML and scripts on your website.</b></p>
     <p>Otherwise, don't touch this unless you're developing your own game!</p>
 
     <h4>HTML</h4>
 
-    {!! Form::open(['url' => 'admin/files/upload', 'id' => 'uploadForm', 'class' => 'file-form', 'files' => true]) !!}
+    {!! Form::open(['url' => 'admin/data/games/file/'.$game->id.'/upload', 'id' => 'uploadForm', 'class' => 'file-form', 'files' => true]) !!}
     <p>Select a file to upload. (Maximum size {{ min(ini_get('upload_max_filesize'), ini_get('post_max_size')) }}B.)</p>
     <div class="row mb-4">
         <div class="col-6">
             {!! Form::file('files[]', ['class' => 'form-control']) !!}
-            {!! Form::hidden('folder', $game->fileDirectoryUrl, ['class' => 'edit-folder']) !!}
+            {!! Form::hidden('folder', $game->fileDirectory, ['class' => 'edit-folder']) !!}
         </div>
         <div class="text-right">
             {!! Form::submit('Upload', ['class' => 'btn btn-primary']) !!}
@@ -93,10 +93,13 @@
 
     <h4>Files</h4>
 
-    <p>Consider this a shortcut to Admin -> Files. You can upload any arbitrary files here and they will be automatically placed in the game's directory.</p>
-    For this game, that is currently: /files/game/{{ $game->id }}/.
+    <p>You can upload any arbitrary files here and they will be automatically placed in the game's directory.</p>
+    For this game, that is currently: {{ $game->filesDirectory }}/</p>
 
-    <p>Files here, for ease, can also be viewed within the File Manager under "games".</p>
+    <p>If a specific file structure is needed, such as for certain game engines, please use FTP to upload the files.</p>
+
+    <a href="/admin/data/games/files/{{ $game->id }}" class="btn btn-primary float-right">Upload Files</a>
+
 @endsection
 
 @section('scripts')

@@ -225,3 +225,11 @@ Route::group(['prefix' => 'comments', 'namespace' => 'Comments'], function () {
     Route::post('/{id}/like/{action}', 'CommentController@like')->name('comments.like');
     Route::get('/liked', 'CommentController@getLikedComments');
 });
+
+/**************************************************************************************************
+    Games
+**************************************************************************************************/
+Route::group(['prefix' => 'games'], function () {
+    Route::get('/', 'GameController@getIndex');
+    Route::get('{id}', 'GameController@getGame')->where(['id' => '[0-9]+']);
+});

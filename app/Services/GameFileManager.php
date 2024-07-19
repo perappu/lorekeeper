@@ -4,13 +4,14 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\File;
 
-class FileManager extends Service {
+class GameFileManager extends Service {
     /*
     |--------------------------------------------------------------------------
-    | File Manager
+    | Game File Manager
     |--------------------------------------------------------------------------
     |
-    | Handles uploading and manipulation of files.
+    | Handles uploading and manipulation of game files.
+    | this is a lot of data duplication, but it avoids messing with the main filemanager
     |
     */
 
@@ -23,11 +24,11 @@ class FileManager extends Service {
      */
     public function createDirectory($dir) {
         if (file_exists($dir)) {
-            $this->setError('Folder already exists.');
+            $this->setError('error', 'Folder already exists.');
         } else {
             // Create the directory.
             if (!mkdir($dir, 0755, true)) {
-                $this->setError('Failed to create folder.');
+                $this->setError('error', 'Failed to create folder.');
 
                 return false;
             }
@@ -98,26 +99,12 @@ class FileManager extends Service {
      * @return bool
      */
     public function uploadFile($file, $dir, $name, $isFileManager = true) {
-        $directory = public_path().($isFileManager ? '/files'.($dir ? '/'.$dir : '') : '/images');
+        $directory = public_path().'/'.$dir;
         if (!file_exists($directory)) {
             $this->setError('error', 'Folder does not exist.');
         }
         File::move($file, $directory.'/'.$name);
         chmod($directory.'/'.$name, 0755);
-
-        return true;
-    }
-
-    /**
-     * Uploads a custom CSS file.
-     *
-     * @param array $file
-     *
-     * @return bool
-     */
-    public function uploadCss($file) {
-        File::move($file, public_path().'/css/custom.css');
-        chmod(public_path().'/css/custom.css', 0755);
 
         return true;
     }
@@ -180,6 +167,27 @@ class FileManager extends Service {
             return false;
         }
         rename($dir.'/'.$oldName, $dir.'/'.$newName);
+
+        return true;
+    }
+
+    /**
+     * Uploads a file to an arbitrary public path location.
+     * added by Games Room extension so that we can upload to a directory outside of /files/ or /images/
+     *
+     * @param string $oldDir
+     * @param string $newDir
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function uploadFileFullPath($file, $dir) {
+        $directory = public_path().$dir;
+        if (!file_exists($directory)) {
+            $this->setError('error', 'Folder does not exist.');
+        }
+        File::move($file, $directory);
+        chmod($directory, 0755);
 
         return true;
     }

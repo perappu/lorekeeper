@@ -126,20 +126,38 @@ class Game extends Model {
     }
 
     /**
-     * Gets the admin edit URL.
+     * Gets the file directory for the game
+     *
+     * @return string
+     */
+    public function getFileDirectoryAttribute() {
+        return '/gamesfiles/'.$this->id;
+    }
+
+    /**
+     * Gets the directory where arbitrary game files are stored
+     *
+     * @return string
+     */
+    public function getFilesDirectoryAttribute() {
+        return '/gamesfiles/'.$this->id.'/files';
+    }
+
+    /**
+     * Gets  directory where arbitrary game files are stored, but as an absolute url
      *
      * @return string
      */
     public function getFileDirectoryUrlAttribute() {
-        return url('games/'.$this->id);
+        return url('/gamesfiles/'.$this->id);
     }
 
     /**
-     * Gets the admin edit URL.
+     * Gets the absolute URL of the game's main HTML file
      *
      * @return string
      */
     public function getHTMLUrlAttribute() {
-        return url('files/games/'.$this->id.'.txt');
+        return url('gamesfiles/'.$this->id.'/'.$this->id.'.html');
     }
 }
