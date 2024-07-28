@@ -65,7 +65,6 @@ class GameFileManager extends Service {
     /**
      * Renames a directory.
      *
-     * @param string $dir
      * @param string $oldName
      * @param string $newName
      *
