@@ -128,7 +128,7 @@ class GameController extends Controller {
     /********* GAME FILE HANDLING ***********/
 
     /**
-     * Uploads a file to the files directory.
+     * Uploads the main html file for the game.
      *
      * @param App\Services\GameFileManager $service
      * @param mixed                        $id

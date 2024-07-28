@@ -71,19 +71,19 @@ class GameFileManager extends Service {
      *
      * @return bool
      */
-    public function renameDirectory($dir, $oldName, $newName) {
-        if (!file_exists($dir.'/'.$oldName)) {
+    public function renameDirectory($oldName, $newName) {
+        if (!file_exists($oldName)) {
             $this->setError('error', 'Directory does not exist.');
 
             return false;
         }
-        $files = array_diff(scandir($dir.'/'.$oldName), ['.', '..']);
+        $files = array_diff(scandir($oldName), ['.', '..']);
         if (count($files)) {
             $this->setError('error', 'Cannot delete a folder that contains files.');
 
             return false;
         }
-        rename($dir.'/'.$oldName, $dir.'/'.$newName);
+        rename($oldName, $newName);
 
         return true;
     }

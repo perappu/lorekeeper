@@ -109,9 +109,10 @@ class GameFileController extends Controller {
         $oldDir = $request->get('folder');
         $newDir = $request->get('destination');
 
+        //the old directory is the full file path and the new directory var is just the name
         if ($service->moveFile(
-            public_path().'/files'.($oldDir ? '/'.$oldDir : ''),
-            public_path().'/files'.($newDir != 'root' ? '/'.$newDir : ''),
+            public_path().($oldDir),
+            public_path().$game->filesDirectory.($newDir != 'root' ? '/'.$newDir : ''),
             $request->get('filename')
         )) {
             flash('File moved successfully.')->success();
@@ -143,7 +144,7 @@ class GameFileController extends Controller {
         $oldName = $request->get('filename');
         $newName = $request->get('name');
 
-        if ($service->renameFile(public_path().'/files'.($dir ? '/'.$dir : ''), $oldName, $newName)) {
+        if ($service->renameFile(public_path().($dir ? '/'.$dir : ''), $oldName, $newName)) {
             flash('File renamed successfully.')->success();
         } else {
             foreach ($service->errors()->getMessages()['error'] as $error) {
@@ -172,7 +173,7 @@ class GameFileController extends Controller {
         $dir = $request->get('folder');
         $name = $request->get('filename');
 
-        if ($service->deleteFile(public_path().'/files'.($dir ? '/'.$dir : '').'/'.$name)) {
+        if ($service->deleteFile(public_path().($dir ? '/'.$dir : '').'/'.$name)) {
             flash('File deleted successfully.')->success();
         } else {
             foreach ($service->errors()->getMessages()['error'] as $error) {
@@ -228,11 +229,10 @@ class GameFileController extends Controller {
         }
 
         $request->validate(['name' => 'required|regex:/^[a-z0-9\._-]+$/i']);
-        $dir = public_path().'/files';
-        $oldName = $request->get('folder');
-        $newName = $request->get('name');
+        $oldName = public_path().$request->get('folder');
+        $newName = public_path().$game->filesDirectory.'/'.$request->get('name');
 
-        if ($service->renameDirectory($dir, $oldName, $newName)) {
+        if ($service->renameDirectory($oldName, $newName)) {
             flash('Folder renamed successfully.')->success();
         } else {
             foreach ($service->errors()->getMessages()['error'] as $error) {
@@ -242,7 +242,7 @@ class GameFileController extends Controller {
             return redirect()->back();
         }
 
-        return redirect()->to('admin/files/'.$newName);
+        return redirect()->to('admin/data/games/files/'.$game->id.'/'.$request->get('name'));
     }
 
     /**
@@ -262,7 +262,7 @@ class GameFileController extends Controller {
         $request->validate(['folder' => 'required']);
         $dir = $request->get('folder');
 
-        if ($service->deleteDirectory(public_path().'/files/'.$dir)) {
+        if ($service->deleteDirectory(public_path().$dir)) {
             flash('Folder deleted successfully.')->success();
         } else {
             foreach ($service->errors()->getMessages()['error'] as $error) {
@@ -272,7 +272,7 @@ class GameFileController extends Controller {
             return redirect()->back();
         }
 
-        return redirect()->to('admin/files');
+        return redirect()->to('admin/data/games/files/'.$game->id);
     }
 
     /**

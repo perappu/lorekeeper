@@ -69,7 +69,7 @@
                         <p>This will rename the folder. Folders containing files cannot be renamed. Use alphanumeric characters and dashes/underscores only.</p>
                         <div class="form-group">
                             {!! Form::label('name', 'New Name') !!}
-                            {!! Form::text('name', $folder, ['class' => 'form-control', 'id' => 'editFolderName']) !!}
+                            {!! Form::text('name', '', ['class' => 'form-control', 'id' => 'editFolderName']) !!}
                         </div>
                         <div class="text-right">
                             {!! Form::submit('Rename', ['class' => 'btn btn-primary']) !!}

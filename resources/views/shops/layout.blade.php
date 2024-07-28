@@ -2,15 +2,15 @@
 
 @section('title')
     Shops ::
-    @yield('games-title')
+    @yield('shops-title')
 @endsection
 
 @section('sidebar')
-    @include('games._sidebar')
+    @include('shops._sidebar')
 @endsection
 
 @section('content')
-    @yield('games-content')
+    @yield('shops-content')
 @endsection
 
 @section('scripts')
