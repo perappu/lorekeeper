@@ -13,8 +13,9 @@ return new class extends Migration {
             $table->increments('id');
             $table->string('name');
             $table->integer('sort')->unsigned()->nullable();
-            $table->integer('currency_id')->unsigned()->index();
+            $table->integer('currency_id')->unsigned();
             $table->integer('currency_cap')->unsigned();
+            $table->integer('times_playable')->unsigned();
             $table->text('description')->nullable();
             $table->text('parsed_description')->nullable();
             $table->boolean('has_image')->default(false);

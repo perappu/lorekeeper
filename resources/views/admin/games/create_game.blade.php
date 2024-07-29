@@ -35,22 +35,28 @@
     </div>
 
     <div class="row">
-        <div class="col-4">
+        <div class="col-3">
             <div class="form-group">
                 {!! Form::label('Currency') !!} {!! add_help('The currency the game will award.') !!}
                 {!! Form::select('currency_id', $currencies, $game->currency_id ? $game->currency_id : null, ['class' => 'form-control game-field', 'data-name' => 'currency_id']) !!}
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-3">
             <div class="form-group">
                 {!! Form::label('Currency Cap') !!} {!! add_help('The max amount of currency the game will award. Prevents people from sending false high scores for infinite currency.') !!}
                 {!! Form::number('currency_cap', $game->currency_cap, ['class' => 'form-control']) !!}
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-3">
             <div class="form-group">
                 {!! Form::label('Score Multiplier') !!} {!! add_help('A decimal number indicating the currency-to-score ratio. The amount of currency rewarded is the score multiplied by this number. ') !!}
                 {!! Form::number('score_ratio', $game->score_ratio, ['class' => 'form-control', 'step' => 'any']) !!}
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="form-group">
+                {!! Form::label('Times Playable') !!} {!! add_help('The number of times a user can play this game per day.') !!}
+                {!! Form::number('times_playable', $game->times_playable, ['class' => 'form-control', 'step' => 'any']) !!}
             </div>
         </div>
     </div>

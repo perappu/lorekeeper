@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\game\game;
+use App\Models\Game\Game;
 use Illuminate\Support\Facades\DB;
 
 class GameService extends Service {
@@ -166,4 +166,6 @@ class GameService extends Service {
 
         return $data;
     }
+
+
 }
