@@ -13,7 +13,6 @@
     </h1>
 
     <div id="includedContent"></div>
-
 @endsection
 
 @section('scripts')
@@ -25,24 +24,24 @@
 
         /* function to call for sending game scores */
         const submit_score = (score) => {
-        $.ajax({
-            url: "{{ url ('/games/score') }}",
-            type: "POST",
-            data: {
-                'game_id': "{{ $game->id }}",
-                'user_id': "{{ Auth::user()->id }}",
-                'score': score,
-            },
-            headers: {
-                'X-CSRF-Token': '{{ csrf_token() }}',
-            },
-            success: (data) => {
-                console.log("Score submitted successfully");
-            },
-            error: (error) => {
-                console.log("Error submitting score");
-            }
-        });
-    }
-        </script>
+            $.ajax({
+                url: "{{ url('/games/score') }}",
+                type: "POST",
+                data: {
+                    'game_id': "{{ $game->id }}",
+                    'user_id': "{{ Auth::user()->id }}",
+                    'score': score,
+                },
+                headers: {
+                    'X-CSRF-Token': '{{ csrf_token() }}',
+                },
+                success: (data) => {
+                    console.log("Score submitted successfully");
+                },
+                error: (error) => {
+                    console.log("Error submitting score");
+                }
+            });
+        }
+    </script>
 @endsection
