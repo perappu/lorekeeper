@@ -35,7 +35,7 @@
     </div>
 
     <div class="row">
-    <div class="col-3">
+        <div class="col-3">
             <div class="form-group">
                 {!! Form::label('Currency') !!} {!! add_help('The currency the game will award.') !!}
                 {!! Form::select('currency_id', $currencies, $game->currency_id ? $game->currency_id : null, ['class' => 'form-control game-field', 'data-name' => 'currency_id']) !!}
