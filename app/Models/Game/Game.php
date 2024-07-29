@@ -12,7 +12,7 @@ class Game extends Model {
      */
     protected $fillable = [
         'name', 'sort', 'has_image', 'description', 'parsed_description', 'is_active', 'hash',
-        'currency_id', 'currency_cap', 'score_ratio', 'times_playable'
+        'currency_id', 'currency_cap', 'score_ratio', 'times_playable',
     ];
 
     /**

@@ -166,6 +166,4 @@ class GameService extends Service {
 
         return $data;
     }
-
-
 }
