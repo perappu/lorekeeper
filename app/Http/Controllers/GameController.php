@@ -43,9 +43,9 @@ class GameController extends Controller {
         }
 
         return view('games.game', [
-            'game'  => $game,
+            'game'      => $game,
             'gameScore' => GameScore::where('user_id', Auth::user()->id)->first(),
-            'games' => Game::where('is_active', 1)->orderBy('sort', 'DESC')->get(),
+            'games'     => Game::where('is_active', 1)->orderBy('sort', 'DESC')->get(),
         ]);
     }
 
