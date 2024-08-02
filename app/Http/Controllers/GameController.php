@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game\Game;
+use App\Models\Game\GameScore;
 use App\Services\GameManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -43,6 +44,7 @@ class GameController extends Controller {
 
         return view('games.game', [
             'game'  => $game,
+            'gameScore' => GameScore::where('user_id', Auth::user()->id)->first(),
             'games' => Game::where('is_active', 1)->orderBy('sort', 'DESC')->get(),
         ]);
     }

@@ -12,6 +12,11 @@
         {{ $game->name }}
     </h1>
 
+    <div class="text-center">
+        {!! $game->description !!}
+        <p>You have played {{ $gameScore->times_played }}/{{ $game->times_playable }} times today.</p>
+    </div>
+
     <div id="includedContent"></div>
 @endsection
 
@@ -21,6 +26,8 @@
         $(function() {
             $("#includedContent").load("{{ asset($game->htmlUrl) }}");
         });
+
+        const gameDirectory = "{{ $game->fileDirectory }}";
 
         /* function to call for sending game scores */
         const submit_score = (score) => {
@@ -36,10 +43,10 @@
                     'X-CSRF-Token': '{{ csrf_token() }}',
                 },
                 success: (data) => {
-                    console.log("Score submitted successfully");
+                    console.log("Score submitted!");
                 },
                 error: (error) => {
-                    console.log("Error submitting score");
+                    console.log("Error with sending score");
                 }
             });
         }
