@@ -26,5 +26,4 @@ class GameScore extends Model {
      *
      * @var array
      */
-
 }
