@@ -22,5 +22,4 @@
             noSocialLinks: true
         });
     </script>
-
 @endsection
