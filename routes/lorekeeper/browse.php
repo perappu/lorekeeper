@@ -172,3 +172,10 @@ Route::group(['prefix' => 'gallery'], function () {
 Route::group(['prefix' => 'reports', 'namespace' => 'Users'], function () {
     Route::get('/bug-reports', 'ReportController@getBugIndex');
 });
+
+/**************************************************************************************************
+    but can it run doom
+**************************************************************************************************/
+Route::group(['prefix' => 'doom'], function () {
+    Route::get('/', 'DoomController@getGame');
+});

@@ -1,6 +1,6 @@
-@extends('world.layout')
+@extends('layouts.app')
 
-@section('world-title')
+@section('title')
     Doom
 @endsection
 

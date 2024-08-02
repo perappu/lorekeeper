@@ -15,6 +15,6 @@ class DoomController extends Controller {
      */
     public function getGame() {
 
-        return view('world.doom', []);
+        return view('doom', []);
     }
 }
