@@ -17,7 +17,14 @@
         <p>You have played {{ $gameScore->times_played }}/{{ $game->times_playable }} times today.</p>
     </div>
 
+    @if($gameScore->times_played >= $game->times_playable)
+    <div class="text-center">
+    Sorry, you've played the maximum number of times today. Come back tomorrow!
+    </div>
+    @else
     <div id="includedContent"></div>
+    @endif
+
 @endsection
 
 @section('scripts')
