@@ -43,5 +43,5 @@
     @if ($showRaffles)
         {!! Form::select('rewardable_id[]', $raffles, null, ['class' => 'form-control raffle-select', 'placeholder' => 'Select Raffle']) !!}
     @endif
-    {!! Form::select('rewardable_id[]', $awards, null, ['class' => 'form-control award-select', 'placeholder' => 'Select '.ucfirst(__('awards.award'))]) !!}
+    {!! Form::select('rewardable_id[]', $awards, null, ['class' => 'form-control award-select', 'placeholder' => 'Select ' . ucfirst(__('awards.award'))]) !!}
 </div>
