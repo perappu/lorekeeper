@@ -13,6 +13,9 @@ use App\Models\Raffle\Raffle;
 use App\Models\Submission\Submission;
 use App\Models\User\User;
 use App\Models\User\UserItem;
+use App\Models\User\UserAward;
+use App\Models\Award\Award;
+use App\Models\Award\AwardCategory;
 use App\Services\SubmissionManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -74,6 +77,7 @@ class SubmissionController extends Controller {
             'inventory'  => $inventory,
             'itemsrow'   => Item::all()->keyBy('id'),
             'isClaim'    => false,
+            'awardsrow'  => Award::all()->keyBy('id'),
         ]);
     }
 
@@ -84,6 +88,7 @@ class SubmissionController extends Controller {
      */
     public function getNewSubmission(Request $request) {
         $closed = !Settings::get('is_prompts_open');
+        $awardcase = UserAward::with('award')->whereNull('deleted_at')->where('count', '>', '0')->where('user_id', Auth::user()->id)->get();
         $inventory = UserItem::with('item')->whereNull('deleted_at')->where('count', '>', '0')->where('user_id', Auth::user()->id)->get();
 
         return view('home.create_submission', [
@@ -101,6 +106,8 @@ class SubmissionController extends Controller {
             'inventory'           => $inventory,
             'page'                => 'submission',
             'expanded_rewards'    => config('lorekeeper.extensions.character_reward_expansion.expanded'),
+            'awards'              => Award::orderBy('name')->released()->where('is_user_owned',1)->pluck('name', 'id'),
+            'characterAwards'     => Award::orderBy('name')->released()->where('is_character_owned',1)->pluck('name', 'id'),
         ]));
     }
 
@@ -136,6 +143,8 @@ class SubmissionController extends Controller {
             'expanded_rewards'    => config('lorekeeper.extensions.character_reward_expansion.expanded'),
             'selectedInventory'   => isset($submission->data['user']) ? parseAssetData($submission->data['user']) : null,
             'count'               => Submission::where('prompt_id', $submission->prompt_id)->where('status', 'Approved')->where('user_id', $submission->user_id)->count(),
+            'awards'              => Award::orderBy('name')->released()->where('is_user_owned',1)->pluck('name', 'id'),
+            'characterAwards'     => Award::orderBy('name')->released()->where('is_character_owned',1)->pluck('name', 'id'),
         ]));
     }
 
@@ -338,6 +347,7 @@ class SubmissionController extends Controller {
             'itemsrow'   => Item::all()->keyBy('id'),
             'inventory'  => $inventory,
             'isClaim'    => true,
+            'awardsrow'  => Award::all()->keyBy('id'),
         ]);
     }
 
@@ -364,6 +374,8 @@ class SubmissionController extends Controller {
             'raffles'             => Raffle::where('rolled_at', null)->where('is_active', 1)->orderBy('name')->pluck('name', 'id'),
             'page'                => 'submission',
             'expanded_rewards'    => config('lorekeeper.extensions.character_reward_expansion.expanded'),
+            'awards'                => Award::orderBy('name')->released()->where('is_user_owned',1)->pluck('name', 'id'),
+            'characterAwards'       => Award::orderBy('name')->released()->where('is_character_owned',1)->pluck('name', 'id'),
         ]));
     }
 
@@ -398,6 +410,8 @@ class SubmissionController extends Controller {
             'page'                  => 'submission',
             'expanded_rewards'      => config('lorekeeper.extensions.character_reward_expansion.expanded'),
             'selectedInventory'     => isset($submission->data['user']) ? parseAssetData($submission->data['user']) : null,
+            'awards'                => Award::orderBy('name')->released()->where('is_user_owned',1)->pluck('name', 'id'),
+            'characterAwards'       => Award::orderBy('name')->released()->where('is_character_owned',1)->pluck('name', 'id'),
         ]));
     }
 

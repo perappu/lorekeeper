@@ -6,6 +6,7 @@ use App\Models\Currency\Currency;
 use App\Models\Item\Item;
 use App\Models\Item\ItemCategory;
 use App\Models\Model;
+use App\Models\Award\Award;
 
 class Loot extends Model {
     /**
@@ -74,6 +75,8 @@ class Loot extends Model {
             case 'None':
                 // Laravel requires a relationship instance to be returned (cannot return null), so returning one that doesn't exist here.
                 return $this->belongsTo(self::class, 'rewardable_id', 'loot_table_id')->whereNull('loot_table_id');
+            case 'Award':
+                return $this->belongsTo(Award::class, 'rewardable_id');
         }
 
         return null;

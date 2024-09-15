@@ -7,6 +7,7 @@ use App\Models\Item\Item;
 use App\Models\Loot\LootTable;
 use App\Models\Model;
 use App\Models\Raffle\Raffle;
+use App\Models\Award\Award;
 
 class PromptReward extends Model {
     /**
@@ -69,6 +70,8 @@ class PromptReward extends Model {
             case 'Raffle':
                 return $this->belongsTo(Raffle::class, 'rewardable_id');
                 break;
+            case 'Award':
+                return $this->belongsTo(Award::class, 'rewardable_id');
         }
 
         return null;
