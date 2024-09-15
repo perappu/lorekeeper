@@ -114,9 +114,9 @@ return [
             ],
             [
                 'name' => 'Award Grants',
-                'url' => 'admin/grants/awards'
+                'url'  => 'admin/grants/awards',
             ],
-        ]
+        ],
     ],
     'Masterlist' => [
         'power' => 'manage_characters',
@@ -156,11 +156,11 @@ return [
             ],
             [
                 'name' => 'Award Categories',
-                'url' => 'admin/data/award-categories'
+                'url'  => 'admin/data/award-categories',
             ],
             [
                 'name' => 'Awards',
-                'url' => 'admin/data/awards'
+                'url'  => 'admin/data/awards',
             ],
             [
                 'name' => 'Character Categories',

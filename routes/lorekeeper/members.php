@@ -230,7 +230,7 @@ Route::group(['prefix' => 'comments', 'namespace' => 'Comments'], function () {
 /**************************************************************************************************
     Awards
 **************************************************************************************************/
-Route::group(['prefix' => __('awards.awardcase'), 'namespace' => 'Users'], function() {
+Route::group(['prefix' => __('awards.awardcase'), 'namespace' => 'Users'], function () {
     Route::get('/', 'AwardCaseController@getIndex');
     Route::post('edit', 'AwardCaseController@postEdit');
     Route::post('claim/{id}', 'AwardCaseController@postClaimAward');

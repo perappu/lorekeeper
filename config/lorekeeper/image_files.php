@@ -40,7 +40,7 @@ return [
     'awards'          => [
         'name'        => 'Awards Icon',
         'description' => 'The awards graphic on the front page. PNG format, default size of 200px x 200px (no restriction).',
-        'filename'    => 'awards.png'
+        'filename'    => 'awards.png',
     ],
     'myo'             => [
         'name'        => 'MYO Default Image',

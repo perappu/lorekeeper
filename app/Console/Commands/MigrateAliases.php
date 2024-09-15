@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Award\Award;
 use App\Models\Character\Character;
 use App\Models\Character\CharacterImageCreator;
 use App\Models\Character\CharacterLog;
@@ -13,7 +14,6 @@ use Illuminate\Console\Command;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Award\Award;
 
 class MigrateAliases extends Command {
     /**
@@ -260,24 +260,23 @@ class MigrateAliases extends Command {
             // Get character logs with a set recipient alias
             $aliasAwardArtists = Award::whereNotNull('artist_alias')->get();
 
-            if($aliasAwardArtists->count()) {
-                foreach($aliasAwardArtists as $awardArtist) {
+            if ($aliasAwardArtists->count()) {
+                foreach ($aliasAwardArtists as $awardArtist) {
                     $userAlias = UserAlias::where('site', 'deviantart')->where('alias', $awardArtist->artist_alias)->first();
-                    if($userAlias) {
+                    if ($userAlias) {
                         $awardArtist->update(['artist_alias' => null, 'artist_id' => $userAlias->user_id]);
-                    }
-                    elseif(!$userAlias) {
+                    } elseif (!$userAlias) {
                         $alias = $awardArtist->artist_alias;
                         $awardArtist->update(['artist_alias' => null, 'artist_url' => 'https://deviantart.com/'.$alias]);
                     }
                 }
 
-                $this->info("Migrated: Award artist aliases");
+                $this->info('Migrated: Award artist aliases');
             } else {
-                $this->line("Skipped: Award artist aliases (nothing to migrate)");
+                $this->line('Skipped: Award artist aliases (nothing to migrate)');
             }
         } else {
-            $this->line("Skipped: Award artist aliases (column no longer exists)");
+            $this->line('Skipped: Award artist aliases (column no longer exists)');
         }
 
         if ($this->option('drop-columns')) {

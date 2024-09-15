@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin\Data;
 
 use App\Http\Controllers\Controller;
+use App\Models\Award\Award;
 use App\Models\Currency\Currency;
 use App\Models\Item\Item;
-use App\Models\Award\Award;
 use App\Models\Item\ItemCategory;
 use App\Models\Loot\LootTable;
 use App\Services\LootService;

@@ -4,10 +4,10 @@ namespace App\Services;
 
 use App\Facades\Notifications;
 use App\Facades\Settings;
+use App\Models\Award\Award;
 use App\Models\Character\Character;
 use App\Models\Currency\Currency;
 use App\Models\Item\Item;
-use App\Models\Award\Award;
 use App\Models\Loot\LootTable;
 use App\Models\Prompt\Prompt;
 use App\Models\Raffle\Raffle;
@@ -18,7 +18,6 @@ use App\Models\User\UserItem;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use App\Models\User\UserAward;
 
 class SubmissionManager extends Service {
     /*
@@ -398,7 +397,6 @@ class SubmissionManager extends Service {
             // Get the updated set of rewards
             $rewards = $this->processRewards($data, false, true);
 
-
             // Logging data
             $promptLogType = $submission->prompt_id ? 'Prompt Rewards' : 'Claim Rewards';
             $promptData = [
@@ -432,7 +430,7 @@ class SubmissionManager extends Service {
                                 break;
                             case 'LootTable': $tableIds[] = $id;
                                 break;
-                            case 'Award': $awardIds[] = $id; 
+                            case 'Award': $awardIds[] = $id;
                                 break;
                         }
                     }
@@ -601,10 +599,9 @@ class SubmissionManager extends Service {
                         case 'LootTable': if ($data['character_rewardable_quantity'][$data['character_id']][$key]) {
                             addAsset($assets, $data['tables'][$reward], $data['character_rewardable_quantity'][$data['character_id']][$key]);
                         } break;
-                        case 'Award': if($data['character_rewardable_quantity'][$data['character_id']][$key]) {
-                            addAsset($assets, $data['awards'][$reward], $data['character_rewardable_quantity'][$data['character_id']][$key]); 
+                        case 'Award': if ($data['character_rewardable_quantity'][$data['character_id']][$key]) {
+                            addAsset($assets, $data['awards'][$reward], $data['character_rewardable_quantity'][$data['character_id']][$key]);
                         } break;
-                        
                     }
                 }
             }
