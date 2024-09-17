@@ -18,7 +18,7 @@
             ->orderBy('name')
             ->pluck('name', 'id');
     }
-    $awards = \App\Model\Award\Award::orderBy('name')->pluck('name', 'id');
+    $awards = \App\Models\Award\Award::orderBy('name')->pluck('name', 'id');
 @endphp
 
 <div class="text-right mb-3">
