@@ -82,42 +82,50 @@
     @endif
 
     @php $theme = Auth::user()->theme ?? $defaultTheme ?? null; @endphp
-    @if($theme?->prioritize_css) @include('layouts.editable_theme') @endif
-    @if($theme?->has_css)
+    @if ($theme?->prioritize_css)
+        @include('layouts.editable_theme')
+    @endif
+    @if ($theme?->has_css)
         <style type="text/css" media="screen">
-            @php include_once($theme?->cssUrl) @endphp
-            {{-- css in style tag to so that order matters --}}
+            @include('widgets._theme_css_include', ['cssUrl' => $theme?->cssUrl]) {{-- css in style tag to so that order matters --}}
         </style>
     @endif
-    @if(!$theme?->prioritize_css) @include('layouts.editable_theme') @endif
-    
+    @if (!$theme?->prioritize_css)
+        @include('layouts.editable_theme')
+    @endif
+
     {{-- Conditional Themes are dependent on other site features --}}
-    @php 
+    @php
         $conditionalTheme = null;
-        if(class_exists('\App\Models\Weather\WeatherSeason')) {
-            $conditionalTheme = \App\Models\Theme::where('link_type', 'season')->where('link_id', Settings::get('site_season'))->first() ??
-                \App\Models\Theme::where('link_type', 'weather')->where('link_id', Settings::get('site_weather'))->first() ??
-                $theme;
+        if (class_exists('\App\Models\Weather\WeatherSeason')) {
+            $conditionalTheme =
+                \App\Models\Theme::where('link_type', 'season')->where('link_id', Settings::get('site_season'))->first() ?? (\App\Models\Theme::where('link_type', 'weather')->where('link_id', Settings::get('site_weather'))->first() ?? $theme);
         }
     @endphp
-    @if($conditionalTheme?->prioritize_css) @include('layouts.editable_theme', ['theme' => $conditionalTheme]) @endif
-    @if($conditionalTheme?->has_css)
+    @if ($conditionalTheme?->prioritize_css)
+        @include('layouts.editable_theme', ['theme' => $conditionalTheme])
+    @endif
+    @if ($conditionalTheme?->has_css)
         <style type="text/css" media="screen">
-            @php include_once($conditionalTheme?->cssUrl) @endphp
-            {{-- css in style tag to so that order matters --}}
+            @include('widgets._theme_css_include', ['cssUrl' => $conditionalTheme?->cssUrl]) {{-- css in style tag to so that order matters --}}
         </style>
     @endif
-    @if(!$conditionalTheme?->prioritize_css) @include('layouts.editable_theme', ['theme' => $conditionalTheme]) @endif
-    
+    @if (!$conditionalTheme?->prioritize_css)
+        @include('layouts.editable_theme', ['theme' => $conditionalTheme])
+    @endif
+
     @php $decoratorTheme = Auth::user()->decoratorTheme ?? null; @endphp
-    @if($decoratorTheme?->prioritize_css) @include('layouts.editable_theme', ['theme' => $decoratorTheme]) @endif
-    @if($decoratorTheme?->has_css)
+    @if ($decoratorTheme?->prioritize_css)
+        @include('layouts.editable_theme', ['theme' => $decoratorTheme])
+    @endif
+    @if ($decoratorTheme?->has_css)
         <style type="text/css" media="screen">
-            @php include_once($decoratorTheme?->cssUrl) @endphp
-            {{-- css in style tag to so that order matters --}}
+            @include('widgets._theme_css_include', ['cssUrl' => $decoratorTheme?->cssUrl]) {{-- css in style tag to so that order matters --}}
         </style>
     @endif
-    @if(!$decoratorTheme?->prioritize_css) @include('layouts.editable_theme', ['theme' => $decoratorTheme]) @endif
+    @if (!$decoratorTheme?->prioritize_css)
+        @include('layouts.editable_theme', ['theme' => $decoratorTheme])
+    @endif
 
     @include('feed::links')
 </head>
@@ -125,7 +133,7 @@
 <body>
     <div id="app">
 
-        <div class="site-header-image" id="header" style="background-image: url('{{ $decoratorTheme?->headerImageUrl ?? $conditionalTheme?->headerImageUrl ?? $theme?->headerImageUrl ?? asset('images/header.png') }}');"></div>
+        <div class="site-header-image" id="header" style="background-image: url('{{ $decoratorTheme?->headerImageUrl ?? ($conditionalTheme?->headerImageUrl ?? ($theme?->headerImageUrl ?? asset('images/header.png'))) }}');"></div>
 
         @include('layouts._nav')
         @if (View::hasSection('sidebar'))
@@ -186,14 +194,16 @@
         @include('layouts._pagination_js')
         <script>
             $(function() {
-                $('[data-toggle="tooltip"]').tooltip({html: true});
-                
+                $('[data-toggle="tooltip"]').tooltip({
+                    html: true
+                });
+
                 class BlurValid extends $.colorpicker.Extension {
                     constructor(colorpicker, options = {}) {
                         super(colorpicker, options);
 
                         if (this.colorpicker.inputHandler.hasInput()) {
-                            const onBlur = function (colorpicker, fallback) {
+                            const onBlur = function(colorpicker, fallback) {
                                 return () => {
                                     colorpicker.setValue(colorpicker.blurFallback._original.color);
                                 }
@@ -201,19 +211,19 @@
                             this.colorpicker.inputHandler.input[0].addEventListener('blur', onBlur(this.colorpicker));
                         }
                     }
-                    
+
                     onInvalid(e) {
                         const color = this.colorpicker.colorHandler.getFallbackColor();
-                        if(color._original.valid)
+                        if (color._original.valid)
                             this.colorpicker.blurFallback = color;
                     }
                 }
-                
+
                 $.colorpicker.extensions.blurvalid = BlurValid;
                 console.log($['colorpicker'].extensions);
-                
-                
-                
+
+
+
                 $('.cp').colorpicker({
                     'autoInputFallback': false,
                     'autoHexInputFallback': false,
@@ -223,7 +233,7 @@
                         name: 'blurValid'
                     }]
                 });
-                
+
                 tinymce.init({
                     selector: '.wysiwyg',
                     height: 500,
