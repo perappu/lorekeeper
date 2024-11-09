@@ -1,10 +1,5 @@
 <?php
 
-use App\Models\User\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
