@@ -12,15 +12,11 @@
 */
 
 Route::group(['namespace' => 'Api'], function () {
-
     Route::post('/token', 'AuthController@postGenerateToken');
 
     // TODO: Failing the power:api_access returns the HTML for the front page, would rather 401
-    Route::group(['middleware' => ['auth:sanctum', 'power:api_access']], function() {
-
+    Route::group(['middleware' => ['auth:sanctum', 'power:api_access']], function () {
         Route::get('/user', 'InfoController@getUser');
         Route::get('/character', 'InfoController@getCharacter');
-
     });
-
 });
