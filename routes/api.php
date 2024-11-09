@@ -1,10 +1,5 @@
 <?php
 
-use App\Models\User\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,5 +12,15 @@ use Illuminate\Validation\ValidationException;
 */
 
 Route::group(['namespace' => 'Api'], function () {
+
     Route::post('/token', 'AuthController@postGenerateToken');
+
+    // TODO: Failing the power:api_access returns the HTML for the front page, would rather 401
+    Route::group(['middleware' => ['auth:sanctum', 'power:api_access']], function() {
+
+        Route::get('/user', 'InfoController@getUser');
+        Route::get('/character', 'InfoController@getCharacter');
+
+    });
+
 });

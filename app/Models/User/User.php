@@ -28,7 +28,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail {
-    use Commenter, Notifiable, TwoFactorAuthenticatable, HasApiTokens;
+    use Commenter, HasApiTokens, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
