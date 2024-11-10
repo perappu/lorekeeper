@@ -16,7 +16,7 @@ class Feature extends Model {
      */
     protected $fillable = [
         'feature_category_id', 'species_id', 'subtype_id', 'rarity_id', 'name', 'has_image', 'description', 'parsed_description', 'is_visible', 'hash',
-        'display_mode', 'display_separate'
+        'parent_id', 'display_mode', 'display_separate'
     ];
 
     /**

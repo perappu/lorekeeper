@@ -6,6 +6,7 @@ use App\Models\Feature\Feature;
 use App\Models\Feature\FeatureCategory;
 use App\Models\Species\Species;
 use App\Models\Species\Subtype;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class FeatureService extends Service {
@@ -382,7 +383,7 @@ class FeatureService extends Service {
                 // Check for removed alt types
                 if($feature->altTypes()->whereNotIn('id', $data['alt']['id'])) {
                     foreach($feature->altTypes()->whereNotIn('id', $data['alt']['id'])->get() as $deletedType) {
-                        if(!$this->deleteFeature($deletedType))
+                        if(!$this->deleteFeature($deletedType, Auth::user()))
                             throw new \Exception('Failed to delete removed alternate type.');
                     }
                 }
@@ -390,7 +391,7 @@ class FeatureService extends Service {
             elseif($feature->altTypes->count() && !$parent) {
                 // Remove extant alt types
                 foreach($feature->altTypes as $altType)
-                    if(!$this->deleteFeature($altType))
+                    if(!$this->deleteFeature($altType, Auth::user()))
                         throw new \Exception('Failed to delete alternate type(s).');
             }
 
