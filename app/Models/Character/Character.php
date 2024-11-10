@@ -81,7 +81,7 @@ class Character extends Model {
         'image'                 => 'required|mimes:jpeg,jpg,gif,png|max:2048',
         'thumbnail'             => 'nullable|mimes:jpeg,jpg,gif,png|max:2048',
         'owner_url'             => 'url|nullable',
-        'character_count' => 'min:1'
+        'character_count'       => 'min:1',
     ];
 
     /**
