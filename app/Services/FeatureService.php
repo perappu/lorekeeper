@@ -186,13 +186,13 @@ class FeatureService extends Service {
     /**
      * Creates a new feature.
      *
-     * @param  array                        $data
-     * @param  \App\Models\User\User        $user
-     * @param  \App\Models\Feature\Feature  $parent
-     * @return bool|\App\Models\Feature\Feature
+     * @param array                       $data
+     * @param \App\Models\User\User       $user
+     * @param \App\Models\Feature\Feature $parent
+     *
+     * @return \App\Models\Feature\Feature|bool
      */
-    public function createFeature($data, $user, $parent = null)
-    {
+    public function createFeature($data, $user, $parent = null) {
         DB::beginTransaction();
 
         try {
@@ -223,17 +223,18 @@ class FeatureService extends Service {
             }
 
             // An alt type of a feature should not have the same name as an unrelated feature
-            if($parent && Feature::where('name', $data['name'])
-            ->where('id', '!=', $parent->id)
-            ->whereNotIn('id', $parent->altTypes()->pluck('id')->toArray())
-            ->exists() ||
+            if ($parent && Feature::where('name', $data['name'])
+                ->where('id', '!=', $parent->id)
+                ->whereNotIn('id', $parent->altTypes()->pluck('id')->toArray())
+                ->exists() ||
             // An alt type of a feature should not have the same name
             // as a feature with the same rarity and species
-            Feature::where('name', $data['name'])->where(function($query) use ($data) {
+            Feature::where('name', $data['name'])->where(function ($query) use ($data) {
                 return $query->where('rarity_id', $data['rarity_id'])
-                ->where('species_id', $data['species_id']);
-            })->exists())
-                throw new \Exception("The name has already been taken.");
+                    ->where('species_id', $data['species_id']);
+            })->exists()) {
+                throw new \Exception('The name has already been taken.');
+            }
 
             $data = $this->populateData($data);
 
@@ -268,14 +269,14 @@ class FeatureService extends Service {
     /**
      * Updates a feature.
      *
-     * @param  \App\Models\Feature\Feature  $feature
-     * @param  array                        $data
-     * @param  \App\Models\User\User        $user
-     * @param  \App\Models\Feature\Feature  $parent
-     * @return bool|\App\Models\Feature\Feature
+     * @param \App\Models\Feature\Feature $feature
+     * @param array                       $data
+     * @param \App\Models\User\User       $user
+     * @param \App\Models\Feature\Feature $parent
+     *
+     * @return \App\Models\Feature\Feature|bool
      */
-    public function updateFeature($feature, $data, $user, $parent = null)
-    {
+    public function updateFeature($feature, $data, $user, $parent = null) {
         DB::beginTransaction();
 
         try {
@@ -290,27 +291,29 @@ class FeatureService extends Service {
             }
 
             // More specific validation
-            if(
+            if (
                 // Two completely separate features should not have the same name
                 // But alt types of this feature should be able
                 (!$parent && Feature::where('name', $data['name'])->where('id', '!=', $feature->id)->where('parent_id', '!=', $feature->id)->exists()) ||
                 // An alt type of a feature should not have the same name as an unrelated feature
                 ($parent && Feature::where('name', $data['name'])
-                ->where('id', '!=', $feature->id)
-                ->where('id', '!=', $parent->id)
-                ->whereNotIn('id', $parent->altTypes()->pluck('id')->toArray())
-                ->exists()) ||
+                    ->where('id', '!=', $feature->id)
+                    ->where('id', '!=', $parent->id)
+                    ->whereNotIn('id', $parent->altTypes()->pluck('id')->toArray())
+                    ->exists()) ||
                 // An alt type of a feature should not have the same name
                 // as a feature with the same rarity or species
                 ($parent && Feature::where('name', $data['name'])
-                ->where('id', '!=', $feature->id)
-                ->whereNotIn('id', $parent->altTypes()->pluck('id')->toArray())
-                ->where(function($query) use ($data) {
-                    return $query->where('rarity_id', $data['rarity_id'])
-                    ->where('species_id', $data['species_id']);
-                })->exists())
-            ) throw new \Exception("The name has already been taken.");
-             
+                    ->where('id', '!=', $feature->id)
+                    ->whereNotIn('id', $parent->altTypes()->pluck('id')->toArray())
+                    ->where(function ($query) use ($data) {
+                        return $query->where('rarity_id', $data['rarity_id'])
+                            ->where('species_id', $data['species_id']);
+                    })->exists())
+            ) {
+                throw new \Exception('The name has already been taken.');
+            }
+
             if ((isset($data['feature_category_id']) && $data['feature_category_id']) && !FeatureCategory::where('id', $data['feature_category_id'])->exists()) {
                 throw new \Exception('The selected trait category is invalid.');
             }
@@ -348,51 +351,56 @@ class FeatureService extends Service {
             }
 
             // Handle alternate types
-            if(isset($data['alt']) && !$parent) {
-                foreach($data['alt']['id'] as $key=>$alt) {
+            if (isset($data['alt']) && !$parent) {
+                foreach ($data['alt']['id'] as $key=>$alt) {
                     // Collect data for the alt type
                     $altData[$key] = [
-                        'id' => $alt ? $alt : null,
-                        'parent_id' => $feature->id,
+                        'id'                  => $alt ? $alt : null,
+                        'parent_id'           => $feature->id,
                         'feature_category_id' => $data['alt']['feature_category_id'][$key],
-                        'name' => $data['alt']['name'][$key],
-                        'display_mode' => $data['alt']['display_mode'][$key],
-                        'rarity_id' => $data['alt']['rarity_id'][$key],
-                        'species_id' => $data['alt']['species_id'][$key],
-                        'subtype_id' => $data['alt']['subtype_id'][$key],
-                        'description' => $alt ? $data['alt']['description'][$key] : null,
-                        'display_separate' => $alt ? (isset($data['alt']['display_separate'][$key]) ? 1 : 0) : 1,
-                        'image' => isset($data['alt']['image'][$key]) ? $data['alt']['image'][$key] : null,
-                        'remove_image' => $alt ? (isset($data['alt']['remove_image'][$key]) ? 1 : 0) : 0,
+                        'name'                => $data['alt']['name'][$key],
+                        'display_mode'        => $data['alt']['display_mode'][$key],
+                        'rarity_id'           => $data['alt']['rarity_id'][$key],
+                        'species_id'          => $data['alt']['species_id'][$key],
+                        'subtype_id'          => $data['alt']['subtype_id'][$key],
+                        'description'         => $alt ? $data['alt']['description'][$key] : null,
+                        'display_separate'    => $alt ? (isset($data['alt']['display_separate'][$key]) ? 1 : 0) : 1,
+                        'image'               => $data['alt']['image'][$key] ?? null,
+                        'remove_image'        => $alt ? (isset($data['alt']['remove_image'][$key]) ? 1 : 0) : 0,
                     ];
 
                     // If the ID is already set, modify the existing feature
-                    if($alt) {
+                    if ($alt) {
                         $altFeature = Feature::where('id', $alt)->first();
-                        if(!$altFeature) throw new \Exception('Failed to locate alternate type.');
+                        if (!$altFeature) {
+                            throw new \Exception('Failed to locate alternate type.');
+                        }
 
-                        if(!$this->updateFeature($altFeature, $altData[$key], $user, $feature))
+                        if (!$this->updateFeature($altFeature, $altData[$key], $user, $feature)) {
                             throw new \Exception('Failed to update alternate type.');
+                        }
                     }
                     // Otherwise create the feature
-                    else
-                        if(!$this->createFeature($altData[$key], $user, $feature))
-                            throw new \Exception('Failed to create alternate type.');
+                    elseif (!$this->createFeature($altData[$key], $user, $feature)) {
+                        throw new \Exception('Failed to create alternate type.');
+                    }
                 }
 
                 // Check for removed alt types
-                if($feature->altTypes()->whereNotIn('id', $data['alt']['id'])) {
-                    foreach($feature->altTypes()->whereNotIn('id', $data['alt']['id'])->get() as $deletedType) {
-                        if(!$this->deleteFeature($deletedType, Auth::user()))
+                if ($feature->altTypes()->whereNotIn('id', $data['alt']['id'])) {
+                    foreach ($feature->altTypes()->whereNotIn('id', $data['alt']['id'])->get() as $deletedType) {
+                        if (!$this->deleteFeature($deletedType, Auth::user())) {
                             throw new \Exception('Failed to delete removed alternate type.');
+                        }
                     }
                 }
-            }
-            elseif($feature->altTypes->count() && !$parent) {
+            } elseif ($feature->altTypes->count() && !$parent) {
                 // Remove extant alt types
-                foreach($feature->altTypes as $altType)
-                    if(!$this->deleteFeature($altType, Auth::user()))
+                foreach ($feature->altTypes as $altType) {
+                    if (!$this->deleteFeature($altType, Auth::user())) {
                         throw new \Exception('Failed to delete alternate type(s).');
+                    }
+                }
             }
 
             return $this->commitReturn($feature);

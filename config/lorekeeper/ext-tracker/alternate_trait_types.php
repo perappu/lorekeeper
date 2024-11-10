@@ -1,4 +1,5 @@
 <?php
+
 return [
     'wiki_key' => 'Alternate_Trait_Types',
     'creators' => json_encode([
