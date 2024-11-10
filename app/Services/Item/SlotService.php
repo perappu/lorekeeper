@@ -183,6 +183,8 @@ class SlotService extends Service {
                             $characterData['is_visible'] = null;
                         }
 
+                        $characterData['character_count'] = 1;
+
                         // Distribute user rewards
                         $charService = new CharacterManager;
                         if ($character = $charService->createCharacter($characterData, $user, true)) {
