@@ -255,11 +255,11 @@
         </div>
 
         <div class="float-left input-group mb-3 w-50">
-        <div class="input-group-prepend">
-        <span class="input-group-text" id="characterCount">Number of Characters {!! add_help('The number of characters to create using this info.') !!}</span>
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="characterCount">Number of Characters {!! add_help('The number of characters to create using this info.') !!}</span>
+            </div>
+            {!! Form::number('character_count', 1, ['class' => 'quantity-select form-control', 'aria-describedby' => 'characterCount']) !!}
         </div>
-        {!! Form::number('character_count', 1, ['class' => 'quantity-select form-control', 'aria-describedby' => 'characterCount']) !!}
-    </div>
 
         <div class="text-right">
             {!! Form::submit('Create Character', ['class' => 'btn btn-primary']) !!}
