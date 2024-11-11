@@ -68,23 +68,22 @@ class CharacterManager extends Service {
         return $result;
     }
 
-    public function createCharacter($data, $user, $isMyo = false)
-    {
+    public function createCharacter($data, $user, $isMyo = false) {
         DB::beginTransaction();
 
         try {
-            for($i = 1; $i <= $data['character_count']; $i++) {
-                if(!$isMyo && $i > 1) {
+            for ($i = 1; $i <= $data['character_count']; $i++) {
+                if (!$isMyo && $i > 1) {
                     // If this is not the first character in a batch,
                     // pull a new number and assemble a new slug
-                    $data['number'] = (new CharacterManager)->pullNumber(1);
+                    $data['number'] = (new self)->pullNumber(1);
                     $data['slug'] = CharacterCategory::find($data['character_category_id'])->code.'-'.$data['number'];
                 }
 
                 if (!$isMyo && Character::where('slug', $data['slug'])->exists()) {
                     throw new \Exception('Please enter a unique character code.');
                 }
-    
+
                 if (!(isset($data['user_id']) && $data['user_id']) && !(isset($data['owner_url']) && $data['owner_url'])) {
                     throw new \Exception('Please select an owner.');
                 }
@@ -116,11 +115,10 @@ class CharacterManager extends Service {
                 } elseif (isset($data['owner_url']) && $data['owner_url']) {
                     $recipient = checkAlias($data['owner_url']);
                 }
-                if(is_object($recipient)) {
+                if (is_object($recipient)) {
                     $recipientId = $recipient->id;
                     $data['user_id'] = $recipient->id;
-                }
-                else {
+                } else {
                     $url = $recipient;
                 }
 
@@ -148,18 +146,19 @@ class CharacterManager extends Service {
                 $this->createLog($user->id, null, $recipientId, $url, $character->id, $isMyo ? 'MYO Slot Created' : 'Character Created', 'Initial upload', 'user');
 
                 // Update the user's FTO status and character count
-                if(is_object($recipient)) {
-                    if(!$isMyo) {
+                if (is_object($recipient)) {
+                    if (!$isMyo) {
                         $recipient->settings->is_fto = 0; // MYO slots don't affect the FTO status - YMMV
                     }
                     $recipient->settings->save();
                 }
 
                 // If the recipient has an account, send them a notification
-                if(is_object($recipient) && $user->id != $recipient->id) {
+                if (is_object($recipient) && $user->id != $recipient->id) {
                     Notifications::create($isMyo ? 'MYO_GRANT' : 'CHARACTER_UPLOAD', $recipient, [
                         'character_url' => $character->url,
-                    ] + ($isMyo ?
+                    ] + (
+                        $isMyo ?
                         ['name' => $character->name] :
                         ['character_slug' => $character->slug]
                     ));
@@ -170,9 +169,10 @@ class CharacterManager extends Service {
             }
 
             return $this->commitReturn($character);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }
+
         return $this->rollbackReturn(false);
     }
 
@@ -1887,6 +1887,7 @@ class CharacterManager extends Service {
      * @param array $data
      * @param bool  $isMyo
      * @param mixed $character
+     * @param mixed $isBatch
      *
      * @return \App\Models\Character\Character           $character
      * @return \App\Models\Character\CharacterImage|bool

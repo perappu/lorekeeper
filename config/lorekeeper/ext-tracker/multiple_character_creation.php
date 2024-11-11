@@ -1,4 +1,5 @@
 <?php
+
 return [
     'wiki_key' => 'Multiple_Character_Creation',
     'creators' => json_encode([
