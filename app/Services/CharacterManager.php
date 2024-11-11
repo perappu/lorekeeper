@@ -131,7 +131,7 @@ class CharacterManager extends Service {
                 }
                 // Create character image
                 $data['is_valid'] = true; // New image of new characters are always valid
-                $image = $this->handleCharacterImage($data, $character, $isMyo);
+                $image = $this->handleCharacterImage($data, $character, $isMyo, ($data['character_count'] > 1 && $i < $data['character_count'] ? true : false));
                 if (!$image) {
                     throw new \Exception('Error happened while trying to create image.');
                 }
@@ -1891,7 +1891,7 @@ class CharacterManager extends Service {
      * @return \App\Models\Character\Character           $character
      * @return \App\Models\Character\CharacterImage|bool
      */
-    private function handleCharacterImage($data, $character, $isMyo = false) {
+    private function handleCharacterImage($data, $character, $isMyo = false, $isBatch = false) {
         try {
             if ($isMyo) {
                 $data['species_id'] = (isset($data['species_id']) && $data['species_id']) ? $data['species_id'] : null;
@@ -1984,13 +1984,13 @@ class CharacterManager extends Service {
             }
 
             // Save image
-            $this->handleImage($data['image'], $image->imageDirectory, $image->imageFileName, null, isset($data['default_image']));
+            $this->handleImage($data['image'], $image->imageDirectory, $image->imageFileName, null, $isBatch ? true : isset($data['default_image']));
 
             // Save thumbnail first before processing full image
             if (isset($data['use_cropper'])) {
                 $this->cropThumbnail(Arr::only($data, ['x0', 'x1', 'y0', 'y1']), $image, $isMyo);
             } else {
-                $this->handleImage($data['thumbnail'], $image->imageDirectory, $image->thumbnailFileName, null, isset($data['default_image']));
+                $this->handleImage($data['thumbnail'], $image->imageDirectory, $image->thumbnailFileName, null, $isBatch ? true : isset($data['default_image']));
             }
 
             // Process and save the image itself
