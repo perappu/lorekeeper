@@ -1988,7 +1988,7 @@ class CharacterManager extends Service {
             }
 
             // Save image
-            if($data['is_console']) {
+            if ($data['is_console']) {
                 $this->handleImage($data['image'], public_path($image->imageDirectory), $image->imageFileName, null, isset($data['default_image']));
             } else {
                 $this->handleImage($data['image'], $image->imageDirectory, $image->imageFileName, null, isset($data['default_image']));
@@ -1998,7 +1998,7 @@ class CharacterManager extends Service {
             if (isset($data['use_cropper'])) {
                 $this->cropThumbnail(Arr::only($data, ['x0', 'x1', 'y0', 'y1']), $image, $isMyo);
             } else {
-                if($data['is_console']) {
+                if ($data['is_console']) {
                     $this->handleImage($data['thumbnail'], public_path($image->imageDirectory), $image->thumbnailFileName, null, isset($data['default_image']));
                 } else {
                     $this->handleImage($data['thumbnail'], $image->imageDirectory, $image->thumbnailFileName, null, isset($data['default_image']));
