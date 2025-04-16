@@ -29,6 +29,7 @@
         "socialiteproviders/tumblr": "^4.1",
         "socialiteproviders/twitch": "^5.3",
         "spatie/laravel-feed": "^4.1",
+        "spatie/laravel-backup": "^6.16",
         "spatie/laravel-honeypot": "^4.1"
     },
     "require-dev": {
