@@ -181,6 +181,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
 
+        \MarcAndreAppel\BackblazeB2\BackblazeB2ServiceProvider::class,
     ],
 
     /*

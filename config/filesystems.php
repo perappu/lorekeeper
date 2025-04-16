@@ -70,14 +70,11 @@ return [
         ],
 
         'backup' => [
-            'driver'     => 's3',
-            'key'        => env('AWS_ACCESS_KEY_ID'),
-            'secret'     => env('AWS_SECRET_ACCESS_KEY'),
-            'region'     => env('AWS_DEFAULT_REGION'),
-            'bucket'     => env('AWS_BUCKET'),
-            'endpoint'   => env('AWS_ENDPOINT'),
-            'visibility' => 'private',
-            'root'       => 'public/'.env('APP_NAME'),
+            'driver'     => 'b2',
+            'accountId'      => env('B2_APPLICATION_KEY_ID'),
+            'applicationKey' => env('B2_APPLICATION_KEY_SECRET'),
+            'bucketName'     => env('B2_BUCKET_NAME'),
+            'bucketId'       => env('B2_BUCKET_ID', ''),
         ],
 
     ],

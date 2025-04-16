@@ -4,159 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "874d2b6fbf8801c9b4bbd219067ceab6",
+    "content-hash": "7c6ffd85e6b889b8923229c27f5758a4",
     "packages": [
-        {
-            "name": "aws/aws-crt-php",
-            "version": "v1.2.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/awslabs/aws-crt-php.git",
-                "reference": "d71d9906c7bb63a28295447ba12e74723bd3730e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/awslabs/aws-crt-php/zipball/d71d9906c7bb63a28295447ba12e74723bd3730e",
-                "reference": "d71d9906c7bb63a28295447ba12e74723bd3730e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.8.35||^5.6.3||^9.5",
-                "yoast/phpunit-polyfills": "^1.0"
-            },
-            "suggest": {
-                "ext-awscrt": "Make sure you install awscrt native extension to use any of the functionality."
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "AWS SDK Common Runtime Team",
-                    "email": "aws-sdk-common-runtime@amazon.com"
-                }
-            ],
-            "description": "AWS Common Runtime for PHP",
-            "homepage": "https://github.com/awslabs/aws-crt-php",
-            "keywords": [
-                "amazon",
-                "aws",
-                "crt",
-                "sdk"
-            ],
-            "support": {
-                "issues": "https://github.com/awslabs/aws-crt-php/issues",
-                "source": "https://github.com/awslabs/aws-crt-php/tree/v1.2.7"
-            },
-            "time": "2024-10-18T22:15:13+00:00"
-        },
-        {
-            "name": "aws/aws-sdk-php",
-            "version": "3.342.28",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "16cec140483869b3d244a5995b55d5365465dc58"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/16cec140483869b3d244a5995b55d5365465dc58",
-                "reference": "16cec140483869b3d244a5995b55d5365465dc58",
-                "shasum": ""
-            },
-            "require": {
-                "aws/aws-crt-php": "^1.2.3",
-                "ext-json": "*",
-                "ext-pcre": "*",
-                "ext-simplexml": "*",
-                "guzzlehttp/guzzle": "^7.4.5",
-                "guzzlehttp/promises": "^2.0",
-                "guzzlehttp/psr7": "^2.4.5",
-                "mtdowling/jmespath.php": "^2.8.0",
-                "php": ">=8.1",
-                "psr/http-message": "^2.0"
-            },
-            "require-dev": {
-                "andrewsville/php-token-reflection": "^1.4",
-                "aws/aws-php-sns-message-validator": "~1.0",
-                "behat/behat": "~3.0",
-                "composer/composer": "^2.7.8",
-                "dms/phpunit-arraysubset-asserts": "^0.4.0",
-                "doctrine/cache": "~1.4",
-                "ext-dom": "*",
-                "ext-openssl": "*",
-                "ext-pcntl": "*",
-                "ext-sockets": "*",
-                "phpunit/phpunit": "^5.6.3 || ^8.5 || ^9.5",
-                "psr/cache": "^2.0 || ^3.0",
-                "psr/simple-cache": "^2.0 || ^3.0",
-                "sebastian/comparator": "^1.2.3 || ^4.0 || ^5.0",
-                "symfony/filesystem": "^v6.4.0 || ^v7.1.0",
-                "yoast/phpunit-polyfills": "^2.0"
-            },
-            "suggest": {
-                "aws/aws-php-sns-message-validator": "To validate incoming SNS notifications",
-                "doctrine/cache": "To use the DoctrineCacheAdapter",
-                "ext-curl": "To send requests using cURL",
-                "ext-openssl": "Allows working with CloudFront private distributions and verifying received SNS messages",
-                "ext-sockets": "To use client-side monitoring"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/functions.php"
-                ],
-                "psr-4": {
-                    "Aws\\": "src/"
-                },
-                "exclude-from-classmap": [
-                    "src/data/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Amazon Web Services",
-                    "homepage": "http://aws.amazon.com"
-                }
-            ],
-            "description": "AWS SDK for PHP - Use Amazon Web Services in your PHP project",
-            "homepage": "http://aws.amazon.com/sdkforphp",
-            "keywords": [
-                "amazon",
-                "aws",
-                "cloud",
-                "dynamodb",
-                "ec2",
-                "glacier",
-                "s3",
-                "sdk"
-            ],
-            "support": {
-                "forum": "https://github.com/aws/aws-sdk-php/discussions",
-                "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.342.28"
-            },
-            "time": "2025-04-16T18:13:32+00:00"
-        },
         {
             "name": "bacon/bacon-qr-code",
             "version": "v3.0.1",
@@ -1281,6 +1130,66 @@
                 }
             ],
             "time": "2023-10-12T05:21:21+00:00"
+        },
+        {
+            "name": "gliterd/backblaze-b2",
+            "version": "1.5.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gliterd/backblaze-b2.git",
+                "reference": "3abcf1ae5b093199c230d4ad82d64fb16ea4fd1a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gliterd/backblaze-b2/zipball/3abcf1ae5b093199c230d4ad82d64fb16ea4fd1a",
+                "reference": "3abcf1ae5b093199c230d4ad82d64fb16ea4fd1a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "^6.1|^7.0",
+                "nesbot/carbon": "2.*",
+                "php": "^7.2 || ^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.5",
+                "scrutinizer/ocular": "~1.1",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "BackblazeB2\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ramesh Mhetre",
+                    "email": "mhetreramesh@gmail.com",
+                    "homepage": "https://gliterd.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP SDK for working with backblaze B2 cloud storage.",
+            "homepage": "https://github.com/gliterd/b2-sdk-php",
+            "keywords": [
+                "b2",
+                "backblaze",
+                "backup",
+                "cloud",
+                "cloud-storage",
+                "filesystem",
+                "storage"
+            ],
+            "support": {
+                "issues": "https://github.com/gliterd/backblaze-b2/issues",
+                "source": "https://github.com/gliterd/backblaze-b2/tree/1.5.4"
+            },
+            "time": "2022-10-10T02:26:17+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -2890,62 +2799,6 @@
             "time": "2024-10-08T08:58:34+00:00"
         },
         {
-            "name": "league/flysystem-aws-s3-v3",
-            "version": "3.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/flysystem-aws-s3-v3.git",
-                "reference": "f8ba6a92a5c1fdcbdd89dede009a1e6e1b93ba8c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/f8ba6a92a5c1fdcbdd89dede009a1e6e1b93ba8c",
-                "reference": "f8ba6a92a5c1fdcbdd89dede009a1e6e1b93ba8c",
-                "shasum": ""
-            },
-            "require": {
-                "aws/aws-sdk-php": "^3.132.4",
-                "league/flysystem": "^2.0.0 || ^3.0.0",
-                "league/mime-type-detection": "^1.0.0",
-                "php": "^8.0.2"
-            },
-            "conflict": {
-                "guzzlehttp/guzzle": "<7.0",
-                "guzzlehttp/ringphp": "<1.1.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "League\\Flysystem\\AwsS3V3\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Frank de Jonge",
-                    "email": "info@frankdejonge.nl"
-                }
-            ],
-            "description": "AWS S3 filesystem adapter for Flysystem.",
-            "keywords": [
-                "Flysystem",
-                "aws",
-                "file",
-                "files",
-                "filesystem",
-                "s3",
-                "storage"
-            ],
-            "support": {
-                "issues": "https://github.com/thephpleague/flysystem-aws-s3-v3/issues",
-                "source": "https://github.com/thephpleague/flysystem-aws-s3-v3/tree/3.0.0"
-            },
-            "time": "2022-01-13T21:11:49+00:00"
-        },
-        {
             "name": "league/flysystem-local",
             "version": "3.29.0",
             "source": {
@@ -3127,6 +2980,191 @@
             "time": "2022-04-15T14:02:14+00:00"
         },
         {
+            "name": "marcandreappel/flysystem-backblaze",
+            "version": "2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marcandreappel/flysystem-backblaze.git",
+                "reference": "d63f1105fe02f9dee4fa0693b17e2c5024ae7689"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marcandreappel/flysystem-backblaze/zipball/d63f1105fe02f9dee4fa0693b17e2c5024ae7689",
+                "reference": "d63f1105fe02f9dee4fa0693b17e2c5024ae7689",
+                "shasum": ""
+            },
+            "require": {
+                "gliterd/backblaze-b2": ">=1.5",
+                "league/flysystem": "^3.0",
+                "mikey179/vfsstream": "*",
+                "php": "^8.0|^8.1",
+                "psr/http-message-implementation": "*"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^v7.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MarcAndreAppel\\FlysystemBackblaze\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marc-André Appel",
+                    "email": "marc-andre@appel.fun",
+                    "homepage": "https://github.com/marcandreappel",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Ramesh Mhetre",
+                    "email": "mhetreramesh@gmail.com",
+                    "homepage": "https://about.me/rameshmhetre",
+                    "role": "Creator"
+                }
+            ],
+            "description": "Backblaze adapter for the flysystem filesystem abstraction library",
+            "homepage": "https://github.com/marcandreappel/flysystem-backblaze",
+            "keywords": [
+                "Flysystem",
+                "api",
+                "backblaze",
+                "client",
+                "filesystem"
+            ],
+            "support": {
+                "issues": "https://github.com/marcandreappel/flysystem-backblaze/issues",
+                "source": "https://github.com/marcandreappel/flysystem-backblaze/tree/2.1.1"
+            },
+            "time": "2022-10-03T14:40:33+00:00"
+        },
+        {
+            "name": "marcandreappel/laravel-backblaze-b2",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marcandreappel/laravel-backblaze-b2.git",
+                "reference": "784888abc040c30712fa4a0b41387d66c2925e93"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marcandreappel/laravel-backblaze-b2/zipball/784888abc040c30712fa4a0b41387d66c2925e93",
+                "reference": "784888abc040c30712fa4a0b41387d66c2925e93",
+                "shasum": ""
+            },
+            "require": {
+                "gliterd/backblaze-b2": ">=1.5.0",
+                "marcandreappel/flysystem-backblaze": "^2.1",
+                "php": "^8.0|^8.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^v7.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "\\MarcAndreAppel\\BackblazeB2\\BackblazeB2ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MarcAndreAppel\\BackblazeB2\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marc-André Appel",
+                    "email": "marc-andre@appel.fun",
+                    "homepage": "https://github.com/marcandreappel",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Ramesh Mhetre",
+                    "email": "mhetreramesh@gmail.com",
+                    "homepage": "https://about.me/rameshmhetre",
+                    "role": "Creator"
+                }
+            ],
+            "description": "Backblaze B2 Cloud Storage for PHP8+ & Laravel 8+",
+            "homepage": "https://github.com/marcandreappel/laravel-backblaze-b2",
+            "keywords": [
+                "Flysystem",
+                "api",
+                "backblaze",
+                "disks",
+                "filesystem",
+                "laravel",
+                "storage"
+            ],
+            "support": {
+                "issues": "https://github.com/marcandreappel/laravel-backblaze-b2/issues",
+                "source": "https://github.com/marcandreappel/laravel-backblaze-b2/tree/2.0.2"
+            },
+            "time": "2022-10-11T08:31:55+00:00"
+        },
+        {
+            "name": "mikey179/vfsstream",
+            "version": "v1.6.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bovigo/vfsStream.git",
+                "reference": "fe695ec993e0a55c3abdda10a9364eb31c6f1bf0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/fe695ec993e0a55c3abdda10a9364eb31c6f1bf0",
+                "reference": "fe695ec993e0a55c3abdda10a9364eb31c6f1bf0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.5||^8.5||^9.6",
+                "yoast/phpunit-polyfills": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "org\\bovigo\\vfs\\": "src/main/php"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Frank Kleine",
+                    "homepage": "http://frankkleine.de/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Virtual file system to mock the real file system in unit tests.",
+            "homepage": "http://vfs.bovigo.org/",
+            "support": {
+                "issues": "https://github.com/bovigo/vfsStream/issues",
+                "source": "https://github.com/bovigo/vfsStream/tree/master",
+                "wiki": "https://github.com/bovigo/vfsStream/wiki"
+            },
+            "time": "2024-08-29T18:43:31+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "3.5.0",
             "source": {
@@ -3226,72 +3264,6 @@
                 }
             ],
             "time": "2023-10-27T15:32:31+00:00"
-        },
-        {
-            "name": "mtdowling/jmespath.php",
-            "version": "2.8.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jmespath/jmespath.php.git",
-                "reference": "a2a865e05d5f420b50cc2f85bb78d565db12a6bc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jmespath/jmespath.php/zipball/a2a865e05d5f420b50cc2f85bb78d565db12a6bc",
-                "reference": "a2a865e05d5f420b50cc2f85bb78d565db12a6bc",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2.5 || ^8.0",
-                "symfony/polyfill-mbstring": "^1.17"
-            },
-            "require-dev": {
-                "composer/xdebug-handler": "^3.0.3",
-                "phpunit/phpunit": "^8.5.33"
-            },
-            "bin": [
-                "bin/jp.php"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.8-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/JmesPath.php"
-                ],
-                "psr-4": {
-                    "JmesPath\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Graham Campbell",
-                    "email": "hello@gjcampbell.co.uk",
-                    "homepage": "https://github.com/GrahamCampbell"
-                },
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                }
-            ],
-            "description": "Declaratively specify how to extract elements from a JSON document",
-            "keywords": [
-                "json",
-                "jsonpath"
-            ],
-            "support": {
-                "issues": "https://github.com/jmespath/jmespath.php/issues",
-                "source": "https://github.com/jmespath/jmespath.php/tree/2.8.0"
-            },
-            "time": "2024-09-04T18:46:31+00:00"
         },
         {
             "name": "nesbot/carbon",
