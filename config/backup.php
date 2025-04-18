@@ -151,13 +151,15 @@ return [
      */
     'notifications' => [
 
+        //I suppressed the notifications because it was causing errors and also I didn't care
+        //If you want to add back in notifications, change the arrays to ['mail']
         'notifications' => [
-            \Spatie\Backup\Notifications\Notifications\BackupHasFailed::class         => ['mail'],
-            \Spatie\Backup\Notifications\Notifications\UnhealthyBackupWasFound::class => ['mail'],
-            \Spatie\Backup\Notifications\Notifications\CleanupHasFailed::class        => ['mail'],
-            \Spatie\Backup\Notifications\Notifications\BackupWasSuccessful::class     => ['mail'],
-            \Spatie\Backup\Notifications\Notifications\HealthyBackupWasFound::class   => ['mail'],
-            \Spatie\Backup\Notifications\Notifications\CleanupWasSuccessful::class    => ['mail'],
+            \Spatie\Backup\Notifications\Notifications\BackupHasFailedNotification::class         => [],
+            \Spatie\Backup\Notifications\Notifications\UnhealthyBackupWasFoundNotification::class => [],
+            \Spatie\Backup\Notifications\Notifications\CleanupHasFailedNotification::class        => [],
+            \Spatie\Backup\Notifications\Notifications\BackupWasSuccessfulNotification::class     => [],
+            \Spatie\Backup\Notifications\Notifications\HealthyBackupWasFoundNotification::class   => [],
+            \Spatie\Backup\Notifications\Notifications\CleanupWasSuccessfulNotification::class    => [],
         ],
 
         /*
