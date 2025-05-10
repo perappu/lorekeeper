@@ -13,15 +13,19 @@ return new class extends Migration {
             $table->increments('id');
             $table->string('name');
             $table->integer('sort')->unsigned()->nullable();
-            $table->integer('currency_id')->unsigned();
-            $table->integer('currency_cap')->unsigned();
-            $table->integer('times_playable')->unsigned();
             $table->text('description')->nullable();
             $table->text('parsed_description')->nullable();
             $table->boolean('has_image')->default(false);
             $table->string('hash', 10)->nullable();
             $table->boolean('is_active')->default(false);
-            $table->decimal('score_ratio', 5, 2);
+
+            $table->enum('game_type', ['file', 'link'])->default('file');
+
+            $table->integer('currency_id')->unsigned()->default(0);
+            $table->integer('currency_cap')->unsigned()->default(0);
+            $table->integer('times_playable')->unsigned()->default(0);
+            $table->enum('playable_timeframe', ['daily','weekly','monthly'])->default('daily');
+            $table->decimal('score_ratio', 5, 2)->default(1.0);
         });
     }
 

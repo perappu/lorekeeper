@@ -25,10 +25,28 @@ class GameManager extends Service {
 
             // increase the number of times we've played the game today by one
             if (GameScore::where('user_id', $data['user_id'])->where('game_id', $data['game_id'])->exists()) {
+
                 $gameScore = GameScore::where('user_id', $data['user_id'])->where('game_id', $data['game_id'])->first();
 
+                switch ($game->playable_timeframe) {
+                    case 'daily':
+                        $timeframe = "today";
+                        break;
+                    case 'weekly':
+                        $timeframe = "this week";
+                        break;
+                    case 'monthly':
+                        $timeframe = "this month";
+                        break;
+                    default:
+                        $timeframe = "";
+                        break;
+                }
+
+                //TODO: logic for checking the time frame and resetting times_played
+
                 if ($gameScore->times_played >= $game->times_playable) {
-                    throw new \Exception("You've submitted the maximum number of plays today.");
+                    throw new \Exception("You've submitted the maximum number of plays for ".$timeframe.". Check back later!");
                 }
 
                 $data['times_played'] = $gameScore->times_played + 1;

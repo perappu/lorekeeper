@@ -74,6 +74,7 @@ class GameController extends Controller {
         $id ? $request->validate(Game::$updateRules) : $request->validate(Game::$createRules);
         $data = $request->only([
             'name', 'description', 'image', 'remove_image', 'is_active', 'currency_id', 'currency_cap', 'score_ratio', 'times_playable',
+            'game_type', 'playable_timeframe'
         ]);
         if ($id && $service->updateGame(Game::find($id), $data, Auth::user())) {
             flash('Game updated successfully.')->success();
