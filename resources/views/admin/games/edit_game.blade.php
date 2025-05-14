@@ -93,35 +93,40 @@
 
     <hr>
 
-    @if($game->game_type === 'file')
-    <h3>Files</h3>
+    @if($game->game_type === 'game')
 
-    <p><b>For non-developers:</b> Someone who has created a game will give you the file to upload into these fields. <b>Please be careful who you accept files from. This puts arbitrary HTML and scripts on your website.</b></p>
-    <p>Otherwise, don't touch this unless you're developing your own game!</p>
+        <h3>Data</h3>
 
-    <h4>HTML</h4>
+        @if(!($game->data->exists()))
+        {!! Form::open(['url' => 'admin/data/games/data/add/' . $game->id]) !!}
 
-    {!! Form::open(['url' => 'admin/data/games/file/' . $game->id . '/upload', 'id' => 'uploadForm', 'class' => 'file-form', 'files' => true]) !!}
-    <p>Select a file to upload. (Maximum size {{ min(ini_get('upload_max_filesize'), ini_get('post_max_size')) }}B.)</p>
-    <div class="row mb-4">
-        <div class="col-6">
-            {!! Form::file('files[]', ['class' => 'form-control']) !!}
-            {!! Form::hidden('folder', $game->fileDirectory, ['class' => 'edit-folder']) !!}
+        <div class="form-group">
+            {!! Form::label('game', 'Game Selection') !!}
+            {!! Form::select('game', [0 => 'Select a Game'] + $gameOptions, null, ['class' => 'form-control']) !!}
         </div>
+
         <div class="text-right">
-            {!! Form::submit('Upload', ['class' => 'btn btn-primary']) !!}
+            {!! Form::submit('Add Game', ['class' => 'btn btn-primary']) !!}
         </div>
-    </div>
-    {!! Form::close() !!}
 
-    <h4>Files</h4>
+        {!! Form::close() !!}
 
-    <p>You can upload any arbitrary files here and they will be automatically placed in the game's directory.</p>
-    For this game, that is currently: {{ $game->filesDirectory }}/</p>
+        @else
+            {!! Form::open(['url' => 'admin/data/games/data/edit/' . $game->id]) !!}
 
-    <p>If a specific file structure is needed, such as for certain game engines, please use FTP to upload the files.</p>
+            @if (View::exists('admin.games.data.' . $game->data->game))
+                @include('admin.games.data.' . $game->data->game, ['game' => $game, 'data' => $game->data])
+            @else
+                Form for entering game data is missing!
+            @endif
 
-    <a href="/admin/data/games/files/{{ $game->id }}" class="btn btn-primary float-right">Upload Files</a>
+            <div class="text-right">
+                {!! Form::submit('Edit Data', ['class' => 'btn btn-primary']) !!}
+            </div>
+
+            {!! Form::close() !!}
+
+        @endif
 
     @endif
 

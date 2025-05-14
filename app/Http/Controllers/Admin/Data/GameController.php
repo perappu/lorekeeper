@@ -50,7 +50,7 @@ class GameController extends Controller {
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getEditGame($id) {
+    public function getEditGame(GameService $service, $id) {
         $game = Game::find($id);
         if (!$game) {
             abort(404);
@@ -59,6 +59,7 @@ class GameController extends Controller {
         return view('admin.games.edit_game', [
             'game'       => $game,
             'currencies' => Currency::orderBy('name')->pluck('name', 'id'),
+            'gameOptions' => $service->getGameOptions(),
         ]);
     }
 
@@ -74,7 +75,8 @@ class GameController extends Controller {
         $id ? $request->validate(Game::$updateRules) : $request->validate(Game::$createRules);
         $data = $request->only([
             'name', 'description', 'image', 'remove_image', 'is_active', 'currency_id', 'currency_cap', 'score_ratio', 'times_playable',
-            'game_type', 'playable_timeframe'
+            'game_type', 'playable_timeframe',
+            'game','game_data'
         ]);
         if ($id && $service->updateGame(Game::find($id), $data, Auth::user())) {
             flash('Game updated successfully.')->success();
@@ -126,38 +128,30 @@ class GameController extends Controller {
         return redirect()->to('admin/data/games');
     }
 
-    /********* GAME FILE HANDLING ***********/
+    /********* GAME DATA HANDLING ***********/
 
     /**
-     * Uploads the main html file for the game.
+     * Adds game data to a game.
      *
-     * @param App\Services\GameFileManager $service
-     * @param mixed                        $id
+     * @param App\Services\GameService $service
+     * @param int                      $id
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postUploadGameFile($id, Request $request, GameFileManager $service) {
+    public function postAddGameData(Request $request, GameService $service, $id) {
         $game = Game::find($id);
-        if (!$game) {
-            abort(404);
-        }
+        $gameOption = $request->get('game');
+        if ($gameData = $service->addGameData($game, $gameOption, Auth::user())) {
+            flash('Game data added successfully.')->success();
 
-        $request->validate(['files.*' => 'file|required']);
-        $dir = $request->get('folder');
-        $files = $request->file('files');
-
-        foreach ($files as $file) {
-            $moveDir = $dir.'/'.$game->id.'.html';
-
-            if ($service->uploadFileFullPath($file, $moveDir)) {
-                flash('File uploaded successfully.')->success();
-            } else {
-                foreach ($service->errors()->getMessages()['error'] as $error) {
-                    flash($error)->error();
-                }
+            return redirect()->to($gameData->adminUrl);
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
             }
         }
 
         return redirect()->back();
     }
+
 }

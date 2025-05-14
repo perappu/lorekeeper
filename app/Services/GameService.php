@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Game\Game;
+use App\Models\Game\GameData;
 use Illuminate\Support\Facades\DB;
 
 class GameService extends Service {
@@ -165,5 +166,107 @@ class GameService extends Service {
         }
 
         return $data;
+    }
+
+    /**********************************************************************************************
+
+        GAME OPTIONS/DATA
+
+    **********************************************************************************************/
+
+    /**
+     * Gets a list of game options for selection
+     *
+     * @return array
+     */
+    public function getGameOptions() {
+        $games = config('lorekeeper.game_options');
+        $result = [];
+        foreach ($games as $game => $gameData) {
+            $result[$game] = $gameData['name'];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Adds game data tag to a game.
+     *
+     * @param \App\Models\Game\Game $game
+     * @param string                $tag
+     * @param mixed                 $user
+     *
+     * @return bool|string
+     */
+    public function addGameData($game, $gameOption, $user) {
+        DB::beginTransaction();
+
+        try {
+            if (!$game) {
+                throw new \Exception('Invalid game selected.');
+            }
+            if ($game->data()->exists()) {
+                throw new \Exception('This game already has data attached to it.');
+            }
+            if (!$gameOption) {
+                throw new \Exception('No game data selected.');
+            }
+
+            if (!$this->logAdminAction($user, 'Added Game Data', 'Added '.$gameOption.' tag to '.$game->displayName)) {
+                throw new \Exception('Failed to log admin action.');
+            }
+
+            $tag = GameData::create([
+                'game_id' => $game->id,
+                'game'     => $gameOption,
+            ]);
+
+            return $this->commitReturn($tag);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
+    }
+
+    /**
+     * Edits the data associated with an game.
+     *
+     * @param \App\Models\Game\Game $item
+     * @param string                $tag
+     * @param array                 $data
+     * @param mixed                 $user
+     *
+     * @return bool|string
+     */
+    public function editItemTag($game, $gameOption, $data, $user) {
+        DB::beginTransaction();
+
+        try {
+            if (!$game) {
+                throw new \Exception('Invalid game selected.');
+            }
+            if (!$game->data()->exists()) {
+                throw new \Exception('This game does not have data attached to it.');
+            }
+
+            if (!$this->logAdminAction($user, 'Edited Game Data', 'Edited '.$gameOption.' tag on '.$game->displayName)) {
+                throw new \Exception('Failed to log admin action.');
+            }
+
+            $gameData = $game->data();
+
+            $service = $gameData->service;
+            if (!$service->updateData($gameData, $data)) {
+                $this->setErrors($service->errors());
+                throw new \Exception('sdlfk... 2!');
+            }
+
+            return $this->commitReturn($gameData);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
     }
 }

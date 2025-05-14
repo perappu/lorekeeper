@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->string('hash', 10)->nullable();
             $table->boolean('is_active')->default(false);
 
-            $table->enum('game_type', ['file', 'link'])->default('file');
+            $table->enum('game_type', ['game', 'link'])->default('game');
 
             $table->integer('currency_id')->unsigned()->default(0);
             $table->integer('currency_cap')->unsigned()->default(0);

@@ -47,8 +47,8 @@
     <hr>
 
     <div class="form-group">
-        {!! Form::label('Game Type') !!} {!! add_help('Whether this game is a full-fledge game page or simply a link that will be included in the games room. This can be used to consolidate your "game" type extensions.') !!}
-        {!! Form::select('game_type', ['link' => 'Link', 'file' => 'File'], 'link', ['class' => 'form-control', 'data-name' => 'game_type']) !!}
+        {!! Form::label('Game Type') !!} {!! add_help('Whether this game is a full-fledge game page or simply a link that will be included in the games room.') !!}
+        {!! Form::select('game_type', ['link' => 'Link', 'game' => 'Game'], 'link', ['class' => 'form-control', 'data-name' => 'game_type']) !!}
     </div>
 
     <p><strong>Click the "submit" button to be brought to a page where you can add specifics.</strong></p>
