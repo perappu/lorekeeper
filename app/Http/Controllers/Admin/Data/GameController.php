@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin\Data;
 use App\Http\Controllers\Controller;
 use App\Models\Currency\Currency;
 use App\Models\Game\Game;
-use App\Services\GameFileManager;
 use App\Services\GameService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -57,8 +56,8 @@ class GameController extends Controller {
         }
 
         return view('admin.games.edit_game', [
-            'game'       => $game,
-            'currencies' => Currency::orderBy('name')->pluck('name', 'id'),
+            'game'        => $game,
+            'currencies'  => Currency::orderBy('name')->pluck('name', 'id'),
             'gameOptions' => $service->getGameOptions(),
         ]);
     }
@@ -76,7 +75,7 @@ class GameController extends Controller {
         $data = $request->only([
             'name', 'description', 'image', 'remove_image', 'is_active', 'currency_id', 'currency_cap', 'score_ratio', 'times_playable',
             'game_type', 'playable_timeframe',
-            'game','game_data'
+            'game', 'game_data',
         ]);
         if ($id && $service->updateGame(Game::find($id), $data, Auth::user())) {
             flash('Game updated successfully.')->success();
@@ -153,5 +152,4 @@ class GameController extends Controller {
 
         return redirect()->back();
     }
-
 }

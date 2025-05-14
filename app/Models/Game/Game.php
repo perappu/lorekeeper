@@ -2,7 +2,6 @@
 
 namespace App\Models\Game;
 
-use App\Models\Game\GameData;
 use App\Models\Model;
 
 class Game extends Model {
@@ -13,7 +12,7 @@ class Game extends Model {
      */
     protected $fillable = [
         'name', 'sort', 'has_image', 'description', 'parsed_description', 'is_active', 'hash', 'game_type',
-        'currency_id', 'currency_cap', 'score_ratio', 'times_playable', 'playable_timeframe'
+        'currency_id', 'currency_cap', 'score_ratio', 'times_playable', 'playable_timeframe',
     ];
 
     /**
@@ -70,7 +69,7 @@ class Game extends Model {
      * @return string
      */
     public function getDisplayNameAttribute() {
-        if($this->game_type === 'link') {
+        if ($this->game_type === 'link') {
             return '<a href="'.$this->link.'" class="display-game">'.$this->name.'</a>';
         } else {
             return '<a href="'.$this->url.'" class="display-game">'.$this->name.'</a>';
@@ -143,5 +142,4 @@ class Game extends Model {
     public function getAdminPowerAttribute() {
         return 'edit_data';
     }
-
 }
