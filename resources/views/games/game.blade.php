@@ -17,8 +17,8 @@
         <p>You have played {{ $gameScore ? $gameScore->times_played : 0 }}/{{ $game->times_playable }} times {{ $timeframe }}.</p>
     </div>
 
-    @if(isset($game->data))
-        @if (isset($gameScore) && ($gameScore->times_played >= $game->times_playable))
+    @if (isset($game->data))
+        @if (isset($gameScore) && $gameScore->times_played >= $game->times_playable)
             <div class="text-center">
                 Sorry, you've played the maximum number of times {{ $timeframe }}. Come back later!
             </div>
@@ -27,7 +27,7 @@
         @endif
     @else
         <div class="text-center">
-                This game has not been set up yet. Come back later!
+            This game has not been set up yet. Come back later!
         </div>
     @endif
 @endsection
@@ -90,7 +90,7 @@
                     'game_id': "{{ $game->id }}",
                     'user_id': "{{ Auth::user()->id }}",
                     'currency_id': currencyID,
-                    'amount' : amount
+                    'amount': amount
                 },
                 headers: {
                     'X-CSRF-Token': '{{ csrf_token() }}',
