@@ -208,7 +208,6 @@ class GameService extends Service {
      * @param array $data
      * @param mixed $user
      * @param mixed $game
-     * @param mixed $gameOption
      *
      * @return bool|string
      */

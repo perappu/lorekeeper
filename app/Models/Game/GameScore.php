@@ -11,7 +11,7 @@ class GameScore extends Model {
      * @var array
      */
     protected $fillable = [
-        'user_id', 'game_id', 'times_played', 'high_score'
+        'user_id', 'game_id', 'times_played', 'high_score',
     ];
 
     /**

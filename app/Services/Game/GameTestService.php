@@ -3,7 +3,6 @@
 namespace App\Services\Game;
 
 use App\Models\Item\Item;
-use App\Services\InventoryManager;
 use App\Services\Service;
 use Illuminate\Support\Facades\DB;
 
@@ -29,12 +28,11 @@ class GameTestService extends Service {
     /**
      * Processes the data attribute of the tag and returns it in the preferred format.
      *
-     * @param object $tag
+     * @param mixed $game
      *
      * @return mixed
      */
     public function getGameData($game) {
-
         return $game->data;
     }
 
@@ -59,5 +57,4 @@ class GameTestService extends Service {
 
         return $this->rollbackReturn(false);
     }
-
 }
