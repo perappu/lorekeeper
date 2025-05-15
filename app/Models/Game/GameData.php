@@ -47,7 +47,7 @@ class GameData extends Model {
      * @return string
      */
     public function getDisplayTagAttribute() {
-        $tag = config('lorekeeper.item_tags.'.$this->tag);
+        $tag = config('lorekeeper.item_tags.'.$this->game);
         if ($tag) {
             return '<span class="badge" style="color: '.$tag['text_color'].';background-color: '.$tag['background_color'].';">'.$tag['name'].'</span>';
         }
@@ -88,7 +88,7 @@ class GameData extends Model {
      * @return mixed
      */
     public function getServiceAttribute() {
-        $class = 'App\Services\Game\\'.str_replace(' ', '', ucwords(str_replace('_', ' ', $this->tag))).'Service';
+        $class = 'App\Services\Game\\'.str_replace(' ', '', ucwords(str_replace('_', ' ', $this->game))).'Service';
 
         return new $class();
     }
@@ -114,6 +114,6 @@ class GameData extends Model {
      * @return mixed
      */
     public function getData() {
-        return $this->service->getTagData($this);
+        return $this->service->getGameData($this);
     }
 }

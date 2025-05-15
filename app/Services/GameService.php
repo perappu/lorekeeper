@@ -239,7 +239,7 @@ class GameService extends Service {
      *
      * @return bool|string
      */
-    public function editItemTag($game, $gameOption, $data, $user) {
+    public function editGameData($game, $data, $user) {
         DB::beginTransaction();
 
         try {
@@ -250,11 +250,11 @@ class GameService extends Service {
                 throw new \Exception('This game does not have data attached to it.');
             }
 
-            if (!$this->logAdminAction($user, 'Edited Game Data', 'Edited '.$gameOption.' tag on '.$game->displayName)) {
+            if (!$this->logAdminAction($user, 'Edited Game Data', 'Edited game data on '.$game->displayName)) {
                 throw new \Exception('Failed to log admin action.');
             }
 
-            $gameData = $game->data();
+            $gameData = $game->data()->first();
 
             $service = $gameData->service;
             if (!$service->updateData($gameData, $data)) {

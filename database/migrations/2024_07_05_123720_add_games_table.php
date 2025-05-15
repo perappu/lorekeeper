@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->boolean('is_active')->default(false);
 
             $table->enum('game_type', ['game', 'link'])->default('game');
-
+            $table->text('link')->nullable();
             $table->integer('currency_id')->unsigned()->default(0);
             $table->integer('currency_cap')->unsigned()->default(0);
             $table->integer('times_playable')->unsigned()->default(0);

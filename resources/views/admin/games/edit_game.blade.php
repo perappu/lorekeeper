@@ -7,7 +7,7 @@
 @section('admin-content')
     {!! breadcrumbs(['Admin Panel' => 'admin', 'Games' => 'admin/data/games', ($game->id ? 'Edit' : 'Create') . ' Game' => $game->id ? 'admin/data/games/edit/' . $game->id : 'admin/data/games/create']) !!}
 
-    <h1>{{ $game->id ? 'Edit' : 'Create' }} Game
+    <h1>{{ $game->id ? 'Edit' : 'Create' }} Game ({!! $game->displayName !!})
         @if ($game->id)
             <a href="#" class="btn btn-danger float-right delete-game-button">Delete Game</a>
         @endif
@@ -95,12 +95,14 @@
 
     @if($game->game_type === 'game')
 
-        <h3>Data</h3>
+        <h3>Data {{ isset($game->data) ? ('- ' . $game->data->getName()) : "" }}</h3>
 
-        @if(!($game->data->exists()))
+        @if(!(isset($game->data)))
         {!! Form::open(['url' => 'admin/data/games/data/add/' . $game->id]) !!}
 
         <div class="form-group">
+
+            <p><b>This can not be changed once selected.</b> Selecting a value will replace this block with the form for customizing the game.</p>
             {!! Form::label('game', 'Game Selection') !!}
             {!! Form::select('game', [0 => 'Select a Game'] + $gameOptions, null, ['class' => 'form-control']) !!}
         </div>

@@ -14,6 +14,8 @@ return new class extends Migration {
             $table->integer('user_id')->unsigned();
             $table->integer('game_id')->unsigned();
             $table->integer('times_played')->unsigned();
+            $table->integer('high_score')->unsigned()->default(0);
+            $table->timestamps();
         });
     }
 

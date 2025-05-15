@@ -2,6 +2,7 @@
 
 namespace App\Models\Game;
 
+use App\Models\Currency\Currency;
 use App\Models\Game\GameData;
 use App\Models\Model;
 
@@ -12,8 +13,9 @@ class Game extends Model {
      * @var array
      */
     protected $fillable = [
-        'name', 'sort', 'has_image', 'description', 'parsed_description', 'is_active', 'hash', 'game_type',
-        'currency_id', 'currency_cap', 'score_ratio', 'times_playable', 'playable_timeframe'
+        'name', 'sort', 'has_image', 'description', 'parsed_description', 'is_active', 'hash', 
+        'link',
+        'game_type', 'currency_id', 'currency_cap', 'score_ratio', 'times_playable', 'playable_timeframe'
     ];
 
     /**
@@ -52,10 +54,17 @@ class Game extends Model {
     **********************************************************************************************/
 
     /**
-     * Get the item's tags.
+     * Get the game's data.
      */
     public function data() {
         return $this->hasOne(GameData::class, 'game_id');
+    }
+
+    /**
+     * Get the currency rewarded by the game.
+     */
+    public function currency() {
+        return $this->hasOne(Currency::class, 'id', 'currency_id');
     }
 
     /**********************************************************************************************
@@ -70,7 +79,7 @@ class Game extends Model {
      * @return string
      */
     public function getDisplayNameAttribute() {
-        if($this->game_type === 'link') {
+        if($this->game_type == 'link') {
             return '<a href="'.$this->link.'" class="display-game">'.$this->name.'</a>';
         } else {
             return '<a href="'.$this->url.'" class="display-game">'.$this->name.'</a>';

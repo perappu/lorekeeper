@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\Auth;
 class GameController extends Controller {
     /*
     |--------------------------------------------------------------------------
-    | Shop Controller
+    | Game Controller
     |--------------------------------------------------------------------------
     |
-    | Handles viewing the shop index, shops and purchasing from shops.
+    | Handles viewing the game index, games and submitting scores.
     |
     */
 
@@ -30,7 +30,7 @@ class GameController extends Controller {
     }
 
     /**
-     * Shows a shop.
+     * Shows a game.
      *
      * @param int $id
      *
@@ -42,22 +42,77 @@ class GameController extends Controller {
             abort(404);
         }
 
+        switch ($game->playable_timeframe) {
+            case 'daily':
+                $timeframe = "today";
+                break;
+            case 'weekly':
+                $timeframe = "this week";
+                break;
+            case 'monthly':
+                $timeframe = "this month";
+                break;
+            default:
+                $timeframe = "";
+                break;
+        }
+
         return view('games.game', [
             'game'      => $game,
-            'gameScore' => GameScore::where('user_id', Auth::user()->id)->first(),
+            'gameScore' => GameScore::where('user_id', Auth::user()->id)->where('game_id', $id)->first() ?? null,
             'games'     => Game::where('is_active', 1)->orderBy('sort', 'DESC')->get(),
+            'timeframe' => $timeframe
         ]);
     }
 
-    public function postSubmitScore(Request $request, GameManager $service) {
-        if ($service->submitScore($request->only(['user_id', 'game_id', 'score']), Auth::user())) {
-            flash('Score submitted and currency rewarded.')->success();
-        } else {
-            foreach ($service->errors()->getMessages()['error'] as $error) {
-                flash($error)->error();
-            }
-        }
+    /** API-esque functions that games can call to handle scoring and charging **/
 
-        return redirect()->back();
+    /**
+     * Submits a score
+     *
+     * @param Illuminate\Http\Request $request
+     * @param App\Services\GameManager $service
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postSubmitScore(Request $request, GameManager $service) {
+        if ($reward = $service->submitScore($request->only(['user_id', 'game_id', 'score']), Auth::user())) {
+            return response()->json(['submitted' => true, 'reward' => $reward]);
+        } else {
+            return response()->json(['submitted' => false, 'reward' => null, 'errors' => $service->errors()]);
+        }
     }
+
+    /**
+     * Checks if a user can submit a score
+     *
+     * @param Illuminate\Http\Request $request
+     * @param App\Services\GameManager $service
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postCanSubmitScore(Request $request, GameManager $service) {
+        if ($canSubmit = $service->canSubmitScore($request->input('game_id'), $request->input('user_id'))) {
+            return response()->json(['can_submit' => $canSubmit]);
+        } else {
+            return response()->json(['can_submit' => false, 'errors' => $service->errors()]);
+        }
+    }
+
+    /**
+     * Charges a user currency
+     *
+     * @param Illuminate\Http\Request $request
+     * @param App\Services\GameManager $service
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postChargeCurrency(Request $request, GameManager $service) {
+        if ($service->chargeCurrency($request->only(['user_id', 'game_id', 'currency_id', 'amount']), Auth::user())) {
+            return response()->json(['successful' => true]);
+        } else {
+            return response()->json(['successful' => false, 'errors' => $service->errors()]);
+        }
+    }
+
 }

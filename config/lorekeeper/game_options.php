@@ -14,8 +14,6 @@ return [
     */
 
     'game_test'  => [
-        'name'             => 'Game Test',
-        'text_color'       => '#ffffff',
-        'background_color' => '#f6993f',
+        'name'             => 'Test Game'
     ],
 ];

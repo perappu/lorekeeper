@@ -20,7 +20,7 @@
                     </div>
                 @endif
                 <div class="game-name mt-1">
-                    <a href="{{ $game->url }}" class="h5 mb-0">{{ $game->name }}</a>
+                    <h5>{!! $game->displayName !!}</h5>
                 </div>
             </div>
         @endforeach

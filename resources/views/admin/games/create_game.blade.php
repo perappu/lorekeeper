@@ -40,7 +40,7 @@
     </div>
 
     <div class="form-group">
-        {!! Form::checkbox('is_active', 1, $game->id ? $game->is_active : 1, ['class' => 'form-check-input', 'data-toggle' => 'toggle']) !!}
+        {!! Form::checkbox('is_active', 1, $game->id ? $game->is_active : 0, ['class' => 'form-check-input', 'data-toggle' => 'toggle']) !!}
         {!! Form::label('is_active', 'Set Active', ['class' => 'form-check-label ml-3']) !!} {!! add_help('If turned off, the game will not be visible to regular users.') !!}
     </div>
 

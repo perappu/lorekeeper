@@ -233,4 +233,6 @@ Route::group(['prefix' => 'games'], function () {
     Route::get('/', 'GameController@getIndex');
     Route::get('{id}', 'GameController@getGame')->where(['id' => '[0-9]+']);
     Route::post('/score', 'GameController@postSubmitScore');
+    Route::post('/score/check', 'GameController@postCanSubmitScore');
+    Route::post('/charge', 'GameController@postChargeCurrency');
 });

@@ -11,7 +11,7 @@ class GameScore extends Model {
      * @var array
      */
     protected $fillable = [
-        'user_id', 'game_id', 'times_played',
+        'user_id', 'game_id', 'times_played', 'high_score'
     ];
 
     /**
@@ -21,9 +21,10 @@ class GameScore extends Model {
      */
     protected $table = 'game_scores';
 
-    /*
-     * Validation rules for creation.
+    /**
+     * Whether the model contains timestamps to be saved and updated.
      *
-     * @var array
+     * @var string
      */
+    public $timestamps = true;
 }

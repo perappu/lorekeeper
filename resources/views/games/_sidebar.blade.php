@@ -1,9 +1,9 @@
 <ul>
-    <li class="sidebar-header"><a href="{{ url('shops') }}" class="card-link">Games</a></li>
+    <li class="sidebar-header"><a href="{{ url('games') }}" class="card-link">Games</a></li>
 
     @if (Auth::check())
         <li class="sidebar-section">
-            <div class="sidebar-section-header">My Currencies</div>
+            <div class="sidebar-section-header">Bank</div>
             @foreach (Auth::user()->getCurrencies(true) as $currency)
                 <div class="sidebar-item pr-3">{!! $currency->display($currency->quantity) !!}</div>
             @endforeach

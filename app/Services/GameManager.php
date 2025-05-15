@@ -6,9 +6,35 @@ use App\Models\Currency\Currency;
 use App\Models\Game\Game;
 use App\Models\Game\GameScore;
 use App\Models\User\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class GameManager extends Service {
+
+    /**
+     * Checks if a user has hit their playable cap or not
+     * 
+     * @param int $game
+     * @param int $user
+     * 
+     * @return boolean
+     */
+    public function canSubmitScore($gameId, $userId) {
+
+        $game = Game::find($gameId);
+        if (!$game) {
+            throw new \Exception("Game not found");
+        }
+
+        $score = GameScore::where('user_id', $userId)->where('game_id', $gameId)->first();
+
+        if ($score->times_played >= $game->times_playable) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     /**
      * Processes score submission.
      *
@@ -23,10 +49,13 @@ class GameManager extends Service {
         try {
             $game = Game::where('id', $data['game_id'])->first();
 
-            // increase the number of times we've played the game today by one
-            if (GameScore::where('user_id', $data['user_id'])->where('game_id', $data['game_id'])->exists()) {
+            $score = GameScore::where('user_id', $data['user_id'])->where('game_id', $data['game_id']);
 
-                $gameScore = GameScore::where('user_id', $data['user_id'])->where('game_id', $data['game_id'])->first();
+            // increase the number of times we've played the game today by one
+            // scores will be reset every day by the kernel command, so we don't need to handle it here
+            if ($score->exists()) {
+
+                $gameScore = $score->first();
 
                 switch ($game->playable_timeframe) {
                     case 'daily':
@@ -37,19 +66,18 @@ class GameManager extends Service {
                         break;
                     case 'monthly':
                         $timeframe = "this month";
-                        break;
                     default:
                         $timeframe = "";
                         break;
                 }
-
-                //TODO: logic for checking the time frame and resetting times_played
 
                 if ($gameScore->times_played >= $game->times_playable) {
                     throw new \Exception("You've submitted the maximum number of plays for ".$timeframe.". Check back later!");
                 }
 
                 $data['times_played'] = $gameScore->times_played + 1;
+                $data['high_score'] = $data['score'] > $gameScore->high_score ? $data['score'] : $gameScore->high_score;
+                
                 $gameScore->update($data);
             } else {
                 $data['times_played'] = 1;
@@ -67,7 +95,33 @@ class GameManager extends Service {
             $currencyManager = new CurrencyManager;
             $currencyManager->creditCurrency(null, $user, 'Game Score', $game->id, $game->currency_id, $reward);
 
-            return $this->commitReturn($gameScore);
+            return $this->commitReturn($reward);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
+    }
+
+    /**
+     * Subtracts currency amount, for betting games and things like that
+     *
+     * @param array $data
+     * @param mixed $user
+     *
+     * @return array
+     */
+    public function chargeCurrency($data, $user) {
+        DB::beginTransaction();
+
+        try {
+            $game = Game::where('id', $data['game_id'])->first();
+
+            $currencyManager = new CurrencyManager;
+            //this will ALWAYS subtract the number given, even if it's initially positive. no player circumventing!
+            $currencyManager->creditCurrency(null, $user, 'Game Payment', $game->id, $data['currency_id'], -1 * abs($data['amount']));
+
+            return $this->commitReturn(true);
         } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
         }

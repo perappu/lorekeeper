@@ -74,8 +74,9 @@ class GameController extends Controller {
     public function postCreateEditGame(Request $request, GameService $service, $id = null) {
         $id ? $request->validate(Game::$updateRules) : $request->validate(Game::$createRules);
         $data = $request->only([
-            'name', 'description', 'image', 'remove_image', 'is_active', 'currency_id', 'currency_cap', 'score_ratio', 'times_playable',
-            'game_type', 'playable_timeframe',
+            'name', 'description', 'image', 'remove_image', 'is_active', 
+            'game_type', 'link',
+            'currency_id', 'currency_cap', 'score_ratio', 'times_playable', 'playable_timeframe',
             'game','game_data'
         ]);
         if ($id && $service->updateGame(Game::find($id), $data, Auth::user())) {
@@ -145,6 +146,28 @@ class GameController extends Controller {
             flash('Game data added successfully.')->success();
 
             return redirect()->to($gameData->adminUrl);
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
+        }
+
+        return redirect()->back();
+    }
+
+    /**
+     * Edits game data for a game.
+     *
+     * @param App\Services\GameService $service
+     * @param int                      $id
+     * @param string                   $tag
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postEditGameData(Request $request, GameService $service, $id) {
+        $game = Game::find($id);
+        if ($service->editGameData($game, $request->all(), Auth::user())) {
+            flash('Game data edited successfully.')->success();
         } else {
             foreach ($service->errors()->getMessages()['error'] as $error) {
                 flash($error)->error();
