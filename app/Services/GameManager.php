@@ -59,20 +59,21 @@ class GameManager extends Service {
 
                 switch ($game->playable_timeframe) {
                     case 'daily':
-                        $timeframe = "today";
+                        $timeframe = 'today';
                         break;
                     case 'weekly':
-                        $timeframe = "this week";
+                        $timeframe = 'this week';
                         break;
                     case 'monthly':
-                        $timeframe = "this month";
+                        $timeframe = 'this month';
+                        break;
                     default:
-                        $timeframe = "";
+                        $timeframe = '';
                         break;
                 }
 
                 if ($gameScore->times_played >= $game->times_playable) {
-                    throw new \Exception("You've submitted the maximum number of plays for ".$timeframe.". Check back later!");
+                    throw new \Exception("You've submitted the maximum number of plays for ".$timeframe.'. Check back later!');
                 }
 
                 $data['times_played'] = $gameScore->times_played + 1;

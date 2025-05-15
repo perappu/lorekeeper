@@ -24,7 +24,7 @@ return new class extends Migration {
             $table->integer('currency_id')->unsigned()->default(0);
             $table->integer('currency_cap')->unsigned()->default(0);
             $table->integer('times_playable')->unsigned()->default(0);
-            $table->enum('playable_timeframe', ['daily','weekly','monthly'])->default('daily');
+            $table->enum('playable_timeframe', ['daily', 'weekly', 'monthly'])->default('daily');
             $table->decimal('score_ratio', 5, 2)->default(1.0);
         });
     }

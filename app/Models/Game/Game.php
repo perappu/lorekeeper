@@ -152,5 +152,4 @@ class Game extends Model {
     public function getAdminPowerAttribute() {
         return 'edit_data';
     }
-
 }

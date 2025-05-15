@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin\Data;
 use App\Http\Controllers\Controller;
 use App\Models\Currency\Currency;
 use App\Models\Game\Game;
-use App\Services\GameFileManager;
 use App\Services\GameService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -57,8 +56,8 @@ class GameController extends Controller {
         }
 
         return view('admin.games.edit_game', [
-            'game'       => $game,
-            'currencies' => Currency::orderBy('name')->pluck('name', 'id'),
+            'game'        => $game,
+            'currencies'  => Currency::orderBy('name')->pluck('name', 'id'),
             'gameOptions' => $service->getGameOptions(),
         ]);
     }

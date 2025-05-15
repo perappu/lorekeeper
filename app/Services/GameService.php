@@ -141,33 +141,6 @@ class GameService extends Service {
         return $this->rollbackReturn(false);
     }
 
-    /**
-     * Processes user input for creating/updating a game.
-     *
-     * @param array                 $data
-     * @param \App\Models\game\Game $game
-     *
-     * @return array
-     */
-    private function populateGameData($data, $game = null) {
-        if (isset($data['description']) && $data['description']) {
-            $data['parsed_description'] = parse($data['description']);
-        } else {
-            $data['parsed_description'] = null;
-        }
-        $data['is_active'] = isset($data['is_active']);
-
-        if (isset($data['remove_image'])) {
-            if ($game && $game->has_image && $data['remove_image']) {
-                $data['has_image'] = 0;
-                $this->deleteImage($game->gameImagePath, $game->gameImageFileName);
-            }
-            unset($data['remove_image']);
-        }
-
-        return $data;
-    }
-
     /**********************************************************************************************
 
         GAME OPTIONS/DATA
@@ -175,7 +148,7 @@ class GameService extends Service {
     **********************************************************************************************/
 
     /**
-     * Gets a list of game options for selection
+     * Gets a list of game options for selection.
      *
      * @return array
      */
@@ -193,8 +166,8 @@ class GameService extends Service {
      * Adds game data tag to a game.
      *
      * @param \App\Models\Game\Game $game
-     * @param string                $tag
      * @param mixed                 $user
+     * @param mixed                 $gameOption
      *
      * @return bool|string
      */
@@ -217,7 +190,7 @@ class GameService extends Service {
             }
 
             $tag = GameData::create([
-                'game_id' => $game->id,
+                'game_id'  => $game->id,
                 'game'     => $gameOption,
             ]);
 
@@ -232,10 +205,10 @@ class GameService extends Service {
     /**
      * Edits the data associated with an game.
      *
-     * @param \App\Models\Game\Game $item
-     * @param string                $tag
-     * @param array                 $data
-     * @param mixed                 $user
+     * @param array $data
+     * @param mixed $user
+     * @param mixed $game
+     * @param mixed $gameOption
      *
      * @return bool|string
      */
@@ -268,5 +241,32 @@ class GameService extends Service {
         }
 
         return $this->rollbackReturn(false);
+    }
+
+    /**
+     * Processes user input for creating/updating a game.
+     *
+     * @param array                 $data
+     * @param \App\Models\game\Game $game
+     *
+     * @return array
+     */
+    private function populateGameData($data, $game = null) {
+        if (isset($data['description']) && $data['description']) {
+            $data['parsed_description'] = parse($data['description']);
+        } else {
+            $data['parsed_description'] = null;
+        }
+        $data['is_active'] = isset($data['is_active']);
+
+        if (isset($data['remove_image'])) {
+            if ($game && $game->has_image && $data['remove_image']) {
+                $data['has_image'] = 0;
+                $this->deleteImage($game->gameImagePath, $game->gameImageFileName);
+            }
+            unset($data['remove_image']);
+        }
+
+        return $data;
     }
 }

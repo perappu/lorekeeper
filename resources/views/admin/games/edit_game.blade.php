@@ -44,44 +44,44 @@
         {!! Form::label('is_active', 'Set Active', ['class' => 'form-check-label ml-3']) !!} {!! add_help('If turned off, the game will not be visible to regular users.') !!}
     </div>
 
-    @if($game->game_type === 'link') 
+    @if ($game->game_type === 'link')
         <div class="form-group">
             {!! Form::label('Link') !!}
             {!! Form::text('link', $game->link, ['class' => 'form-control']) !!}
         </div>
     @else
-    <div class="row">
-        <div class="col-2">
-            <div class="form-group">
-                {!! Form::label('Currency') !!} {!! add_help('The currency the game will award.') !!}
-                {!! Form::select('currency_id', $currencies, $game->currency_id ? $game->currency_id : null, ['class' => 'form-control game-field', 'data-name' => 'currency_id']) !!}
+        <div class="row">
+            <div class="col-2">
+                <div class="form-group">
+                    {!! Form::label('Currency') !!} {!! add_help('The currency the game will award.') !!}
+                    {!! Form::select('currency_id', $currencies, $game->currency_id ? $game->currency_id : null, ['class' => 'form-control game-field', 'data-name' => 'currency_id']) !!}
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    {!! Form::label('Currency Cap') !!} {!! add_help('The max amount of currency the game will award. Prevents people from sending false high scores for infinite currency.') !!}
+                    {!! Form::number('currency_cap', $game->currency_cap, ['class' => 'form-control']) !!}
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    {!! Form::label('Score Multiplier') !!} {!! add_help('A decimal number indicating the currency-to-score ratio. The amount of currency rewarded is the score multiplied by this number. ') !!}
+                    {!! Form::number('score_ratio', $game->score_ratio, ['class' => 'form-control', 'step' => 'any']) !!}
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    {!! Form::label('Times Playable') !!} {!! add_help('The number of times a user can play this game per timeframe.') !!}
+                    {!! Form::number('times_playable', $game->times_playable, ['class' => 'form-control', 'step' => 'any']) !!}
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                    {!! Form::label('Playable Timeframe') !!} {!! add_help('How often this game can be played.') !!}
+                    {!! Form::select('playable_timeframe', ['daily' => 'Daily', 'weekly' => 'Weekly', 'monthly' => 'Monthly'], $game->playable_timeframe, ['class' => 'form-control', 'data-name' => 'playable_timeframe']) !!}
+                </div>
             </div>
         </div>
-        <div class="col-2">
-            <div class="form-group">
-                {!! Form::label('Currency Cap') !!} {!! add_help('The max amount of currency the game will award. Prevents people from sending false high scores for infinite currency.') !!}
-                {!! Form::number('currency_cap', $game->currency_cap, ['class' => 'form-control']) !!}
-            </div>
-        </div>
-        <div class="col-2">
-            <div class="form-group">
-                {!! Form::label('Score Multiplier') !!} {!! add_help('A decimal number indicating the currency-to-score ratio. The amount of currency rewarded is the score multiplied by this number. ') !!}
-                {!! Form::number('score_ratio', $game->score_ratio, ['class' => 'form-control', 'step' => 'any']) !!}
-            </div>
-        </div>
-        <div class="col-2">
-            <div class="form-group">
-                {!! Form::label('Times Playable') !!} {!! add_help('The number of times a user can play this game per timeframe.') !!}
-                {!! Form::number('times_playable', $game->times_playable, ['class' => 'form-control', 'step' => 'any']) !!}
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="form-group">
-                {!! Form::label('Playable Timeframe') !!} {!! add_help('How often this game can be played.') !!}
-                {!! Form::select('playable_timeframe', ['daily' => 'Daily', 'weekly' => 'Weekly', 'monthly' => 'Monthly'], $game->playable_timeframe, ['class' => 'form-control', 'data-name' => 'playable_timeframe']) !!}
-            </div>
-        </div>
-    </div>
     @endif
 
     <div class="text-right">
@@ -93,7 +93,7 @@
 
     <hr>
 
-    @if($game->game_type === 'game')
+    @if ($game->game_type === 'game')
 
         <h3>Data {{ isset($game->data) ? ('- ' . $game->data->getName()) : "" }}</h3>
 
@@ -107,12 +107,11 @@
             {!! Form::select('game', [0 => 'Select a Game'] + $gameOptions, null, ['class' => 'form-control']) !!}
         </div>
 
-        <div class="text-right">
-            {!! Form::submit('Add Game', ['class' => 'btn btn-primary']) !!}
-        </div>
+            <div class="text-right">
+                {!! Form::submit('Add Game', ['class' => 'btn btn-primary']) !!}
+            </div>
 
-        {!! Form::close() !!}
-
+            {!! Form::close() !!}
         @else
             {!! Form::open(['url' => 'admin/data/games/data/edit/' . $game->id]) !!}
 
@@ -127,7 +126,6 @@
             </div>
 
             {!! Form::close() !!}
-
         @endif
 
     @endif
