@@ -13,7 +13,7 @@
     <li class="sidebar-section">
         <div class="sidebar-section-header">Games</div>
         @foreach ($games as $game)
-            <div class="sidebar-item"><a href="{{ $game->url }}" class="{{ set_active('game/' . $game->id) }}">{{ $game->name }}</a></div>
+            <div class="sidebar-item"><a href="{{ $game->url }}" class="{{ set_active_full_url($game->url) }}">{{ $game->name }}</a></div>
         @endforeach
     </li>
 </ul>

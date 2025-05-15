@@ -132,7 +132,11 @@ class Game extends Model {
      * @return string
      */
     public function getUrlAttribute() {
-        return url('games/'.$this->id);
+        if($this->game_type == 'link') {
+            return $this->link;
+        } else {
+            return url('games/'.$this->id);
+        }
     }
 
     /**

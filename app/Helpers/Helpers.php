@@ -446,4 +446,17 @@ function prettyProfileName($url) {
     } else {
         return $url;
     }
-}
+
+    }
+    /**
+     * Returns class name if the current full URL corresponds to the given path.
+     *
+     * @param string $path
+     * @param string $class
+     *
+     * @return string
+     */
+    function set_active_full_url($path, $class = 'active') {
+        return call_user_func_array('Request::url', [null]) === $path ? $class : '';
+    }
+
