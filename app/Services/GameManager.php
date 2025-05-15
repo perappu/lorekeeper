@@ -6,24 +6,21 @@ use App\Models\Currency\Currency;
 use App\Models\Game\Game;
 use App\Models\Game\GameScore;
 use App\Models\User\User;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class GameManager extends Service {
-
     /**
-     * Checks if a user has hit their playable cap or not
-     * 
-     * @param int $game
-     * @param int $user
-     * 
-     * @return boolean
+     * Checks if a user has hit their playable cap or not.
+     *
+     * @param mixed $gameId
+     * @param mixed $userId
+     *
+     * @return bool
      */
     public function canSubmitScore($gameId, $userId) {
-
         $game = Game::find($gameId);
         if (!$game) {
-            throw new \Exception("Game not found");
+            throw new \Exception('Game not found');
         }
 
         $score = GameScore::where('user_id', $userId)->where('game_id', $gameId)->first();
@@ -54,7 +51,6 @@ class GameManager extends Service {
             // increase the number of times we've played the game today by one
             // scores will be reset every day by the kernel command, so we don't need to handle it here
             if ($score->exists()) {
-
                 $gameScore = $score->first();
 
                 switch ($game->playable_timeframe) {
@@ -78,7 +74,7 @@ class GameManager extends Service {
 
                 $data['times_played'] = $gameScore->times_played + 1;
                 $data['high_score'] = $data['score'] > $gameScore->high_score ? $data['score'] : $gameScore->high_score;
-                
+
                 $gameScore->update($data);
             } else {
                 $data['times_played'] = 1;
@@ -105,7 +101,7 @@ class GameManager extends Service {
     }
 
     /**
-     * Subtracts currency amount, for betting games and things like that
+     * Subtracts currency amount, for betting games and things like that.
      *
      * @param array $data
      * @param mixed $user

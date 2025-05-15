@@ -14,6 +14,6 @@ return [
     */
 
     'game_test'  => [
-        'name'             => 'Test Game'
+        'name'             => 'Test Game',
     ],
 ];

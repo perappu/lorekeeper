@@ -44,16 +44,16 @@ class GameController extends Controller {
 
         switch ($game->playable_timeframe) {
             case 'daily':
-                $timeframe = "today";
+                $timeframe = 'today';
                 break;
             case 'weekly':
-                $timeframe = "this week";
+                $timeframe = 'this week';
                 break;
             case 'monthly':
-                $timeframe = "this month";
+                $timeframe = 'this month';
                 break;
             default:
-                $timeframe = "";
+                $timeframe = '';
                 break;
         }
 
@@ -61,16 +61,16 @@ class GameController extends Controller {
             'game'      => $game,
             'gameScore' => GameScore::where('user_id', Auth::user()->id)->where('game_id', $id)->first() ?? null,
             'games'     => Game::where('is_active', 1)->orderBy('sort', 'DESC')->get(),
-            'timeframe' => $timeframe
+            'timeframe' => $timeframe,
         ]);
     }
 
     /** API-esque functions that games can call to handle scoring and charging **/
 
     /**
-     * Submits a score
+     * Submits a score.
      *
-     * @param Illuminate\Http\Request $request
+     * @param Illuminate\Http\Request  $request
      * @param App\Services\GameManager $service
      *
      * @return \Illuminate\Http\JsonResponse
@@ -84,9 +84,9 @@ class GameController extends Controller {
     }
 
     /**
-     * Checks if a user can submit a score
+     * Checks if a user can submit a score.
      *
-     * @param Illuminate\Http\Request $request
+     * @param Illuminate\Http\Request  $request
      * @param App\Services\GameManager $service
      *
      * @return \Illuminate\Http\JsonResponse
@@ -100,9 +100,9 @@ class GameController extends Controller {
     }
 
     /**
-     * Charges a user currency
+     * Charges a user currency.
      *
-     * @param Illuminate\Http\Request $request
+     * @param Illuminate\Http\Request  $request
      * @param App\Services\GameManager $service
      *
      * @return \Illuminate\Http\JsonResponse
@@ -114,5 +114,4 @@ class GameController extends Controller {
             return response()->json(['successful' => false, 'errors' => $service->errors()]);
         }
     }
-
 }

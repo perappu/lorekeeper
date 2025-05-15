@@ -73,10 +73,10 @@ class GameController extends Controller {
     public function postCreateEditGame(Request $request, GameService $service, $id = null) {
         $id ? $request->validate(Game::$updateRules) : $request->validate(Game::$createRules);
         $data = $request->only([
-            'name', 'description', 'image', 'remove_image', 'is_active', 
+            'name', 'description', 'image', 'remove_image', 'is_active',
             'game_type', 'link',
             'currency_id', 'currency_cap', 'score_ratio', 'times_playable', 'playable_timeframe',
-            'game','game_data'
+            'game', 'game_data',
         ]);
         if ($id && $service->updateGame(Game::find($id), $data, Auth::user())) {
             flash('Game updated successfully.')->success();
@@ -159,7 +159,6 @@ class GameController extends Controller {
      *
      * @param App\Services\GameService $service
      * @param int                      $id
-     * @param string                   $tag
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -175,5 +174,4 @@ class GameController extends Controller {
 
         return redirect()->back();
     }
-
 }

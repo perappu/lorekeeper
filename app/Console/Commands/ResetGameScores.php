@@ -39,22 +39,21 @@ class ResetGameScores extends Command {
 
         $scores = collect();
 
-        foreach($games as $game) {
-            switch($game->playable_timeframe) {
+        foreach ($games as $game) {
+            switch ($game->playable_timeframe) {
                 case 'daily':
                     $scores = $scores->merge(GameScore::where('game_id', $game->id)->whereDate('updated_at', '!=', Carbon::today())->get());
                     break;
                 case 'weekly':
-                    $scores = $scores->merge(GameScore::where('game_id', $game->id)->whereDate('updated_at', '<' , Carbon::now()->startOfWeek())->get());
+                    $scores = $scores->merge(GameScore::where('game_id', $game->id)->whereDate('updated_at', '<', Carbon::now()->startOfWeek())->get());
                     break;
                 case 'monthly':
-                    $scores = $scores->merge(GameScore::where('game_id', $game->id)->whereDate('updated_at', '<' , Carbon::now()->startOfMonth())->get());
+                    $scores = $scores->merge(GameScore::where('game_id', $game->id)->whereDate('updated_at', '<', Carbon::now()->startOfMonth())->get());
                     break;
             }
-
         }
 
-        $this->line('Resetting ' . $scores->count() . ' scores...');
+        $this->line('Resetting '.$scores->count().' scores...');
 
         foreach ($scores as $score) {
             $score->update(['times_played' => 0]);
