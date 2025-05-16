@@ -2,7 +2,7 @@
 
 <div class="form-group">
     {!! Form::label('start_text', 'Start Text') !!}
-    {!! Form::text('start_text', $game->data->data['start_text'] ?? "Tap to Start", ['class' => 'form-control']) !!}
+    {!! Form::text('start_text', $game->data->data['start_text'] ?? 'Tap to Start', ['class' => 'form-control']) !!}
 </div>
 
 <div class="row">
