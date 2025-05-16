@@ -69,7 +69,7 @@ class GameManager extends Service {
                 }
 
                 if ($gameScore->times_played >= $game->times_playable) {
-                    throw new \Exception("You've submitted the maximum number of plays for ".$timeframe.'. Check back later!');
+                    throw new \Exception("You've submitted the maximum number of plays for ".$timeframe.'.');
                 }
 
                 $data['times_played'] = $gameScore->times_played + 1;
@@ -90,7 +90,7 @@ class GameManager extends Service {
             }
 
             $currencyManager = new CurrencyManager;
-            $currencyManager->creditCurrency(null, $user, 'Game Score', $game->id, $game->currency_id, $reward);
+            $currencyManager->creditCurrency(null, $user, 'Game Reward', $game->displayName, $game->currency_id, $reward);
 
             return $this->commitReturn($reward);
         } catch (\Exception $e) {
@@ -116,7 +116,7 @@ class GameManager extends Service {
 
             $currencyManager = new CurrencyManager;
             //this will ALWAYS subtract the number given, even if it's initially positive. no player circumventing!
-            $currencyManager->creditCurrency(null, $user, 'Game Payment', $game->id, $data['currency_id'], -1 * abs($data['amount']));
+            $currencyManager->creditCurrency(null, $user, 'Game Payment', $game->displayName, $data['currency_id'], -1 * abs($data['amount']));
 
             return $this->commitReturn(true);
         } catch (\Exception $e) {
