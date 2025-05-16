@@ -113,7 +113,7 @@
 
             {!! Form::close() !!}
         @else
-            {!! Form::open(['url' => 'admin/data/games/data/edit/' . $game->id]) !!}
+            {!! Form::open(['url' => 'admin/data/games/data/edit/' . $game->id, 'files' => true]) !!}
 
             @if (View::exists('admin.games.data.' . $game->data->game))
                 @include('admin.games.data.' . $game->data->game, ['game' => $game, 'data' => $game->data])
