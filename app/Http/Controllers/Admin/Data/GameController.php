@@ -59,7 +59,7 @@ class GameController extends Controller {
             'game'        => $game,
             'currencies'  => Currency::orderBy('name')->pluck('name', 'id'),
             'gameOptions' => $service->getGameOptions(),
-        ]);
+        ] + (isset($game->data) ? $game->data->getEditData() : []));
     }
 
     /**
