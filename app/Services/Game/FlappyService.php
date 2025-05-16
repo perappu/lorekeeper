@@ -40,7 +40,7 @@ class FlappyService extends Service {
      * Processes the data attribute of the game and returns it in the preferred format.
      *
      * @param object $gameData
-     * @param object  $data
+     * @param object $data
      *
      * @return bool
      */
@@ -48,26 +48,25 @@ class FlappyService extends Service {
         DB::beginTransaction();
 
         try {
-
-            if(isset($data['player_image'])) {
+            if (isset($data['player_image'])) {
                 $this->handleImage($data['player_image'], 'gamefiles/flappy/assets', 'player.png');
             }
-            if(isset($data['coin_image'])) {
+            if (isset($data['coin_image'])) {
                 $this->handleImage($data['coin_image'], 'gamefiles/flappy/assets', 'coin.png');
             }
-            if(isset($data['spikes_image'])) {
+            if (isset($data['spikes_image'])) {
                 $this->handleImage($data['spikes_image'], 'gamefiles/flappy/assets', 'spikes.png');
             }
-            if(isset($data['background_image'])) {
+            if (isset($data['background_image'])) {
                 $this->handleImage($data['spikes_image'], 'gamefiles/flappy/assets', 'background.png');
             }
 
             $gameData->update(['data' => [
                 'start_text' => $data['start_text'],
-                'player_x' => $data['player_x'],
-                'player_y' => $data['player_y'],
-                'coin_x' => $data['coin_x'],
-                'coin_y' => $data['coin_y']
+                'player_x'   => $data['player_x'],
+                'player_y'   => $data['player_y'],
+                'coin_x'     => $data['coin_x'],
+                'coin_y'     => $data['coin_y'],
             ]]);
 
             return $this->commitReturn(true);
