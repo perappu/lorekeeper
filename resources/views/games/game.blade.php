@@ -35,75 +35,7 @@
 @section('scripts')
     @parent
     <script>
-        /* helper functions for games to check and send scores */
-        const submitScore = async (score) => {
-            var data = $.ajax({
-                url: "{{ url('/games/score') }}",
-                type: "POST",
-                data: {
-                    'game_id': "{{ $game->id }}",
-                    'user_id': "{{ Auth::user()->id }}",
-                    'score': score,
-                },
-                headers: {
-                    'X-CSRF-Token': '{{ csrf_token() }}',
-                },
-                success: (data) => {
-                    console.log("Score submitted!");
-                    return data;
-                },
-                error: (error) => {
-                    console.log("Error with sending score");
-                    console.log(error);
-                    return error;
-                }
-            });
-
-            return data;
-        }
-        const canSubmit = async () => {
-            $.ajax({
-                url: "{{ url('/games/score/check') }}",
-                type: "POST",
-                data: {
-                    'game_id': "{{ $game->id }}",
-                    'user_id': "{{ Auth::user()->id }}",
-                },
-                headers: {
-                    'X-CSRF-Token': '{{ csrf_token() }}',
-                },
-                success: (data) => {
-                    console.log(data);
-                    return true;
-                },
-                error: (error) => {
-                    console.log(error);
-                    return false;
-                }
-            });
-        }
-        const chargeCurrency = async (currencyID, amount) => {
-            $.ajax({
-                url: "{{ url('/games/charge') }}",
-                type: "POST",
-                data: {
-                    'game_id': "{{ $game->id }}",
-                    'user_id': "{{ Auth::user()->id }}",
-                    'currency_id': currencyID,
-                    'amount': amount
-                },
-                headers: {
-                    'X-CSRF-Token': '{{ csrf_token() }}',
-                },
-                success: (data) => {
-                    console.log(data);
-                    return true;
-                },
-                error: (error) => {
-                    console.log(error);
-                    return false;
-                }
-            });
-        }
+    /* code is minified */
+    const submitScore=async e=>$.ajax({url:"{{ url('/games/score') }}",type:"POST",data:{game_id:"{{ $game->id }}",user_id:"{{ Auth::user()->id }}",score:e},headers:{"X-CSRF-Token":"{{ csrf_token() }}"},success:e=>(console.log("Score submitted!"),e),error:e=>(console.log("Error with sending score"),console.log(e),e)}),canSubmit=async()=>{$.ajax({url:"{{ url('/games/score/check') }}",type:"POST",data:{game_id:"{{ $game->id }}",user_id:"{{ Auth::user()->id }}"},headers:{"X-CSRF-Token":"{{ csrf_token() }}"},success:e=>(console.log(e),!0),error:e=>(console.log(e),!1)})},chargeCurrency=async(e,r)=>{$.ajax({url:"{{ url('/games/charge') }}",type:"POST",data:{game_id:"{{ $game->id }}",user_id:"{{ Auth::user()->id }}",currency_id:e,amount:r},headers:{"X-CSRF-Token":"{{ csrf_token() }}"},success:e=>(console.log(e),!0),error:e=>(console.log(e),!1)})};
     </script>
 @endsection
