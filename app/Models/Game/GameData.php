@@ -21,6 +21,10 @@ class GameData extends Model {
      */
     protected $table = 'game_data';
 
+    protected $casts = [
+        'data' => 'array',
+    ];
+
     /**********************************************************************************************
 
         RELATIONS
@@ -70,15 +74,6 @@ class GameData extends Model {
      */
     public function getAdminUrlAttribute() {
         return url('admin/data/games/edit/'.$this->game_id);
-    }
-
-    /**
-     * Get the data attribute as an associative array.
-     *
-     * @return array
-     */
-    public function getDataAttribute() {
-        return json_decode($this->attributes['data'], true);
     }
 
     /**
