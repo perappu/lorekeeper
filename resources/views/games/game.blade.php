@@ -35,7 +35,50 @@
 @section('scripts')
     @parent
     <script>
-    /* code is minified */
-    const submitScore=async e=>$.ajax({url:"{{ url('/games/score') }}",type:"POST",data:{game_id:"{{ $game->id }}",user_id:"{{ Auth::user()->id }}",score:e},headers:{"X-CSRF-Token":"{{ csrf_token() }}"},success:e=>(console.log("Score submitted!"),e),error:e=>(console.log("Error with sending score"),console.log(e),e)}),canSubmit=async()=>{$.ajax({url:"{{ url('/games/score/check') }}",type:"POST",data:{game_id:"{{ $game->id }}",user_id:"{{ Auth::user()->id }}"},headers:{"X-CSRF-Token":"{{ csrf_token() }}"},success:e=>(console.log(e),!0),error:e=>(console.log(e),!1)})},chargeCurrency=async(e,r)=>{$.ajax({url:"{{ url('/games/charge') }}",type:"POST",data:{game_id:"{{ $game->id }}",user_id:"{{ Auth::user()->id }}",currency_id:e,amount:r},headers:{"X-CSRF-Token":"{{ csrf_token() }}"},success:e=>(console.log(e),!0),error:e=>(console.log(e),!1)})};
+        /* code is minified */
+        const submitScore = async e => $.ajax({
+            url: "{{ url('/games/score') }}",
+            type: "POST",
+            data: {
+                game_id: "{{ $game->id }}",
+                user_id: "{{ Auth::user()->id }}",
+                score: e
+            },
+            headers: {
+                "X-CSRF-Token": "{{ csrf_token() }}"
+            },
+            success: e => (console.log("Score submitted!"), e),
+            error: e => (console.log("Error with sending score"), console.log(e), e)
+        }), canSubmit = async () => {
+            $.ajax({
+                url: "{{ url('/games/score/check') }}",
+                type: "POST",
+                data: {
+                    game_id: "{{ $game->id }}",
+                    user_id: "{{ Auth::user()->id }}"
+                },
+                headers: {
+                    "X-CSRF-Token": "{{ csrf_token() }}"
+                },
+                success: e => (console.log(e), !0),
+                error: e => (console.log(e), !1)
+            })
+        }, chargeCurrency = async (e, r) => {
+            $.ajax({
+                url: "{{ url('/games/charge') }}",
+                type: "POST",
+                data: {
+                    game_id: "{{ $game->id }}",
+                    user_id: "{{ Auth::user()->id }}",
+                    currency_id: e,
+                    amount: r
+                },
+                headers: {
+                    "X-CSRF-Token": "{{ csrf_token() }}"
+                },
+                success: e => (console.log(e), !0),
+                error: e => (console.log(e), !1)
+            })
+        };
     </script>
 @endsection
