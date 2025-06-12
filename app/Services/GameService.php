@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Game\Game;
+use App\Models\Game\GameCategory;
 use App\Models\Game\GameData;
 use Illuminate\Support\Facades\DB;
 
@@ -52,11 +53,6 @@ class GameService extends Service {
                 $this->handleImage($image, $game->gameImagePath, $game->gameImageFileName);
             }
 
-            //create the file directories
-            $fileManager = new GameFileManager;
-            $fileManager->createDirectory(public_path().'/'.$game->fileDirectory);
-            $fileManager->createDirectory(public_path().'/'.$game->filesDirectory);
-
             return $this->commitReturn($game);
         } catch (\Exception $e) {
             $this->setError('error', $e->getMessage());
@@ -95,7 +91,7 @@ class GameService extends Service {
 
             $game->update($data);
 
-            if ($game) {
+            if ($image) {
                 $this->handleImage($image, $game->gameImagePath, $game->gameImageFileName);
             }
 
@@ -118,15 +114,8 @@ class GameService extends Service {
         DB::beginTransaction();
 
         try {
-            $files = array_diff(scandir(public_path().$game->filesDirectory), ['.', '..']);
-            if (count($files)) {
-                throw new \Exception('Cannot delete a game with files. Delete the files and try again.');
-            }
-
-            $fileManager = new GameFileManager;
-            $fileManager->deleteFile($game->htmlUrl);
-            $fileManager->deleteDirectory($game->filesDirectory);
-            $fileManager->deleteDirectory($game->fileDirectory);
+            //since data is tied to the tag rather than the game itself, any uploaded files are preserved
+            //they will need to be manually removed/removed using the UI if available
 
             if ($game->has_image) {
                 $this->deleteImage($game->gameImagePath, $game->gameImageFileName);
@@ -267,5 +256,123 @@ class GameService extends Service {
         }
 
         return $data;
+    }
+
+    /********************
+     * GAME CATEGORIES
+     ********************/
+
+         /**
+     * Creates a new game.
+     *
+     * @param array                 $data
+     * @param \App\Models\User\User $user
+     *
+     * @return \App\Models\game\Game|bool
+     */
+    public function createGameCategory($data, $user) {
+        DB::beginTransaction();
+
+        try {
+
+            $image = null;
+            if (isset($data['image']) && $data['image']) {
+                $data['has_image'] = 1;
+                $data['hash'] = randomString(10);
+                $image = $data['image'];
+                unset($data['image']);
+            } else {
+                $data['has_image'] = 0;
+            }
+
+            if (isset($data['description']) && $data['description']) {
+                $data['parsed_description'] = parse($data['description']);
+            } else {
+                $data['parsed_description'] = null;
+            }
+
+            $category = GameCategory::create($data);
+
+            if ($image) {
+                $this->handleImage($image, $category->imagePath, $category->imageFileName);
+            }
+
+            return $this->commitReturn($category);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
+    }
+
+    /**
+     * Updates a shop.
+     *
+     * @param array                 $data
+     * @param \App\Models\User\User $user
+     * @param mixed                 $game
+     *
+     * @return \App\Models\game\Game|bool
+     */
+    public function updateGameCategory($category, $data, $user) {
+        DB::beginTransaction();
+
+        try {
+            // More specific validation
+            if (GameCategory::where('name', $data['name'])->where('id', '!=', $category->id)->exists()) {
+                throw new \Exception('The name has already been taken.');
+            }
+
+            $image = null;
+            if (isset($data['image']) && $data['image']) {
+                $data['has_image'] = 1;
+                $data['hash'] = randomString(10);
+                $image = $data['image'];
+                unset($data['image']);
+            }
+
+            if (isset($data['description']) && $data['description']) {
+                $data['parsed_description'] = parse($data['description']);
+            } else {
+                $data['parsed_description'] = null;
+            }
+
+            $category->update($data);
+
+            if ($image) {
+                $this->handleImage($image, $category->imagePath, $category->imageFileName);
+            }
+
+            return $this->commitReturn($category);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
+    }
+
+    /**
+     * Deletes a game.
+     *
+     * @param \App\Models\Game\Game $game
+     *
+     * @return bool
+     */
+    public function deleteGameCategory($cat) {
+        DB::beginTransaction();
+
+        try {
+
+            if ($cat->has_image) {
+                $this->deleteImage($cat->imagePath, $cat->imageFileName);
+            }
+            $cat->delete();
+
+            return $this->commitReturn(true);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
     }
 }

@@ -12,8 +12,11 @@
 
     <li class="sidebar-section">
         <div class="sidebar-section-header">Games</div>
-        @foreach ($games as $game)
+        @foreach($games as $categoryId=>$categorygames)
+        <div class="sidebar-section-header">{{ $categoryId !== "" ? $categories[$categoryId]->name : 'Miscellaneous' }}</div>
+        @foreach ($categorygames as $game)
             <div class="sidebar-item"><a href="{{ $game->url }}" class="{{ set_active_full_url($game->url) }}">{{ $game->name }}</a></div>
+        @endforeach
         @endforeach
     </li>
 </ul>

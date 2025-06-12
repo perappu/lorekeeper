@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game\Game;
+use App\Models\Game\GameCategory;
 use App\Models\Game\GameScore;
 use App\Services\GameManager;
 use Illuminate\Http\Request;
@@ -25,7 +26,8 @@ class GameController extends Controller {
      */
     public function getIndex() {
         return view('games.index', [
-            'games' => Game::where('is_active', 1)->orderBy('sort', 'DESC')->get(),
+            'games' => Game::with('category')->where('is_active', 1)->orderBy('sort', 'DESC')->get()->groupBy('category.id'),
+            'categories' => GameCategory::all()->keyBy('id')
         ]);
     }
 
@@ -60,7 +62,8 @@ class GameController extends Controller {
         return view('games.game', [
             'game'      => $game,
             'gameScore' => GameScore::where('user_id', Auth::user()->id)->where('game_id', $id)->first() ?? null,
-            'games'     => Game::where('is_active', 1)->orderBy('sort', 'DESC')->get(),
+            'games' => Game::with('category')->where('is_active', 1)->orderBy('sort', 'DESC')->get()->groupBy('category.id'),
+            'categories' => GameCategory::all()->keyBy('id'),
             'timeframe' => $timeframe,
         ]);
     }

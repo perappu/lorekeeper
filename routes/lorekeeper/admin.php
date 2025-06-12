@@ -250,6 +250,15 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('games/sort', 'GameController@postSortGame');
     Route::post('games/data/add/{id}', 'GameController@postAddGameData');
     Route::post('games/data/edit/{id}', 'GameController@postEditGameData');
+
+    Route::get('game-categories', 'GameController@getCategoryIndex');
+    Route::get('game-categories/create', 'GameController@getCreateGameCategory');
+    Route::get('game-categories/edit/{id}', 'GameController@getEditGameCategory');
+    Route::get('game-categories/delete/{id}', 'GameController@getDeleteGameCategory');
+    Route::post('game-categories/create', 'GameController@postCreateEditGameCategory');
+    Route::post('game-categories/edit/{id?}', 'GameController@postCreateEditGameCategory');
+    Route::post('game-categories/delete/{id}', 'GameController@postDeleteGameCategory');
+    Route::post('game-categories/sort', 'GameController@postSortGameCategory');
 });
 
 // PAGES

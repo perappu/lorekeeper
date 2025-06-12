@@ -1,31 +1,30 @@
 @extends('admin.layout')
 
 @section('admin-title')
-    Games
+    Game Categories
 @endsection
 
 @section('admin-content')
-    {!! breadcrumbs(['Admin Panel' => 'admin', 'Games' => 'admin/data/games']) !!}
+    {!! breadcrumbs(['Admin Panel' => 'admin', 'Games' => 'admin/data/games', 'Game Categories' => 'admin/data/game-categories']) !!}
 
-    <h1>Games</h1>
+    <h1>Game Categories</h1>
 
-    <p>This is a sortable list of your current games.</p>
+    <p>This is a sortable list of your current game categories.</p>
 
-    <div class="text-right mb-3"><a class="btn btn-primary" href="{{ url('admin/data/games/create') }}"><i class="fas fa-plus"></i> Create New Game</a>
-    <a class="btn btn-secondary" href="{{ url('admin/data/game-categories') }}">Game Categories</a></div>
-    @if (!count($games))
-        <p>No games found.</p>
+    <div class="text-right mb-3"><a class="btn btn-primary" href="{{ url('admin/data/game-categories/create') }}"><i class="fas fa-plus"></i> Create New Category</a></div>
+    @if (!count($categories))
+        <p>No categories found.</p>
     @else
         <table class="table table-sm shop-table">
             <tbody id="sortable" class="sortable">
-                @foreach ($games as $game)
-                    <tr class="sort-item" data-id="{{ $game->id }}">
+                @foreach ($categories as $category)
+                    <tr class="sort-item" data-id="{{ $category->id }}">
                         <td>
                             <a class="fas fa-arrows-alt-v handle mr-3" href="#"></a>
-                            {!! $game->displayName !!}
+                            {{ $category->name }}
                         </td>
                         <td class="text-right">
-                            <a href="{{ url('admin/data/games/edit/' . $game->id) }}" class="btn btn-primary">Edit</a>
+                            <a href="{{ url('admin/data/game-categories/edit/' . $category->id) }}" class="btn btn-primary">Edit</a>
                         </td>
                     </tr>
                 @endforeach
@@ -33,7 +32,7 @@
 
         </table>
         <div class="mb-4">
-            {!! Form::open(['url' => 'admin/data/games/sort']) !!}
+            {!! Form::open(['url' => 'admin/data/game-categories/sort']) !!}
             {!! Form::hidden('sort', '', ['id' => 'sortableOrder']) !!}
             {!! Form::submit('Save Order', ['class' => 'btn btn-primary']) !!}
             {!! Form::close() !!}

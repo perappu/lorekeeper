@@ -35,6 +35,11 @@
     </div>
 
     <div class="form-group">
+        {!! Form::label('Category') !!}
+        {!! Form::select('category_id', $categories, $game->category_id, ['class' => 'form-control']) !!}
+    </div>
+
+    <div class="form-group">
         {!! Form::label('Description (Optional)') !!}
         {!! Form::textarea('description', $game->description, ['class' => 'form-control wysiwyg']) !!}
     </div>

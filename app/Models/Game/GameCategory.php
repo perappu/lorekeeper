@@ -5,17 +5,14 @@ namespace App\Models\Game;
 use App\Models\Currency\Currency;
 use App\Models\Model;
 
-class Game extends Model {
+class GameCategory extends Model {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'sort', 'has_image', 'description', 'parsed_description', 'is_active', 'hash',
-        'link',
-        'game_type', 'currency_id', 'currency_cap', 'score_ratio', 'times_playable', 'playable_timeframe',
-        'category_id'
+        'name', 'sort', 'description', 'parsed_description'
     ];
 
     /**
@@ -23,7 +20,7 @@ class Game extends Model {
      *
      * @var string
      */
-    protected $table = 'games';
+    protected $table = 'game_categories';
 
     /**
      * Validation rules for creation.
@@ -57,18 +54,7 @@ class Game extends Model {
      * Get the game's data.
      */
     public function data() {
-        return $this->hasOne(GameData::class, 'game_id');
-    }
-
-    /**
-     * Get the currency rewarded by the game.
-     */
-    public function currency() {
-        return $this->hasOne(Currency::class, 'id', 'currency_id');
-    }
-
-    public function category() {
-        return $this->hasOne(GameCategory::class, 'id', 'category_id');
+        return $this->hasMany(Game::class, 'category_id');
     }
 
     /**********************************************************************************************
@@ -76,19 +62,6 @@ class Game extends Model {
         ACCESSORS
 
     **********************************************************************************************/
-
-    /**
-     * Displays the shop's name, linked to its purchase page.
-     *
-     * @return string
-     */
-    public function getDisplayNameAttribute() {
-        if ($this->game_type == 'link') {
-            return '<a href="'.$this->link.'" class="display-game">'.$this->name.'</a>';
-        } else {
-            return '<a href="'.$this->url.'" class="display-game">'.$this->name.'</a>';
-        }
-    }
 
     /**
      * Gets the file directory containing the model's image.
@@ -104,7 +77,7 @@ class Game extends Model {
      *
      * @return string
      */
-    public function getGameImageFileNameAttribute() {
+    public function getImageFileNameAttribute() {
         return $this->hash.$this->id.'-image.png';
     }
 
@@ -113,7 +86,7 @@ class Game extends Model {
      *
      * @return string
      */
-    public function getGameImagePathAttribute() {
+    public function getImagePathAttribute() {
         return public_path($this->imageDirectory);
     }
 
@@ -122,7 +95,7 @@ class Game extends Model {
      *
      * @return string
      */
-    public function getGameImageUrlAttribute() {
+    public function getImageUrlAttribute() {
         if (!$this->has_image) {
             return null;
         }
@@ -131,25 +104,12 @@ class Game extends Model {
     }
 
     /**
-     * Gets the URL of the model's encyclopedia page.
-     *
-     * @return string
-     */
-    public function getUrlAttribute() {
-        if ($this->game_type == 'link') {
-            return $this->link;
-        } else {
-            return url('games/'.$this->id);
-        }
-    }
-
-    /**
      * Gets the admin edit URL.
      *
      * @return string
      */
     public function getAdminUrlAttribute() {
-        return url('admin/data/games/edit/'.$this->id);
+        return url('admin/data/game-categories/edit/'.$this->id);
     }
 
     /**
