@@ -12,7 +12,8 @@
     <p>This is a sortable list of your current games.</p>
 
     <div class="text-right mb-3"><a class="btn btn-primary" href="{{ url('admin/data/games/create') }}"><i class="fas fa-plus"></i> Create New Game</a>
-    <a class="btn btn-secondary" href="{{ url('admin/data/game-categories') }}">Game Categories</a></div>
+        <a class="btn btn-secondary" href="{{ url('admin/data/game-categories') }}">Game Categories</a>
+    </div>
     @if (!count($games))
         <p>No games found.</p>
     @else
