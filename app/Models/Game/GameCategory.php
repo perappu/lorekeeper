@@ -2,7 +2,6 @@
 
 namespace App\Models\Game;
 
-use App\Models\Currency\Currency;
 use App\Models\Model;
 
 class GameCategory extends Model {
@@ -12,7 +11,7 @@ class GameCategory extends Model {
      * @var array
      */
     protected $fillable = [
-        'name', 'sort', 'description', 'parsed_description'
+        'name', 'sort', 'description', 'parsed_description',
     ];
 
     /**
