@@ -58,7 +58,7 @@ class FlappyService extends Service {
                 $this->handleImage($data['spikes_image'], 'gamefiles/flappy/assets', 'spikes.png');
             }
             if (isset($data['background_image'])) {
-                $this->handleImage($data['spikes_image'], 'gamefiles/flappy/assets', 'background.png');
+                $this->handleImage($data['background_image'], 'gamefiles/flappy/assets', 'background.png');
             }
 
             $gameData->update(['data' => [
