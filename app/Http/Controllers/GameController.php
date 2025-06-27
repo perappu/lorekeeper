@@ -26,8 +26,8 @@ class GameController extends Controller {
      */
     public function getIndex() {
         return view('games.index', [
-            'games' => Game::with('category')->where('is_active', 1)->orderBy('sort', 'DESC')->get()->groupBy('category.id'),
-            'categories' => GameCategory::all()->keyBy('id')
+            'games'      => Game::with('category')->where('is_active', 1)->orderBy('sort', 'DESC')->get()->groupBy('category.id'),
+            'categories' => GameCategory::all()->keyBy('id'),
         ]);
     }
 
@@ -60,11 +60,11 @@ class GameController extends Controller {
         }
 
         return view('games.game', [
-            'game'      => $game,
-            'gameScore' => GameScore::where('user_id', Auth::user()->id)->where('game_id', $id)->first() ?? null,
-            'games' => Game::with('category')->where('is_active', 1)->orderBy('sort', 'DESC')->get()->groupBy('category.id'),
+            'game'       => $game,
+            'gameScore'  => GameScore::where('user_id', Auth::user()->id)->where('game_id', $id)->first() ?? null,
+            'games'      => Game::with('category')->where('is_active', 1)->orderBy('sort', 'DESC')->get()->groupBy('category.id'),
             'categories' => GameCategory::all()->keyBy('id'),
-            'timeframe' => $timeframe,
+            'timeframe'  => $timeframe,
         ]);
     }
 

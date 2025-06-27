@@ -15,7 +15,7 @@ class Game extends Model {
         'name', 'sort', 'has_image', 'description', 'parsed_description', 'is_active', 'hash',
         'link',
         'game_type', 'currency_id', 'currency_cap', 'score_ratio', 'times_playable', 'playable_timeframe',
-        'category_id'
+        'category_id',
     ];
 
     /**

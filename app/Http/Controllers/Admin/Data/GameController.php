@@ -59,7 +59,7 @@ class GameController extends Controller {
 
         return view('admin.games.edit_game', [
             'game'        => $game,
-            'categories' => [null => 'None'] + GameCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'categories'  => [null => 'None'] + GameCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'currencies'  => Currency::orderBy('name')->pluck('name', 'id'),
             'gameOptions' => $service->getGameOptions(),
         ] + (isset($game->data) ? $game->data->getEditData() : []));
@@ -79,7 +79,7 @@ class GameController extends Controller {
             'name', 'description', 'image', 'remove_image', 'is_active',
             'game_type', 'link',
             'currency_id', 'currency_cap', 'score_ratio', 'times_playable', 'playable_timeframe',
-            'game', 'game_data', 'category_id'
+            'game', 'game_data', 'category_id',
         ]);
         if ($id && $service->updateGame(Game::find($id), $data, Auth::user())) {
             flash('Game updated successfully.')->success();
@@ -218,7 +218,7 @@ class GameController extends Controller {
         }
 
         return view('admin.games.create_edit_game_category', [
-            'category'        => $category
+            'category'        => $category,
         ]);
     }
 
@@ -232,7 +232,7 @@ class GameController extends Controller {
      */
     public function postCreateEditGameCategory(Request $request, GameService $service, $id = null) {
         $data = $request->only([
-            'name', 'description', 'image'
+            'name', 'description', 'image',
         ]);
         if ($id && $service->updateGameCategory(GameCategory::find($id), $data, Auth::user())) {
             flash('Category updated successfully.')->success();

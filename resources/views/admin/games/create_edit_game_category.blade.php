@@ -5,7 +5,12 @@
 @endsection
 
 @section('admin-content')
-    {!! breadcrumbs(['Admin Panel' => 'admin', 'Games' => 'admin/data/games', 'Game Categories' => 'admin/data/game-categories', ($category->id ? 'Edit' : 'Create') . ' Game Category' => $category->id ? 'admin/data/game-categories/edit/' . $category->id : 'admin/data/game-categories/create']) !!}
+    {!! breadcrumbs([
+        'Admin Panel' => 'admin',
+        'Games' => 'admin/data/games',
+        'Game Categories' => 'admin/data/game-categories',
+        ($category->id ? 'Edit' : 'Create') . ' Game Category' => $category->id ? 'admin/data/game-categories/edit/' . $category->id : 'admin/data/game-categories/create',
+    ]) !!}
 
     <h1>{{ $category->id ? 'Edit' : 'Create' }} Game Category
         @if ($category->id)
