@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Shops ::
+    Games ::
     @yield('games-title')
 @endsection
 

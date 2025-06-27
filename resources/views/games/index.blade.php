@@ -1,7 +1,7 @@
 @extends('games.layout')
 
 @section('games-title')
-Shop Index
+Games Index
 @endsection
 
 @section('games-content')
