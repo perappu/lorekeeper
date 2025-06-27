@@ -231,6 +231,32 @@ class GameService extends Service {
         return $this->rollbackReturn(false);
     }
 
+    /**
+     * Sorts game order.
+     *
+     * @param array $data
+     *
+     * @return bool
+     */
+    public function sortGame($data) {
+        DB::beginTransaction();
+
+        try {
+            // explode the sort array and reverse it since the order is inverted
+            $sort = array_reverse(explode(',', $data));
+
+            foreach ($sort as $key => $s) {
+                Game::where('id', $s)->update(['sort' => $key]);
+            }
+
+            return $this->commitReturn(true);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
+    }
+
     /********************
      * GAME CATEGORIES
      ********************/
@@ -372,5 +398,31 @@ class GameService extends Service {
         }
 
         return $data;
+    }
+
+    /**
+     * Sorts game order.
+     *
+     * @param array $data
+     *
+     * @return bool
+     */
+    public function sortGameCategory($data) {
+        DB::beginTransaction();
+
+        try {
+            // explode the sort array and reverse it since the order is inverted
+            $sort = array_reverse(explode(',', $data));
+
+            foreach ($sort as $key => $s) {
+                GameCategory::where('id', $s)->update(['sort' => $key]);
+            }
+
+            return $this->commitReturn(true);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
     }
 }

@@ -131,6 +131,25 @@ class GameController extends Controller {
         return redirect()->to('admin/data/games');
     }
 
+    /**
+     * Sorts games.
+     *
+     * @param App\Services\GameService $service
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postSortGame(Request $request, GameService $service) {
+        if ($service->sortGame($request->get('sort'))) {
+            flash('Game order updated successfully.')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
+        }
+
+        return redirect()->back();
+    }
+
     /********* GAME DATA HANDLING ***********/
 
     /**
@@ -282,5 +301,24 @@ class GameController extends Controller {
         }
 
         return redirect()->to('admin/data/game-categories');
+    }
+
+    /**
+     * Sorts games.
+     *
+     * @param App\Services\GameService $service
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postSortGameCategory(Request $request, GameService $service) {
+        if ($service->sortGameCategory($request->get('sort'))) {
+            flash('Game category order updated successfully.')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
+        }
+
+        return redirect()->back();
     }
 }
