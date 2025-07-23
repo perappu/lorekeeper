@@ -120,11 +120,10 @@ class GameController extends Controller {
 
     /**
      * Retrieves game data based on given ID
-     * This is a post request because it's harder for users to just get the data if it's a post request.
+     * This is a post request because it's harder for users to just get the data if it's a post request
      *
      * @param Illuminate\Http\Request  $request
      * @param App\Services\GameManager $service
-     * @param mixed                    $id
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -135,4 +134,8 @@ class GameController extends Controller {
             return response()->json(['successful' => false, 'errors' => $service->errors()]);
         }
     }
+
+    /*********************************************************************
+     ******** FUNCTIONS FOR SPECIFIC GAMES BELOW THIS COMMENT ************
+     *********************************************************************/
 }
