@@ -125,4 +125,19 @@ class GameManager extends Service {
 
         return $this->rollbackReturn(false);
     }
+
+    /**
+     * Gets the game data based on id
+     *
+     * @param array $data
+     * @param mixed $user
+     *
+     * @return array
+     */
+    public function postGameData($id, $user)
+    {
+        $game = Game::where('id', $id)->first();
+
+        return $game->data->data;
+    }
 }

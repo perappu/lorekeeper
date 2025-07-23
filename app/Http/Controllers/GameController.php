@@ -117,4 +117,21 @@ class GameController extends Controller {
             return response()->json(['successful' => false, 'errors' => $service->errors()]);
         }
     }
+
+    /**
+     * Retrieves game data based on given ID
+     * This is a post request because it's harder for users to just get the data if it's a post request
+     *
+     * @param Illuminate\Http\Request  $request
+     * @param App\Services\GameManager $service
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postGameData(Request $request, GameManager $service, $id) {
+        if ($data = $service->postGameData($id, Auth::user())) {
+            return response()->json(['successful' => true, 'data' => $data]);
+        } else {
+            return response()->json(['successful' => false, 'errors' => $service->errors()]);
+        }
+    }
 }

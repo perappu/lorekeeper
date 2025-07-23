@@ -232,6 +232,7 @@ Route::group(['prefix' => 'comments', 'namespace' => 'Comments'], function () {
 Route::group(['prefix' => 'games'], function () {
     Route::get('/', 'GameController@getIndex');
     Route::get('{id}', 'GameController@getGame')->where(['id' => '[0-9]+']);
+    Route::post('data/{id}', 'GameController@postGameData')->where(['id' => '[0-9]+']);
     Route::post('/score', 'GameController@postSubmitScore');
     Route::get('/score', function () {
         return csrf_token();
