@@ -239,4 +239,8 @@ Route::group(['prefix' => 'games'], function () {
     });
     Route::post('/score/check', 'GameController@postCanSubmitScore');
     Route::post('/charge', 'GameController@postChargeCurrency');
+
+    /*********** ROUTES FOR SPECIFIC GAMES BELOW THIS COMMENT *************/
+
+    /*********** END ROUTES FOR SPECIFIC GAMES ****************************/
 });

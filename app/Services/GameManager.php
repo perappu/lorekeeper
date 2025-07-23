@@ -140,4 +140,8 @@ class GameManager extends Service {
 
         return $game->data->data;
     }
+
+    /*********************************************************************
+     *********** ROUTES FOR SPECIFIC GAMES BELOW THIS COMMENT ************
+     *********************************************************************/
 }
