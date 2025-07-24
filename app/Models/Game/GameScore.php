@@ -21,14 +21,14 @@ class GameScore extends Model {
      */
     protected $table = 'game_scores';
 
+    protected $casts = [
+        'save_data' => 'array',
+    ];
+
     /**
      * Whether the model contains timestamps to be saved and updated.
      *
      * @var string
      */
     public $timestamps = true;
-
-    protected $casts = [
-        'save_data' => 'array',
-    ];
 }
