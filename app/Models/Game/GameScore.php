@@ -27,4 +27,8 @@ class GameScore extends Model {
      * @var string
      */
     public $timestamps = true;
+
+    protected $casts = [
+        'save_data' => 'array',
+    ];
 }
