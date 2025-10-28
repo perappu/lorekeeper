@@ -33,63 +33,71 @@
     </div>
 
     <div class="form-group">
-        {!! Form::label('World Page Image (Optional)') !!} {!! add_help('This image is used only on the world information pages.') !!}
-        <div>{!! Form::file('image') !!}</div>
-        <div class="text-muted">Recommended size: 200px x 200px</div>
-        @if ($rarity->has_image)
-            <div class="form-check">
-                {!! Form::checkbox('remove_image', 1, false, ['class' => 'form-check-input']) !!}
-                {!! Form::label('remove_image', 'Remove current image', ['class' => 'form-check-label']) !!}
+        <div class="row">
+            <div class="col-md-6">
+                {!! Form::label('World Page Image (Optional)') !!} {!! add_help('This image is used only on the world information pages.') !!}
+                <div class="custom-file">
+                    {!! Form::label('image', 'Choose file...', ['class' => 'custom-file-label']) !!}
+                    {!! Form::file('image', ['class' => 'custom-file-input']) !!}
+                </div>
+                <div class="text-muted">Recommended size: 200px x 200px</div>
+                @if ($rarity->has_image)
+                    <div class="form-check">
+                        {!! Form::checkbox('remove_image', 1, false, ['class' => 'form-check-input']) !!}
+                        {!! Form::label('remove_image', 'Remove current image', ['class' => 'form-check-label']) !!}
+                    </div>
+                @endif
             </div>
-        @endif
-    </div>
-
-    <div class="form-group">
-        {!! Form::label('Icon (Optional)') !!} {!! add_help('Displays next to the rarity name') !!}
-        <div>{!! Form::file('icon') !!}</div>
-        @if ($rarity->has_icon)
-            <div class="form-check">
-                {!! Form::checkbox('remove_icon', 1, false, ['class' => 'form-check-input']) !!}
-                {!! Form::label('remove_icon', 'Remove current icon', ['class' => 'form-check-label']) !!}
-            </div>
-        @endif
-    </div>
-
-    <div class="form-group">
-        {!! Form::label('Description (Optional)') !!}
-        {!! Form::textarea('description', $rarity->description, ['class' => 'form-control wysiwyg']) !!}
-    </div>
-
-    <div class="text-right">
-        {!! Form::submit($rarity->id ? 'Edit' : 'Create', ['class' => 'btn btn-primary']) !!}
-    </div>
-
-    {!! Form::close() !!}
-
-    @if ($rarity->id)
-        <h3>Preview</h3>
-        <div class="card mb-3">
-            <div class="card-body">
-                @include('world._rarity_entry', [
-                    'imageUrl' => $rarity->rarityImageUrl,
-                    'name' => $rarity->displayName,
-                    'description' => $rarity->parsed_description,
-                    'searchFeaturesUrl' => $rarity->searchFeaturesUrl,
-                    'searchCharactersUrl' => $rarity->searchCharactersUrl,
-                ])
+            <div class="col-md-6">
+                {!! Form::label('Rarity Icon (Optional)') !!} {!! add_help('Displays next to the rarity name') !!}
+                <div class="custom-file mb-1">
+                    {!! Form::label('icon', 'Rarity Icon (Optional)', ['class' => 'custom-file-label']) !!}
+                    {!! Form::file('icon', ['class' => 'custom-file-input']) !!}
+                </div>
+                @if ($rarity->has_icon)
+                    <div class="form-check">
+                        {!! Form::checkbox('remove_icon', 1, false, ['class' => 'form-check-input']) !!}
+                        {!! Form::label('remove_icon', 'Remove current icon', ['class' => 'form-check-label']) !!}
+                    </div>
+                @endif
             </div>
         </div>
-    @endif
-@endsection
 
-@section('scripts')
-    @parent
-    <script>
-        $(document).ready(function() {
-            $('.delete-rarity-button').on('click', function(e) {
-                e.preventDefault();
-                loadModal("{{ url('admin/data/rarities/delete') }}/{{ $rarity->id }}", 'Delete Rarity');
+        <div class="form-group">
+            {!! Form::label('Description (Optional)') !!}
+            {!! Form::textarea('description', $rarity->description, ['class' => 'form-control wysiwyg']) !!}
+        </div>
+
+        <div class="text-right">
+            {!! Form::submit($rarity->id ? 'Edit' : 'Create', ['class' => 'btn btn-primary']) !!}
+        </div>
+
+        {!! Form::close() !!}
+
+        @if ($rarity->id)
+            <h3>Preview</h3>
+            <div class="card mb-3">
+                <div class="card-body">
+                    @include('world._rarity_entry', [
+                        'imageUrl' => $rarity->rarityImageUrl,
+                        'name' => $rarity->displayName,
+                        'description' => $rarity->parsed_description,
+                        'searchFeaturesUrl' => $rarity->searchFeaturesUrl,
+                        'searchCharactersUrl' => $rarity->searchCharactersUrl,
+                    ])
+                </div>
+            </div>
+        @endif
+    @endsection
+
+    @section('scripts')
+        @parent
+        <script>
+            $(document).ready(function() {
+                $('.delete-rarity-button').on('click', function(e) {
+                    e.preventDefault();
+                    loadModal("{{ url('admin/data/rarities/delete') }}/{{ $rarity->id }}", 'Delete Rarity');
+                });
             });
-        });
-    </script>
-@endsection
+        </script>
+    @endsection
