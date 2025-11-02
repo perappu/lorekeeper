@@ -38,7 +38,7 @@
                         </div>
                         <div class="form-group">
                             {!! Form::label('message', 'Update your message here:') !!}
-                            {!! Form::textarea('message', $thread->comment, ['class' => 'form-control', 'required']) !!}
+                            {!! Form::textarea('message', $thread->comment, ['class' => 'form-control ' . (config('lorekeeper.settings.wysiwyg_comments') ? 'comment-wysiwyg' : ''), 'rows' => 5, config('lorekeeper.settings.wysiwyg_comments') ? '' : 'required']) !!}
                         </div>
                         <small class="form-text text-muted mb-2">Thread starter posts use HTML.</small>
 
@@ -51,4 +51,30 @@
 
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    @parent
+    <script>
+        $(document).ready(function() {
+            tinymce.init({
+                selector: '.comment-wysiwyg',
+                height: 250,
+                menubar: false,
+                convert_urls: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen spoiler',
+                    'insertdatetime media table paste code help wordcount'
+                ],
+                toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | spoiler-add spoiler-remove | removeformat | code',
+                content_css: [
+                    '{{ asset('css/app.css') }}',
+                    '{{ asset('css/lorekeeper.css') }}'
+                ],
+                spoiler_caption: 'Toggle Spoiler',
+                target_list: false
+            });
+        });
+    </script>
 @endsection

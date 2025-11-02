@@ -14,8 +14,10 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="message">Update your message here:</label>
-                            <textarea required class="form-control" name="message" rows="3">{{ $comment->comment }}</textarea>
-                            <small class="form-text text-muted"><a target="_blank" href="https://help.github.com/articles/basic-writing-and-formatting-syntax">Markdown cheatsheet.</a></small>
+                            <textarea class="form-control {{ config('lorekeeper.settings.wysiwyg_comments') ? 'comment-wysiwyg' : '' }}" name="message" rows="3">{{ $comment->comment }}</textarea>
+                            @if (!config('lorekeeper.settings.wysiwyg_comments'))
+                                <small class="form-text text-muted"><a target="_blank" href="https://help.github.com/articles/basic-writing-and-formatting-syntax">Markdown cheatsheet.</a></small>
+                            @endif
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -43,8 +45,10 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="message">Enter your message here:</label>
-                            <textarea required class="form-control" name="message" rows="3"></textarea>
-                            <small class="form-text text-muted"><a target="_blank" href="https://help.github.com/articles/basic-writing-and-formatting-syntax">Markdown cheatsheet.</a></small>
+                            <textarea class="form-control {{ config('lorekeeper.settings.wysiwyg_comments') ? 'comment-wysiwyg' : '' }}" name="message" rows="3"></textarea>
+                            @if (!config('lorekeeper.settings.wysiwyg_comments'))
+                                <small class="form-text text-muted"><a target="_blank" href="https://help.github.com/articles/basic-writing-and-formatting-syntax">Markdown cheatsheet.</a></small>
+                            @endif
                         </div>
                     </div>
                     <div class="modal-footer">

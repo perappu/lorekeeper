@@ -120,7 +120,7 @@
                             </div>
                         </div>
                         <div class="p-2">
-                            <p>{!! nl2br($markdown->line($comment->comment)) !!}</p>
+                            <p>{!! $comment->comment !!}</p>
                         </div>
 
                         @include('forums._form_modals', ['comment' => $comment])
@@ -140,8 +140,10 @@
                 <h5 class="modal-title">Reply to Thread</h5>
                 <div class="form-group mb-0">
                     <label for="message">Enter your message here:</label>
-                    <textarea required class="form-control" name="message" rows="3"></textarea>
-                    <small class="form-text text-muted"><a target="_blank" href="https://help.github.com/articles/basic-writing-and-formatting-syntax">Markdown cheatsheet.</a></small>
+                    <textarea class="form-control {{ config('lorekeeper.settings.wysiwyg_comments') ? 'comment-wysiwyg' : '' }}" name="message" rows="3"></textarea>
+                    @if (!config('lorekeeper.settings.wysiwyg_comments'))
+                        <small class="form-text text-muted"><a target="_blank" href="https://help.github.com/articles/basic-writing-and-formatting-syntax">Markdown cheatsheet.</a></small>
+                    @endif
                 </div>
                 <div class="text-center">
                     <button type="button" class="btn btn-sm px-md-4 btn-outline-secondary text-uppercase" data-dismiss="modal">Cancel</button>
@@ -161,4 +163,51 @@
         </div>
     @endif
 
+@endsection
+
+@section('scripts')
+    @parent
+    <script>
+        $(document).ready(function() {
+            tinymce.init({
+                selector: '.comment-wysiwyg',
+                height: 250,
+                menubar: false,
+                convert_urls: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen spoiler',
+                    'insertdatetime media table paste code help wordcount'
+                ],
+                toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | spoiler-add spoiler-remove | removeformat | code',
+                content_css: [
+                    '{{ asset('css/app.css') }}',
+                    '{{ asset('css/lorekeeper.css') }}'
+                ],
+                spoiler_caption: 'Toggle Spoiler',
+                target_list: false
+            });
+
+            document.querySelectorAll('form').forEach(function(form) {
+                form.addEventListener('submit', function() {
+                    if (typeof tinymce !== 'undefined') {
+                        tinymce.triggerSave(); // Synchronize TinyMCE content with the textarea
+                    }
+                });
+            });
+
+            document.querySelectorAll('form').forEach(function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (typeof tinymce !== 'undefined') {
+                        tinymce.triggerSave(); // Synchronize TinyMCE content with the textarea
+                        const messageContent = tinymce.get('message').getContent({ format: 'text' }).trim();
+                        if (!messageContent) {
+                            event.preventDefault(); // Prevent form submission
+                            alert('The message field cannot be empty.');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
