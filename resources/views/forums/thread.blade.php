@@ -200,7 +200,9 @@
                 form.addEventListener('submit', function(event) {
                     if (typeof tinymce !== 'undefined') {
                         tinymce.triggerSave(); // Synchronize TinyMCE content with the textarea
-                        const messageContent = tinymce.get('message').getContent({ format: 'text' }).trim();
+                        const messageContent = tinymce.get('message').getContent({
+                            format: 'text'
+                        }).trim();
                         if (!messageContent) {
                             event.preventDefault(); // Prevent form submission
                             alert('The message field cannot be empty.');
