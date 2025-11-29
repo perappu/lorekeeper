@@ -263,7 +263,7 @@ class PromptController extends Controller {
         return redirect()->to('admin/data/prompts');
     }
 
-        /**
+    /**
      * Sorts prompts.
      *
      * @param App\Services\PromptService $service

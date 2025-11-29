@@ -230,7 +230,6 @@ class Prompt extends Model {
      * Scope a query to sort prompts by custom sort value.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param bool                                  $reverse
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
