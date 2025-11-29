@@ -107,9 +107,12 @@ class PromptsController extends Controller {
                 case 'end-reverse':
                     $query->sortEnd(true);
                     break;
+                case 'custom-sort':
+                    $query->sortBySort();
+                    break;
             }
         } else {
-            $query->sortCategory();
+            $query->sortBySort();
         }
 
         return view('prompts.prompts', [

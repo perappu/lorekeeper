@@ -15,6 +15,7 @@ class Prompt extends Model {
         'prompt_category_id', 'name', 'summary', 'description', 'parsed_description', 'is_active',
         'start_at', 'end_at', 'hide_before_start', 'hide_after_end', 'has_image', 'prefix',
         'hide_submissions', 'staff_only', 'hash',
+        'sort',
     ];
 
     /**
@@ -223,6 +224,18 @@ class Prompt extends Model {
      */
     public function scopeSortEnd($query, $reverse = false) {
         return $query->orderBy('end_at', $reverse ? 'DESC' : 'ASC');
+    }
+
+    /**
+     * Scope a query to sort prompts by custom sort value.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param bool                                  $reverse
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSortBySort($query) {
+        return $query->orderBy('sort', 'DESC');
     }
 
     /**********************************************************************************************

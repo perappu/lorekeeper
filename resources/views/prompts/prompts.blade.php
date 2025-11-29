@@ -34,6 +34,7 @@
                             'start-reverse' => 'Starts Latest',
                             'end' => 'Ends Earliest',
                             'end-reverse' => 'Ends Latest',
+                            'custom-sort' => 'Custom Sort'
                         ],
                         Request::get('sort') ?: 'category',
                         ['class' => 'form-control'],

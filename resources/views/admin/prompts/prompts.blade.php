@@ -31,7 +31,6 @@
     @if (!count($prompts))
         <p>No prompts found.</p>
     @else
-        {!! $prompts->render() !!}
         <div class="mb-4 logs-table">
             <div class="logs-table-header">
                 <div class="row">
@@ -52,12 +51,13 @@
                     </div>
                 </div>
             </div>
-            <div class="logs-table-body">
+            <div class="logs-table-body" id="sortable">
                 @foreach ($prompts as $prompt)
-                    <div class="logs-table-row">
+                    <div class="logs-table-row sort-item" data-id="{{ $prompt->id }}">
                         <div class="row flex-wrap">
                             <div class="col-2 col-md-1">
                                 <div class="logs-table-cell">
+                                    <a class="fas fa-arrows-alt-v handle mr-3" href="#"></a>
                                     {!! $prompt->is_active ? '<i class="text-success fas fa-check"></i>' : '' !!}
                                 </div>
                             </div>
@@ -92,13 +92,41 @@
             </div>
         </div>
 
-        {!! $prompts->render() !!}
+        <div class="text-center mt-4 small text-muted">{{ $prompts->count() }} result{{ $prompts->count() == 1 ? '' : 's' }} found.</div>
 
-        <div class="text-center mt-4 small text-muted">{{ $prompts->total() }} result{{ $prompts->total() == 1 ? '' : 's' }} found.</div>
+        <div class="mb-4">
+            {!! Form::open(['url' => 'admin/data/prompts/sort']) !!}
+            {!! Form::hidden('sort', '', ['id' => 'sortableOrder']) !!}
+            {!! Form::submit('Save Order', ['class' => 'btn btn-primary']) !!}
+            {!! Form::close() !!}
+        </div>
     @endif
 
 @endsection
 
 @section('scripts')
     @parent
+    <script>
+        $(document).ready(function() {
+            $('.handle').on('click', function(e) {
+                e.preventDefault();
+            });
+            $("#sortable").sortable({
+                items: '.sort-item',
+                handle: ".handle",
+                placeholder: "sortable-placeholder",
+                stop: function(event, ui) {
+                    $('#sortableOrder').val($(this).sortable("toArray", {
+                        attribute: "data-id"
+                    }));
+                },
+                create: function() {
+                    $('#sortableOrder').val($(this).sortable("toArray", {
+                        attribute: "data-id"
+                    }));
+                }
+            });
+            $("#sortable").disableSelection();
+        });
+    </script>
 @endsection

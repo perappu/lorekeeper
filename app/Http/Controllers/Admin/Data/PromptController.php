@@ -161,9 +161,10 @@ class PromptController extends Controller {
         if (isset($data['name'])) {
             $query->where('name', 'LIKE', '%'.$data['name'].'%');
         }
+        $query->sortBySort();
 
         return view('admin.prompts.prompts', [
-            'prompts'    => $query->paginate(20)->appends($request->query()),
+            'prompts'    => $query->get(),
             'categories' => ['none' => 'Any Category'] + PromptCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
         ]);
     }
@@ -260,5 +261,24 @@ class PromptController extends Controller {
         }
 
         return redirect()->to('admin/data/prompts');
+    }
+
+        /**
+     * Sorts prompts.
+     *
+     * @param App\Services\PromptService $service
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postSortPrompt(Request $request, PromptService $service) {
+        if ($service->sortPrompt($request->get('sort'))) {
+            flash('Prompt order updated successfully.')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
+        }
+
+        return redirect()->back();
     }
 }
