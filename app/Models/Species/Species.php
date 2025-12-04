@@ -14,6 +14,7 @@ class Species extends Model {
      */
     protected $fillable = [
         'name', 'sort', 'has_image', 'description', 'parsed_description', 'masterlist_sub_id', 'is_visible', 'hash',
+        'has_border'
     ];
 
     /**
@@ -195,5 +196,14 @@ class Species extends Model {
      */
     public function getAdminPowerAttribute() {
         return 'edit_data';
+    }
+
+    /**
+     * Gets the file name of the model's image.
+     *
+     * @return string
+     */
+    public function getSpeciesBorderImageFileNameAttribute() {
+        return $this->id.'-border.png';
     }
 }

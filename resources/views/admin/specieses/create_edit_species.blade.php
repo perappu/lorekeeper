@@ -43,6 +43,21 @@
     </div>
 
     <div class="form-group">
+        {!! Form::label('Character Border Image') !!} {!! add_help('This image is applied on top of character\'s thumbnail, if the character belongs to this species.') !!}
+        <div class="custom-file">
+            {!! Form::label('border_image', 'Choose file...', ['class' => 'custom-file-label']) !!}
+            {!! Form::file('border_image', ['class' => 'custom-file-input']) !!}
+        </div>
+        <div class="text-muted">Recommended size: {{ config('lorekeeper.settings.masterlist_thumbnails.width') }} x {{ config('lorekeeper.settings.masterlist_thumbnails.height') }}</div>
+        @if ($species->has_border)
+            <div class="form-check">
+                {!! Form::checkbox('remove_border', 1, false, ['class' => 'form-check-input']) !!}
+                {!! Form::label('remove_border', 'Remove current border', ['class' => 'form-check-label']) !!}
+            </div>
+        @endif
+    </div>
+
+    <div class="form-group">
         {!! Form::label('Description (Optional)') !!}
         {!! Form::textarea('description', $species->description, ['class' => 'form-control wysiwyg']) !!}
     </div>

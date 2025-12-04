@@ -482,6 +482,8 @@ class CharacterManager extends Service {
             $image->resize(config('lorekeeper.settings.masterlist_thumbnails.width'), config('lorekeeper.settings.masterlist_thumbnails.height'));
         }
 
+        $image = $this->applyBorder($image, $characterImage);
+
         // Save the thumbnail
         $image->save($characterImage->thumbnailPath.'/'.$characterImage->thumbnailFileName, 100, config('lorekeeper.settings.masterlist_image_format'));
     }
@@ -859,7 +861,11 @@ class CharacterManager extends Service {
             if (isset($data['use_cropper'])) {
                 $this->cropThumbnail(Arr::only($data, ['x0', 'x1', 'y0', 'y1']), $image, $isMyo);
             } else {
-                $this->handleImage($data['thumbnail'], $image->thumbnailPath, $image->thumbnailFileName);
+                $extension = $data['thumbnail']->getClientOriginalExtension();
+                $thumbnail = $this->applyBorder(Image::make($data['thumbnail']), $image);
+                $thumbnail->save($image->thumbnailPath.'/'.$image->thumbnailFileName, 100, $extension);
+
+                //$this->handleImage($data['thumbnail'], $image->thumbnailPath, $image->thumbnailFileName);
             }
 
             // Process and save the image itself
@@ -2003,7 +2009,10 @@ class CharacterManager extends Service {
             if (isset($data['use_cropper'])) {
                 $this->cropThumbnail(Arr::only($data, ['x0', 'x1', 'y0', 'y1']), $image, $isMyo);
             } else {
-                $this->handleImage($data['thumbnail'], $image->imageDirectory, $image->thumbnailFileName, null, isset($data['default_image']));
+                $extension = $data['thumbnail']->getClientOriginalExtension();
+                $thumbnail = $this->applyBorder(Image::make($data['thumbnail']), $image);
+                $thumbnail->save($image->imageDirectory.'/'.$image->thumbnailFileName, 100, $extension);
+                //$this->handleImage($data['thumbnail'], $image->imageDirectory, $image->thumbnailFileName, null, isset($data['default_image']));
             }
 
             // Process and save the image itself
@@ -2059,5 +2068,16 @@ class CharacterManager extends Service {
         }
 
         return $result;
+    }
+
+    public function applyBorder($image, $characterImage) {
+
+        if($characterImage->species->has_border) {
+            $border = Image::make($characterImage->species->speciesImagePath.'/'.$characterImage->species->speciesBorderImageFileName);
+
+            $image->insert($border, 'center');
+        }
+
+        return $image;
     }
 }

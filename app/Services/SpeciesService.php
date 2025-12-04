@@ -41,10 +41,23 @@ class SpeciesService extends Service {
                 $data['has_image'] = 0;
             }
 
+            $border_image = null;
+            if (isset($data['border_image']) && $data['border_image']) {
+                $data['has_border'] = 1;
+                $border_image = $data['border_image'];
+                unset($data['border_image']);
+            } else {
+                $data['has_border'] = 0;
+            }
+
             $species = Species::create($data);
 
             if ($image) {
                 $this->handleImage($image, $species->speciesImagePath, $species->speciesImageFileName);
+            }
+            
+            if ($border_image) {
+                $this->handleImage($border_image, $species->speciesImagePath, $species->speciesBorderImageFileName);
             }
 
             return $this->commitReturn($species);
@@ -83,10 +96,23 @@ class SpeciesService extends Service {
                 unset($data['image']);
             }
 
+            $border_image = null;
+            if (isset($data['border_image']) && $data['border_image']) {
+                $data['has_border'] = 1;
+                $border_image = $data['border_image'];
+                unset($data['border_image']);
+            } else {
+                $data['has_border'] = 0;
+            }
+
             $species->update($data);
 
-            if ($species) {
+            if ($image) {
                 $this->handleImage($image, $species->speciesImagePath, $species->speciesImageFileName);
+            }
+
+            if ($border_image) {
+                $this->handleImage($border_image, $species->speciesImagePath, $species->speciesBorderImageFileName);
             }
 
             return $this->commitReturn($species);
@@ -115,6 +141,9 @@ class SpeciesService extends Service {
 
             if ($species->has_image) {
                 $this->deleteImage($species->speciesImagePath, $species->speciesImageFileName);
+            }
+            if ($species->has_border) {
+                $this->deleteImage($species->speciesImagePath, $species->speciesBorderImageFileName);
             }
             $species->delete();
 
@@ -304,6 +333,13 @@ class SpeciesService extends Service {
                 $this->deleteImage($species->speciesImagePath, $species->speciesImageFileName);
             }
             unset($data['remove_image']);
+        }
+        if (isset($data['remove_border'])) {
+            if ($species && $species->has_border && $data['remove_border']) {
+                $data['has_border'] = 0;
+                $this->deleteImage($species->speciesImagePath, $species->speciesBorderImageFileName);
+            }
+            unset($data['remove_border']);
         }
 
         return $data;
