@@ -55,7 +55,7 @@ class SpeciesService extends Service {
             if ($image) {
                 $this->handleImage($image, $species->speciesImagePath, $species->speciesImageFileName);
             }
-            
+
             if ($border_image) {
                 $this->handleImage($border_image, $species->speciesImagePath, $species->speciesBorderImageFileName);
             }

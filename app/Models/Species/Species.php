@@ -14,7 +14,7 @@ class Species extends Model {
      */
     protected $fillable = [
         'name', 'sort', 'has_image', 'description', 'parsed_description', 'masterlist_sub_id', 'is_visible', 'hash',
-        'has_border'
+        'has_border',
     ];
 
     /**

@@ -1847,6 +1847,16 @@ class CharacterManager extends Service {
         );
     }
 
+    public function applyBorder($image, $characterImage) {
+        if ($characterImage->species->has_border) {
+            $border = Image::make($characterImage->species->speciesImagePath.'/'.$characterImage->species->speciesBorderImageFileName);
+
+            $image->insert($border, 'center');
+        }
+
+        return $image;
+    }
+
     /**
      * Handles character data.
      *
@@ -2068,16 +2078,5 @@ class CharacterManager extends Service {
         }
 
         return $result;
-    }
-
-    public function applyBorder($image, $characterImage) {
-
-        if($characterImage->species->has_border) {
-            $border = Image::make($characterImage->species->speciesImagePath.'/'.$characterImage->species->speciesBorderImageFileName);
-
-            $image->insert($border, 'center');
-        }
-
-        return $image;
     }
 }
