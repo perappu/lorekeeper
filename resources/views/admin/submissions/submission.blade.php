@@ -105,8 +105,8 @@
             <div class="card-body">
                 <p>If there are any characters in this submission that are not on-site, list them here.</p>
                 <div id="externalCharactersBody">
-                    @if(isset($submission->external_characters))
-                        @foreach($submission->external_characters as $ext_character)
+                    @if (isset($submission->external_characters))
+                        @foreach ($submission->external_characters as $ext_character)
                             @include('widgets._external_character_row_select', ['extCharacter' => $ext_character])
                         @endforeach
                     @endif
@@ -176,7 +176,7 @@
         {!! Form::close() !!}
 
         <div id="external-character" class="hide">
-        @include('widgets._external_character_row_select')
+            @include('widgets._external_character_row_select')
         </div>
 
         <div id="characterComponents" class="hide">

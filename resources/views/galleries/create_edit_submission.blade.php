@@ -133,18 +133,18 @@
                 </div>
 
                 <h3>External Characters</h3>
-        <p>If there are any characters in this submission that are not on-site, list them here.</p>
-        <div id="externalCharactersBody">
-            @if(isset($submission->external_characters))
-        @foreach($submission->external_characters as $ext_character)
-            @include('widgets._external_character_row_select', ['extCharacter' => $ext_character])
-        @endforeach
-        @endif
-        </div>
-                        <div class="text-right mb-3">
+                <p>If there are any characters in this submission that are not on-site, list them here.</p>
+                <div id="externalCharactersBody">
+                    @if (isset($submission->external_characters))
+                        @foreach ($submission->external_characters as $ext_character)
+                            @include('widgets._external_character_row_select', ['extCharacter' => $ext_character])
+                        @endforeach
+                    @endif
+                </div>
+                <div class="text-right mb-3">
                     <a href="#" class="btn btn-outline-info" id="addExternalCharacter">Add External Character</a>
                 </div>
-</div>
+            </div>
             @if (!$submission->id || $submission->status == 'Pending')
                 <div class="col-md-4">
                     <div class="card mb-4">
@@ -298,7 +298,7 @@
         {!! Form::close() !!}
 
         <div id="external-character" class="hide">
-        @include('widgets._external_character_row_select')
+            @include('widgets._external_character_row_select')
         </div>
 
         @include('galleries._character_select')
