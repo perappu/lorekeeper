@@ -67,22 +67,22 @@ class SubmissionManager extends Service {
             }
 
             // Create the external characters array
-                foreach($data['external_name'] as $i => $name) {
-                    $external_characters[] = [
-                        'name' => $data['external_name'][$i],
-                        'link' => $data['external_link'][$i]
-                    ];
-                }
+            foreach ($data['external_name'] as $i => $name) {
+                $external_characters[] = [
+                    'name' => $data['external_name'][$i],
+                    'link' => $data['external_link'][$i],
+                ];
+            }
             // End external characters
 
             // Create the submission itself.
             $submission = Submission::create([
-                'user_id'   => $user->id,
-                'url'       => $data['url'] ?? null,
-                'status'    => $isDraft ? 'Draft' : 'Pending',
-                'comments'  => $data['comments'],
-                'data'      => null,
-                'external_characters' => isset($external_characters) ? $external_characters : null
+                'user_id'             => $user->id,
+                'url'                 => $data['url'] ?? null,
+                'status'              => $isDraft ? 'Draft' : 'Pending',
+                'comments'            => $data['comments'],
+                'data'                => null,
+                'external_characters' => $external_characters ?? null,
             ] + ($isClaim ? [] : [
                 'prompt_id' => $prompt->id,
             ]));
@@ -146,12 +146,12 @@ class SubmissionManager extends Service {
             }
 
             // Create the external characters array
-                foreach($data['external_name'] as $i => $name) {
-                    $external_characters[] = [
-                        'name' => $data['external_name'][$i],
-                        'link' => $data['external_link'][$i]
-                    ];
-                }
+            foreach ($data['external_name'] as $i => $name) {
+                $external_characters[] = [
+                    'name' => $data['external_name'][$i],
+                    'link' => $data['external_link'][$i],
+                ];
+            }
             // End external characters
 
             // First, return all items and currency applied.
@@ -171,11 +171,11 @@ class SubmissionManager extends Service {
 
             // Modify submission
             $submission->update([
-                'url'           => $data['url'] ?? null,
-                'updated_at'    => Carbon::now(),
-                'comments'      => $data['comments'],
-                'external_characters' => isset($external_characters) ? $external_characters : null,
-                'data'          => json_encode([
+                'url'                 => $data['url'] ?? null,
+                'updated_at'          => Carbon::now(),
+                'comments'            => $data['comments'],
+                'external_characters' => $external_characters ?? null,
+                'data'                => json_encode([
                     'user'          => Arr::only(getDataReadyAssets($userAssets), ['user_items', 'currencies']),
                     'rewards'       => getDataReadyAssets($promptRewards),
                 ]), // list of rewards and addons
@@ -489,14 +489,14 @@ class SubmissionManager extends Service {
             } else {
                 $data['parsed_staff_comments'] = null;
             }
-            
+
             // Create the external characters array
-                foreach($data['external_name'] as $i => $name) {
-                    $external_characters[] = [
-                        'name' => $data['external_name'][$i],
-                        'link' => $data['external_link'][$i]
-                    ];
-                }
+            foreach ($data['external_name'] as $i => $name) {
+                $external_characters[] = [
+                    'name' => $data['external_name'][$i],
+                    'link' => $data['external_link'][$i],
+                ];
+            }
             // End external characters
 
             // Finally, set:
@@ -509,7 +509,7 @@ class SubmissionManager extends Service {
                 'parsed_staff_comments' => $data['parsed_staff_comments'],
                 'staff_id'              => $user->id,
                 'status'                => 'Approved',
-                'external_characters' => isset($external_characters) ? $external_characters : null,
+                'external_characters'   => $external_characters ?? null,
                 'data'                  => json_encode([
                     'user'    => $addonData,
                     'rewards' => getDataReadyAssets($rewards),

@@ -782,10 +782,10 @@ class GalleryManager extends Service {
         }
 
         // Create the external characters array
-        foreach($data['external_name'] as $i => $name) {
+        foreach ($data['external_name'] as $i => $name) {
             $data['external_characters'][] = [
                 'name' => $data['external_name'][$i],
-                'link' => $data['external_link'][$i]
+                'link' => $data['external_link'][$i],
             ];
         }
         // End external characters

@@ -17,7 +17,7 @@ class Submission extends Model {
         'prompt_id', 'user_id', 'staff_id', 'url',
         'comments', 'staff_comments', 'parsed_staff_comments',
         'status', 'data',
-        'external_characters'
+        'external_characters',
     ];
 
     /**
@@ -28,13 +28,6 @@ class Submission extends Model {
     protected $table = 'submissions';
 
     /**
-     * Whether the model contains timestamps to be saved and updated.
-     *
-     * @var string
-     */
-    public $timestamps = true;
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array
@@ -42,6 +35,13 @@ class Submission extends Model {
     protected $casts = [
         'external_characters' => 'array',
     ];
+
+    /**
+     * Whether the model contains timestamps to be saved and updated.
+     *
+     * @var string
+     */
+    public $timestamps = true;
 
     /**
      * Validation rules for submission creation.

@@ -26,7 +26,7 @@ class GallerySubmission extends Model {
         'prompt_id', 'data', 'is_visible', 'status',
         'vote_data', 'staff_id', 'is_valued',
         'staff_comments', 'parsed_staff_comments',
-        'external_characters'
+        'external_characters',
     ];
 
     /**
@@ -55,13 +55,6 @@ class GallerySubmission extends Model {
     ];
 
     /**
-     * Whether the model contains timestamps to be saved and updated.
-     *
-     * @var string
-     */
-    public $timestamps = true;
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array
@@ -69,6 +62,13 @@ class GallerySubmission extends Model {
     protected $casts = [
         'external_characters' => 'array',
     ];
+
+    /**
+     * Whether the model contains timestamps to be saved and updated.
+     *
+     * @var string
+     */
+    public $timestamps = true;
 
     /**
      * Validation rules for character creation.
