@@ -22,7 +22,14 @@ return new class extends Migration {
 
         DB::statement('ALTER TABLE character_relations ADD CONSTRAINT check_chara_order CHECK (character_1_id < character_2_id)');
 
-        DB::unprepared('
+        // This statement breaks if you don't have permission to execute unprepared statements in your DB
+        // it is not a common permission to have in shared hosting environments.
+        //
+        // If you know you have those permissions, you can uncomment this
+        // FWIW, it's also a little redundant, as the code should already put the IDs in the right place in the first place
+        // so it's more of a safety measure
+        
+        /*    DB::unprepared('
             CREATE TRIGGER before_insert_character_relations 
             BEFORE INSERT ON character_relations
             FOR EACH ROW
@@ -33,7 +40,7 @@ return new class extends Migration {
                     SET NEW.character_2_id = @temp;
                 END IF;
             END
-        ');
+        ');*/
     }
 
     /**
