@@ -103,7 +103,7 @@ class MailController extends Controller {
         if (!config('lorekeeper.mod_mail.allow_user_mail')) {
             abort(404);
         }
-        $data = $request->only(['recipient_id', 'subject', 'message']);
+        $data = $request->only(['recipient_id', 'subject', 'message', 'parent_id']);
         $mail = $mail_id ? UserMail::findOrFail($mail_id) : null;
         if ($mail) {
             $data['recipient_id'] = $mail->sender_id;
