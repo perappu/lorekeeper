@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands;
 
-use DB;
-use Settings;
-use Log;
+use App\Facades\Settings;
 use Illuminate\Console\Command;
 use App\Models\Character\Character;
+use Illuminate\Support\Facades\DB;
 
 class ChangeFeature extends Command
 {
@@ -41,12 +40,13 @@ class ChangeFeature extends Command
      */
     public function handle()
     {
-        $id = Character::myo()->random()->id;
+        $characters = Character::myo()->get();
+        $random = $characters->random();
         $setting = Settings::get('featured_character');
-        while($id == $setting) {
-            $id = Character::myo()->random()->id;
+        while($random->id == $setting) {
+            $random = $characters->random();
         }
 
-        DB::table('site_settings')->where('key', 'featured_character')->update(['value' => $id]);
+        DB::table('site_settings')->where('key', 'featured_character')->update(['value' => $random->id]);
     }
 }
