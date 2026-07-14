@@ -1,4 +1,5 @@
 <?php
+
 return [
     'wiki_key' => 'Mini_Clock',
     'creators' => json_encode([
