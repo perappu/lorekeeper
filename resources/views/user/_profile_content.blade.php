@@ -56,7 +56,7 @@
                 <div class="col-lg-3 col-md-3 col-4">
                     <h5>Rank</h5>
                 </div>
-                <div class="col-lg-9 col-md-9 col-8">{!! $user->rank->displayName !!} {!! add_help($user->rank->parsed_description) !!}</div>
+                <div class="col-lg-9 col-md-9 col-8">{!! $user->rank->displayName !!} {!! $user->rank->parsed_description ? add_help($user->rank->parsed_description) : '' !!}</div>
             </div>
             @if ($user->birthdayDisplay && isset($user->birthday))
                 <div class="row no-gutters col-sm-7">
@@ -162,20 +162,24 @@
                 <div class="alert alert-secondary">
                     {{ '@' . $user->name }}
                 </div>
-                In a comment:
-                <div class="alert alert-secondary">
-                    [{{ $user->name }}]({{ $user->url }})
-                </div>
+                @if (!config('lorekeeper.settings.wysiwyg_comments'))
+                    In a comment:
+                    <div class="alert alert-secondary">
+                        [{{ $user->name }}]({{ $user->url }})
+                    </div>
+                @endif
                 <hr>
                 <div class="my-2"><strong>For Names and Avatars:</strong></div>
                 In the rich text editor:
                 <div class="alert alert-secondary">
                     {{ '%' . $user->name }}
                 </div>
-                In a comment:
-                <div class="alert alert-secondary">
-                    [![{{ $user->name }}'s Avatar]({{ $user->avatarUrl }})]({{ $user->url }}) [{{ $user->name }}]({{ $user->url }})
-                </div>
+                @if (!config('lorekeeper.settings.wysiwyg_comments'))
+                    In a comment:
+                    <div class="alert alert-secondary">
+                        [![{{ $user->name }}'s Avatar]({{ $user->avatarUrl }})]({{ $user->url }}) [{{ $user->name }}]({{ $user->url }})
+                    </div>
+                @endif
             </div>
             @if (Auth::check() && Auth::user()->isStaff)
                 <div class="card-footer">
