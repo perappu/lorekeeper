@@ -455,13 +455,13 @@ function prettyProfileName($url) {
  * @param mixed  $id
  */
 function storeIp($ip, $id) {
-    $query = \App\Models\User\UserIp::where('user_id', $id)->where('ip', $ip)->first();
+    $query = App\Models\User\UserIp::where('user_id', $id)->where('ip', $ip)->first();
 
     if ($query) {
         $query->updated_at = Carbon\Carbon::now();
         $query->save();
     } else {
-        \App\Models\User\UserIp::create([
+        App\Models\User\UserIp::create([
             'user_id'    => $id,
             'ip'         => $ip,
             'created_at' => Carbon\Carbon::now(),
