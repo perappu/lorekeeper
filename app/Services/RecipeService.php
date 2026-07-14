@@ -30,10 +30,10 @@ class RecipeService extends Service {
     /**
      * Creates a new recipe.
      *
-     * @param array                 $data
-     * @param \App\Models\User\User $user
+     * @param array $data
+     * @param User  $user
      *
-     * @return \App\Models\Recipe\Recipe|bool
+     * @return bool|Recipe
      */
     public function createRecipe($data, $user) {
         DB::beginTransaction();
@@ -87,7 +87,7 @@ class RecipeService extends Service {
 
             $recipe = Recipe::create($data);
             $this->populateIngredients($recipe, $data);
-            //limits
+            // limits
             $this->populateLimits($recipe, $data);
 
             $recipe->output = $this->populateRewards($data);
@@ -108,11 +108,11 @@ class RecipeService extends Service {
     /**
      * Updates an recipe.
      *
-     * @param \App\Models\Recipe\Recipe $recipe
-     * @param array                     $data
-     * @param \App\Models\User\User     $user
+     * @param Recipe $recipe
+     * @param array  $data
+     * @param User   $user
      *
-     * @return \App\Models\Recipe\Recipe|bool
+     * @return bool|Recipe
      */
     public function updateRecipe($recipe, $data, $user) {
         DB::beginTransaction();
@@ -168,7 +168,7 @@ class RecipeService extends Service {
     /**
      * Deletes an recipe.
      *
-     * @param \App\Models\Recipe\Recipe $recipe
+     * @param Recipe $recipe
      *
      * @return bool
      */
@@ -213,8 +213,8 @@ class RecipeService extends Service {
     /**
      * Admin function for granting recipes to multiple users.
      *
-     * @param array                 $data
-     * @param \App\Models\User\User $staff
+     * @param array $data
+     * @param User  $staff
      *
      * @return bool
      */
@@ -259,12 +259,12 @@ class RecipeService extends Service {
     /**
      * Credits recipe to a user or character.
      *
-     * @param \App\Models\User\User           $sender
-     * @param \App\Models\User\User           $recipient
+     * @param User                            $sender
+     * @param User                            $recipient
      * @param \App\Models\Character\Character $character
      * @param string                          $type
      * @param string                          $data
-     * @param \App\Models\Recipe\Recipe       $recipe
+     * @param Recipe                          $recipe
      *
      * @return bool
      */
@@ -341,8 +341,8 @@ class RecipeService extends Service {
     /**
      * Processes user input for creating/updating an recipe.
      *
-     * @param array                     $data
-     * @param \App\Models\Recipe\Recipe $recipe
+     * @param array  $data
+     * @param Recipe $recipe
      *
      * @return array
      */
@@ -371,8 +371,8 @@ class RecipeService extends Service {
     /**
      * Manages ingredients attached to the recipe.
      *
-     * @param \App\Models\Recipe\Recipe $recipe
-     * @param array                     $data
+     * @param Recipe $recipe
+     * @param array  $data
      */
     private function populateIngredients($recipe, $data) {
         $recipe->ingredients()->delete();
@@ -428,8 +428,8 @@ class RecipeService extends Service {
     /**
      * Adds limits to the recipe.
      *
-     * @param \App\Models\Recipe\Recipe $recipe
-     * @param array                     $data
+     * @param Recipe $recipe
+     * @param array  $data
      */
     private function populateLimits($recipe, $data) {
         if (!isset($data['is_limited'])) {

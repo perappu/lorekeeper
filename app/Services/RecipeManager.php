@@ -20,9 +20,9 @@ class RecipeManager extends Service {
     /**
      * Attempts to craft the specified recipe.
      *
-     * @param array                     $data
-     * @param \App\Models\Recipe\Recipe $recipe
-     * @param \App\Models\User\User     $user
+     * @param array  $data
+     * @param Recipe $recipe
+     * @param User   $user
      *
      * @return bool
      */
@@ -78,7 +78,7 @@ class RecipeManager extends Service {
                 }
 
                 // Debit the ingredients
-                $service = new InventoryManager();
+                $service = new InventoryManager;
                 foreach ($plucked as $id => $quantity) {
                     $stack = UserItem::find($id);
                     if (!$service->debitStack($user, 'Crafting', ['data' => 'Used in '.$recipe->name.' Recipe'], $stack, $quantity)) {
@@ -93,7 +93,7 @@ class RecipeManager extends Service {
             }
 
             // Debit the currency
-            $service = new CurrencyManager();
+            $service = new CurrencyManager;
             foreach ($currency_ingredients as $ingredient) {
                 if (!$service->debitCurrency($user, null, 'Crafting', 'Used in '.$recipe->name.' Recipe', Currency::find($ingredient->data[0]), $ingredient->quantity)) {
                     throw new \Exception('Currency could not be debited.');
@@ -122,9 +122,9 @@ class RecipeManager extends Service {
      * Plucks stacks from a given Collection of user items that meet the crafting requirements of a recipe
      * If there are insufficient ingredients, null is returned.
      *
-     * @param \App\Models\Recipe\Recipe $recipe
-     * @param mixed                     $user
-     * @param mixed|null                $selectedStacks
+     * @param Recipe     $recipe
+     * @param mixed      $user
+     * @param mixed|null $selectedStacks
      *
      * @return array|null
      */
