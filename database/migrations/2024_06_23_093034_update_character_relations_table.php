@@ -28,9 +28,9 @@ return new class extends Migration {
         // If you know you have those permissions, you can uncomment this
         // FWIW, it's also a little redundant, as the code should already put the IDs in the right place in the first place
         // so it's more of a safety measure
-        
+
         /*    DB::unprepared('
-            CREATE TRIGGER before_insert_character_relations 
+            CREATE TRIGGER before_insert_character_relations
             BEFORE INSERT ON character_relations
             FOR EACH ROW
             BEGIN
@@ -48,6 +48,6 @@ return new class extends Migration {
      */
     public function down(): void {
         // This migration is not reversible
-        throw new \RuntimeException('This migration is not reversible.');
+        throw new RuntimeException('This migration is not reversible.');
     }
 };
