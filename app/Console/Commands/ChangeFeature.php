@@ -3,12 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Facades\Settings;
-use Illuminate\Console\Command;
 use App\Models\Character\Character;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
-class ChangeFeature extends Command
-{
+class ChangeFeature extends Command {
     /**
      * The name and signature of the console command.
      *
@@ -25,11 +24,8 @@ class ChangeFeature extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
@@ -38,12 +34,11 @@ class ChangeFeature extends Command
      *
      * @return mixed
      */
-    public function handle()
-    {
+    public function handle() {
         $characters = Character::myo()->get();
         $random = $characters->random();
         $setting = Settings::get('featured_character');
-        while($random->id == $setting) {
+        while ($random->id == $setting) {
             $random = $characters->random();
         }
 

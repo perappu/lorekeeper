@@ -28,8 +28,7 @@ class HomeController extends Controller {
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getIndex()
-    {
+    public function getIndex() {
         if (config('lorekeeper.extensions.show_all_recent_submissions.enable')) {
             $query = GallerySubmission::visible(Auth::check() ? Auth::user() : null)->accepted()->orderBy('created_at', 'DESC');
             $gallerySubmissions = $query->get()->take(8);
@@ -37,15 +36,16 @@ class HomeController extends Controller {
             $gallerySubmissions = [];
         }
 
-        if(Settings::get('featured_character')) {
+        if (Settings::get('featured_character')) {
             $character = Character::find(Settings::get('featured_character'));
+        } else {
+            $character = null;
         }
-        else $character = null;
 
         return view('welcome', [
             'about'               => SitePage::where('key', 'about')->first(),
             'gallerySubmissions'  => $gallerySubmissions,
-            'featured' => $character,
+            'featured'            => $character,
         ]);
     }
 
