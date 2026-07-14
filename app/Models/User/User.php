@@ -15,7 +15,6 @@ use App\Models\Item\Item;
 use App\Models\Item\ItemLog;
 use App\Models\Notification;
 use App\Models\Rank\Rank;
-use App\Models\Rank\RankPower;
 use App\Models\Shop\ShopLog;
 use App\Models\Submission\Submission;
 use App\Traits\Commenter;
@@ -68,11 +67,29 @@ class User extends Authenticatable implements MustVerifyEmail {
     ];
 
     /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = [
+        'rank',
+    ];
+
+    /**
      * Whether the model contains timestamps to be saved and updated.
      *
      * @var string
      */
     public $timestamps = true;
+
+    /**
+     * Validation rules for updating.
+     *
+     * @var array
+     */
+    public static $avatarUpdateRules = [
+        'avatar'      => 'required|mimes:jpeg,jpg,gif,png,webp|max:1024',
+    ];
 
     /**********************************************************************************************
 
@@ -170,8 +187,9 @@ class User extends Authenticatable implements MustVerifyEmail {
     public function gallerySubmissions() {
         return $this->hasMany(GallerySubmission::class)
             ->where('user_id', $this->id)
-            ->orWhereIn('id', GalleryCollaborator::where('user_id', $this->id)->where('type', 'Collab')->pluck('gallery_submission_id')->toArray())
-            ->visible($this)->accepted()->orderBy('created_at', 'DESC');
+            ->orWhereIn('id', GalleryCollaborator::where('user_id', $this->id)
+                ->where('type', 'Collab')->pluck('gallery_submission_id')->toArray())
+            ->orderBy('created_at', 'DESC');
     }
 
     /**
@@ -279,7 +297,7 @@ class User extends Authenticatable implements MustVerifyEmail {
      * @return bool
      */
     public function getIsStaffAttribute() {
-        return RankPower::where('rank_id', $this->rank_id)->exists() || $this->isAdmin;
+        return $this->isAdmin || $this->rank->powers->count();
     }
 
     /**
@@ -366,7 +384,7 @@ class User extends Authenticatable implements MustVerifyEmail {
             return '(Unverified)';
         }
 
-        return $this->primaryAlias->displayAlias;
+        return $this->primaryAlias?->displayAlias ?? '(No Alias)';
     }
 
     /**
@@ -447,7 +465,7 @@ class User extends Authenticatable implements MustVerifyEmail {
      */
     public function getcheckBirthdayAttribute() {
         $bday = $this->birthday;
-        if (!$bday || $bday->diffInYears(carbon::now()) < 13) {
+        if (!$bday || $bday->diffInYears(Carbon::now()) < 13) {
             return false;
         } else {
             return true;
@@ -668,7 +686,7 @@ class User extends Authenticatable implements MustVerifyEmail {
      *
      * @param mixed $character
      *
-     * @return \App\Models\Character\CharacterBookmark
+     * @return CharacterBookmark
      */
     public function hasBookmarked($character) {
         return CharacterBookmark::where('user_id', $this->id)->where('character_id', $character->id)->first();
