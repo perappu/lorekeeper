@@ -63,11 +63,11 @@ class SubmissionManager extends Service {
                     throw new \Exception('This prompt may only be submitted to by staff members.');
                 }
 
-                //check that the prompt limit hasn't been hit
+                // check that the prompt limit hasn't been hit
                 if ($prompt->limit) {
                     // check that the user hasn't hit the prompt submission limit
                     // filter the submissions by hour/day/week/etc and count
-                    
+
                     // if limit by character is on... multiply by # of chars. otherwise, don't
                     if ($prompt->limit_character) {
                         $characters = Character::myo(0)->visible()->whereIn('slug', $data['slug'])->get();
@@ -159,7 +159,7 @@ class SubmissionManager extends Service {
                 if ($prompt->limit && !($submission->status == 'Draft' && $submission->prompt_id && $submission->staff_comments)) {
                     // check that the user hasn't hit the prompt submission limit
                     // filter the submissions by hour/day/week/etc and count
-                    
+
                     // if limit by character is on... multiply by # of chars. otherwise, don't
                     if ($prompt->limit_character) {
                         $characters = Character::myo(0)->visible()->whereIn('slug', $data['slug'])->get();
