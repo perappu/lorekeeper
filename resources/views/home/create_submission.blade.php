@@ -97,6 +97,7 @@
                     var $rewards = $('#rewards');
 
                     $prompt.selectize();
+                    $rewards.load('{{ url('submissions/new/prompt') }}/' + $prompt.val());
                     $prompt.on('change', function(e) {
                         $rewards.load('{{ url('submissions/new/prompt') }}/' + $(this).val());
                     });

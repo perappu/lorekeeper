@@ -368,7 +368,9 @@ class PromptService extends Service {
             unset($data['remove_image']);
         }
 
-        if(!isset($data['limit_character'])) $data['limit_character'] = null;
+        if (!isset($data['limit_character'])) {
+            $data['limit_character'] = null;
+        }
 
         return $data;
     }

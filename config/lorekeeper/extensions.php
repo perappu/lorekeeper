@@ -106,4 +106,17 @@ return [
     // Use ReCaptcha to check new user registrations - Mercury
     // Requires site key and secret be set in your .env file!
     'use_recaptcha' => 0,
+
+    // Prompt Submission Limits (Time Based) - Juni
+    'limit_periods' => [
+        null        => 'None',
+        'Hour'      => 'Hour',
+        'Day'       => 'Day',
+        'Week'      => 'Week',
+        'BiWeekly'  => 'Bi-Weekly', // This is once every two weeks.
+        'Month'     => 'Month',
+        'BiMonthly' => 'Bi-Monthly', // This is once every two months.
+        'Quarter'   => 'Quarter', // This is once every three months.
+        'Year'      => 'Year',
+    ],
 ];

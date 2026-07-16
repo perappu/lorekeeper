@@ -3,6 +3,7 @@
 namespace App\Models\Prompt;
 
 use App\Models\Model;
+use App\Models\Submission\Submission;
 use Carbon\Carbon;
 
 class Prompt extends Model {
@@ -324,5 +325,39 @@ class Prompt extends Model {
      */
     public function getAdminPowerAttribute() {
         return 'edit_data';
+    }
+
+    /**
+     * Get an array of how many prompts the user has completed in general.
+     *
+     * @param mixed $user
+     * @param mixed $characters
+     *
+     * @return array
+     */
+    public function getCount($user, $characters = null) {
+        // filter the submissions by hour/day/week/etc and returns count
+        if($characters && count($characters)) {
+            $ids = $characters->pluck('id');
+            $submissions = Submission::submitted($this->id, $user->id)->where(function ($query) use ($ids) {
+                $query->whereHas('characters', function ($q) use ($ids) {
+                    $q->whereIn('character_id', $ids);
+                });
+            })->get();
+        } else {
+            $submissions = Submission::submitted($this->id, $user->id)->get();
+        }
+
+        $count['all'] = $submissions->count();
+        $count['Hour'] = $submissions->where('created_at', '>=', now()->startOfHour())->count();
+        $count['Day'] = $submissions->where('created_at', '>=', now()->startOfDay())->count();
+        $count['Week'] = $submissions->where('created_at', '>=', now()->startOfWeek())->count();
+        $count['BiWeekly'] = $submissions->where('created_at', '>=', now()->subWeeks(2))->count();
+        $count['Month'] = $submissions->where('created_at', '>=', now()->startOfMonth())->count();
+        $count['BiMonthly'] = $submissions->where('created_at', '>=', now()->subMonths(2))->count();
+        $count['Quarter'] = $submissions->where('created_at', '>=', now()->subMonths(3))->count();
+        $count['Year'] = $submissions->where('created_at', '>=', now()->startOfYear())->count();
+
+        return $count;
     }
 }
