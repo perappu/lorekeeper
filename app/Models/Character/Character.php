@@ -17,6 +17,7 @@ use App\Models\User\User;
 use App\Models\User\UserCharacterLog;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Settings;
 
 class Character extends Model {
     use SoftDeletes;
@@ -191,6 +192,14 @@ class Character extends Model {
      */
     public function items() {
         return $this->belongsToMany(Item::class, 'character_items')->withPivot('count', 'data', 'updated_at', 'id', 'stack_name')->whereNull('character_items.deleted_at');
+    }
+
+    /**
+     * Get all of the likes that are not NULL
+     */
+    public function characterLikes() 
+    {
+        return $this->hasMany('App\Models\Character\CharacterLike')->where('character_id', $this->id)->whereNotNull('liked_at');
     }
 
     /**********************************************************************************************
@@ -558,5 +567,17 @@ class Character extends Model {
                 ]);
             }
         }
+    }
+
+     /**
+     * Return like count based on site setting
+     *
+     * Will always return the accurate count even if settings are flip flopped around (i am paranoid.)
+     */
+    public function getLikeTotalAttribute() {
+        //can like only once
+        if(!Settings::get('character_likes')) {
+            return $this->characterLikes->count();
+        }else return $this->profile->like_count;
     }
 }
