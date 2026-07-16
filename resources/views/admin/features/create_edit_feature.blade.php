@@ -177,6 +177,10 @@
                             {!! Form::checkbox('alt[display_separate][' . $altType->id . ']', 1, $altType->display_separate, ['class' => 'form-check-input', 'data-toggle' => 'toggle']) !!}
                             {!! Form::label('alt[display_separate]', 'Display Separately', ['class' => 'form-check-label ml-3']) !!} {!! add_help('If enabled, this trait will be displayed separately from its parent in general trait listings, including species\' visual trait indexes if enabled.') !!}
                         </div>
+                        <div class="form-group">
+                            {!! Form::checkbox('alt[is_visible][' . $altType->id . ']', 1, $altType->is_visible, ['class' => 'form-check-input', 'data-toggle' => 'toggle']) !!}
+                            {!! Form::label('alt[is_visible]', 'Is Visible', ['class' => 'form-check-label ml-3']) !!} {!! add_help('If turned off, the trait will not be visible in the trait list or available for selection in search and design updates. Permissioned staff will still be able to add them to characters, however.') !!}
+                        </div>
                         @if (isset($altType->display_separate) && $altType->display_separate)
                             <h4>Preview</h4>
                             <hr />
@@ -190,6 +194,8 @@
         <div class="text-right mb-4">
             <a href="#" class="btn btn-primary" id="add-type">Add Alternate Type</a>
         </div>
+    @else
+        <p>You can add alternate types after this trait has been created.</p>
     @endif
 
     <div class="text-right">
@@ -263,6 +269,7 @@
                             </div>
                         </div>
                     </div>
+                    <p><strong>The trait will be created as hidden by default.</strong> You can set visibility after the trait is saved.</p>
                 </div>
             </div>
         </div>
@@ -301,6 +308,10 @@
                 var $clone = $('.type-row').clone();
                 $('#typeList').append($clone);
                 $clone.removeClass('hide type-row');
+                $clone.find('[data-toggle="tooltip"]').tooltip({
+                    html: true
+                });
+                console.log($clone.find("[data-toggle='toggle']"));
                 $clone.find('.remove-type').on('click', function(e) {
                     e.preventDefault();
                     removeTypeRow($(this));
