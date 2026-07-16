@@ -340,8 +340,8 @@ class Prompt extends Model {
         if ($characters && count($characters)) {
             $ids = $characters->pluck('id');
             $submissions = Submission::submitted($this->id, $user->id)->whereHas('characters', function ($q) use ($ids) {
-                    $q->whereIn('character_id', $ids);
-                })->get();
+                $q->whereIn('character_id', $ids);
+            })->get();
         } else {
             $submissions = Submission::submitted($this->id, $user->id)->get();
         }
