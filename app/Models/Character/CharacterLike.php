@@ -5,7 +5,6 @@ namespace App\Models\Character;
 use App\Models\Model;
 
 class CharacterLike extends Model {
-
     /**
      * The attributes that are mass assignable.
      *
@@ -29,33 +28,29 @@ class CharacterLike extends Model {
      */
     public $dates = ['liked_at'];
 
-
     /**********************************************************************************************
-        
+
         RELATIONS
 
     **********************************************************************************************/
 
     /**
-     * Character associated with the like
+     * Character associated with the like.
      */
     public function character() {
         return $this->belongsTo('App\Models\Character\Character', 'character_id');
     }
 
-
     /**
-     * User associated with the like
+     * User associated with the like.
      */
     public function user() {
         return $this->belongsTo('App\Models\User\User', 'user_id');
     }
 
     /**********************************************************************************************
-        
+
         ATTRIBUTES
 
     **********************************************************************************************/
-
-
 }

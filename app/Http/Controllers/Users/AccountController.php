@@ -477,21 +477,22 @@ class AccountController extends Controller {
         return redirect()->back();
     }
 
-     /**
-     * Change if the user's characters can be liked
+    /**
+     * Change if the user's characters can be liked.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  App\Services\UserService  $service
+     * @param App\Services\UserService $service
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postAllowCharacterLikes(Request $request, UserService $service)
-    {
-        if($service->updateAllowCharacterLikes($request->input('allow_character_likes'), Auth::user())) {
+    public function postAllowCharacterLikes(Request $request, UserService $service) {
+        if ($service->updateAllowCharacterLikes($request->input('allow_character_likes'), Auth::user())) {
             flash('Like status updated successfully.')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->back();
     }
 }

@@ -217,8 +217,7 @@ class User extends Authenticatable implements MustVerifyEmail {
     /**
      * Get all of the user's character like data.
      */
-    public function characterLikes() 
-    {
+    public function characterLikes() {
         return $this->hasMany('App\Models\Character\CharacterLike')->where('user_id', $this->id);
     }
 
@@ -702,17 +701,18 @@ class User extends Authenticatable implements MustVerifyEmail {
     }
 
     /**
-     * Check the user's like for the character
+     * Check the user's like for the character.
+     *
+     * @param mixed $character
      */
     public function checkLike($character) {
+        // check for the like and create if nonexistent
 
-        //check for the like and create if nonexistent
-        
         $like = $this->characterLikes()->where('character_id', $character->id)->first();
 
         if (!$like) {
             $createdlike = $this->characterLikes()->create([
-                'user_id'       => $this->id,
+                'user_id'          => $this->id,
                 'character_id'     => $character->id,
             ]);
             $this->refresh();
@@ -721,38 +721,41 @@ class User extends Authenticatable implements MustVerifyEmail {
     }
 
     /**
-     * Check if user can like the character again
+     * Check if user can like the character again.
+     *
+     * @param mixed $character
      */
     public function canLike($character) {
-
-        //triplecheck that a like exists even though we spammed this check literally everywhere.
+        // triplecheck that a like exists even though we spammed this check literally everywhere.
         $like = $this->characterLikes()->where('character_id', $character->id)->first();
 
         if (!$like) {
             $createdlike = $this->characterLikes()->create([
-                'user_id'       => $this->id,
+                'user_id'          => $this->id,
                 'character_id'     => $character->id,
             ]);
             $this->refresh();
             $createdlike->refresh();
         }
 
-        //user disabled likes on their characters
-        if(!$character->user->settings->allow_character_likes) return false;
+        // user disabled likes on their characters
+        if (!$character->user->settings->allow_character_likes) {
+            return false;
+        }
 
-        //already liked
+        // already liked
         if ($like->liked_at) {
-
-            //can only like once
-            if(!Settings::get('character_likes')) {
+            // can only like once
+            if (!Settings::get('character_likes')) {
                 return false;
             }
-            //can like daily
+            // can like daily
             if ($like->liked_at->isToday()) {
                 return false;
             }
         }
-        //else you can :)
+
+        // else you can :)
         return true;
     }
 }

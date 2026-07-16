@@ -103,10 +103,10 @@ class CharacterController extends Controller {
                 View::share('extPrevAndNextBtns', $extPrevAndNextBtns);
             }
 
-            if(Auth::check()) {
+            if (Auth::check()) {
                 Auth::user()->checkLike($this->character);
             }
-                
+
             return $next($request);
         });
     }
@@ -556,6 +556,37 @@ class CharacterController extends Controller {
     }
 
     /**
+     * Like a character.
+     *
+     * @param mixed $slug
+     */
+    public function postLikeCharacter(Request $request, CharacterManager $service, $slug) {
+        if (!Auth::check()) {
+            abort(404);
+        }
+
+        // owned by same user
+        if (Auth::user()->id == $this->character->user->id) {
+            abort(404);
+        }
+
+        // user disabled likes
+        if (!$this->character->user->settings->allow_character_likes) {
+            abort(404);
+        }
+
+        if ($service->likeCharacter($this->character, Auth::user())) {
+            flash('Character '.__('character_likes.liked').' successfully.')->success();
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
+        }
+
+        return redirect()->back();
+    }
+
+    /**
      * Transfers inventory items back to a user.
      *
      * @param App\Services\InventoryManager $service
@@ -613,28 +644,6 @@ class CharacterController extends Controller {
             }
         }
 
-        return redirect()->back();
-    }
-
-    /**
-     * Like a character
-     */
-    public function postLikeCharacter(Request $request, CharacterManager $service, $slug)
-    {
-        if(!Auth::check()) abort(404);
-
-        //owned by same user
-        if(Auth::user()->id == $this->character->user->id) abort(404);
-
-        //user disabled likes
-        if(!$this->character->user->settings->allow_character_likes) abort(404);
-
-        if($service->likeCharacter($this->character, Auth::user())) {
-            flash('Character '.__('character_likes.liked').' successfully.')->success();
-        }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
         return redirect()->back();
     }
 }
