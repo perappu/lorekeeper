@@ -57,8 +57,7 @@ class SubmissionController extends Controller {
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getSubmission($id)
-    {
+    public function getSubmission($id) {
         $submission = Submission::whereNotNull('prompt_id')->where('id', $id)->where('status', '!=', 'Draft')->first();
         $inventory = isset($submission->data['user']) ? parseAssetData($submission->data['user']) : null;
         if (!$submission) {
@@ -88,8 +87,8 @@ class SubmissionController extends Controller {
             'tables'              => LootTable::orderBy('name')->pluck('name', 'id'),
             'raffles'             => Raffle::where('rolled_at', null)->where('is_active', 1)->orderBy('name')->pluck('name', 'id'),
             'count'               => $count,
-            'prompt' => $prompt,
-            'limit' => $limit
+            'prompt'              => $prompt,
+            'limit'               => $limit,
         ] : []));
     }
 

@@ -166,8 +166,8 @@ class SubmissionController extends Controller {
         if (!$prompt) {
             return response(404);
         }
-        
-        if($prompt->limit_character) {
+
+        if ($prompt->limit_character) {
             $limit = $prompt->limit * Character::visible()->where('is_myo_slot', 0)->where('user_id', Auth::user()->id)->count();
         } else {
             $limit = $prompt->limit;
@@ -176,7 +176,7 @@ class SubmissionController extends Controller {
         return view('home._prompt', [
             'prompt' => $prompt,
             'count'  => $prompt->getCount(Auth::user()),
-            'limit' => $limit
+            'limit'  => $limit,
         ]);
     }
 

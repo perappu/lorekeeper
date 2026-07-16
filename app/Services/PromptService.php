@@ -203,7 +203,7 @@ class PromptService extends Service {
             }
 
             $prompt = Prompt::create(Arr::only($data, ['prompt_category_id', 'name', 'summary', 'description', 'parsed_description', 'is_active', 'start_at', 'end_at', 'hide_before_start', 'hide_after_end', 'has_image', 'prefix', 'hide_submissions', 'staff_only', 'hash',
-                        'limit', 'limit_period', 'limit_character']));
+                'limit', 'limit_period', 'limit_character']));
 
             if ($image) {
                 $this->handleImage($image, $prompt->imagePath, $prompt->imageFileName);
@@ -262,7 +262,7 @@ class PromptService extends Service {
             }
 
             $prompt->update(Arr::only($data, ['prompt_category_id', 'name', 'summary', 'description', 'parsed_description', 'is_active', 'start_at', 'end_at', 'hide_before_start', 'hide_after_end', 'has_image', 'prefix', 'hide_submissions', 'staff_only', 'hash',
-            'limit', 'limit_period', 'limit_character']));
+                'limit', 'limit_period', 'limit_character']));
 
             if ($image) {
                 $this->handleImage($image, $prompt->imagePath, $prompt->imageFileName);
