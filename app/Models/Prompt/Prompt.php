@@ -339,11 +339,9 @@ class Prompt extends Model {
         // filter the submissions by hour/day/week/etc and returns count
         if($characters && count($characters)) {
             $ids = $characters->pluck('id');
-            $submissions = Submission::submitted($this->id, $user->id)->where(function ($query) use ($ids) {
-                $query->whereHas('characters', function ($q) use ($ids) {
+            $submissions = Submission::submitted($this->id, $user->id)->whereHas('characters', function ($q) use ($ids) {
                     $q->whereIn('character_id', $ids);
-                });
-            })->get();
+                })->get();
         } else {
             $submissions = Submission::submitted($this->id, $user->id)->get();
         }
