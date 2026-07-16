@@ -349,7 +349,7 @@ class FeatureService extends Service {
             if ($feature) {
                 $this->handleImage($image, $feature->imagePath, $feature->imageFileName);
             }
-            
+
             // Handle alternate types
             if (isset($data['alt']) && !$parent) {
                 foreach ($data['alt']['id'] as $key=>$alt) {
