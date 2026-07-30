@@ -113,10 +113,10 @@ class GameManager extends Service {
 
         try {
             $game = Game::where('id', $data['game_id'])->first();
+            $currency = Currency::find($data['currency_id']);
 
-            $currencyManager = new CurrencyManager;
-            //this will ALWAYS subtract the number given, even if it's initially positive. no player circumventing!
-            $currencyManager->creditCurrency(null, $user, 'Game Payment', $game->displayName, $data['currency_id'], -1 * abs($data['amount']));
+            //this will ALWAYS subtract the number given, even if it's initially negative. no player circumventing!
+            (new CurrencyManager)->debitCurrency($user, null, 'Game Payment', $game->displayName, $currency, abs($data['amount']));
 
             return $this->commitReturn(true);
         } catch (\Exception $e) {
