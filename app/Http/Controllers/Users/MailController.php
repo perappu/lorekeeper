@@ -111,18 +111,19 @@ class MailController extends Controller {
             $data['subject'] = 'Re: '.$mail->subject;
             $data['parent_id'] = $mail->id;
         }
-        
+
         $validator = Validator::make($data, UserMail::$createRules, ($mail ? [
-            'subject.between' => 'This reply chain has reached its max length. Please create a new one.'
+            'subject.between' => 'This reply chain has reached its max length. Please create a new one.',
         ] : []));
 
         // validating after the $mail to catch people who have made a really long subject from the longest reply chain ever
         if ($validator->fails()) {
             foreach ($validator->errors()->getMessages() as $value => $errors) {
-                foreach($errors as $error) {
+                foreach ($errors as $error) {
                     flash($error)->error();
                 }
             }
+
             return redirect()->back()->withInput();
         }
 
