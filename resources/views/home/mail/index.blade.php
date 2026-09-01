@@ -1,7 +1,7 @@
 @extends('home.layout')
 
 @section('home-title')
-    Mod Mail
+    Mail
 @endsection
 
 @section('home-content')
@@ -29,14 +29,14 @@
     <div class="tab-content" id="inboxTypeContent">
         <div class="tab-pane fade show active" id="inbox" role="tabpanel">
             @if (count($inbox))
-                @include('home.mail._mail', ['mails' => $inbox])
+                @include('home.mail._mail', ['mails' => $inbox, 'showSeen' => true])
             @else
                 <p>Your inbox is empty.</p>
             @endif
         </div>
         <div class="tab-pane fade" id="outbox" role="tabpanel">
             @if (count($outbox))
-                @include('home.mail._mail', ['mails' => $outbox])
+                @include('home.mail._mail', ['mails' => $outbox, 'showSeen' => Settings::get('unseen_mail_indicator')])
             @else
                 <p>Your outbox is empty.</p>
             @endif
@@ -46,7 +46,7 @@
                 This mail is anonymously sent messages from moderators. {{ config('lorekeeper.mod_mail.allow_replies_to_staff') ? 'You can respond to staff mail.' : 'It cannot be responded to.' }}
             </p>
             @if (count($modMail))
-                @include('home.mail._mail', ['mails' => $modMail])
+                @include('home.mail._mail', ['mails' => $modMail, 'showSeen' => true])
             @else
                 <p>No staff messages found.</p>
             @endif

@@ -1,13 +1,13 @@
 @extends('home.layout')
 
 @section('home-title')
-    Create Direct Message
+    Send New Message
 @endsection
 
 @section('home-content')
-    {!! breadcrumbs(['Inbox' => 'mail', 'Create Message' => 'mail/new']) !!}
+    {!! breadcrumbs(['Inbox' => 'mail', 'Send New Message' => 'mail/new']) !!}
 
-    <h1>Create Direct Message</h1>
+    <h1>Send New Message</h1>
 
     {!! Form::open(['url' => 'mail/new']) !!}
 

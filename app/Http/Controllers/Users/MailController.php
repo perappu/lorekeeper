@@ -7,8 +7,9 @@ use App\Models\Mail\ModMail;
 use App\Models\Mail\UserMail;
 use App\Models\User\User;
 use App\Services\MailService;
-use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class MailController extends Controller {
     /**
@@ -109,8 +110,20 @@ class MailController extends Controller {
             $data['recipient_id'] = $mail->sender_id;
             $data['subject'] = 'Re: '.$mail->subject;
             $data['parent_id'] = $mail->id;
-        } else {
-            $request->validate(UserMail::$createRules);
+        }
+        
+        $validator = Validator::make($data, UserMail::$createRules, ($mail ? [
+            'subject.between' => 'This reply chain has reached its max length. Please create a new one.'
+        ] : []));
+
+        // validating after the $mail to catch people who have made a really long subject from the longest reply chain ever
+        if ($validator->fails()) {
+            foreach ($validator->errors()->getMessages() as $value => $errors) {
+                foreach($errors as $error) {
+                    flash($error)->error();
+                }
+            }
+            return redirect()->back()->withInput();
         }
 
         if (!$mail = $service->createUserMail($data, Auth::user())) {
@@ -118,7 +131,7 @@ class MailController extends Controller {
                 flash($error)->error();
             }
 
-            return redirect()->to('mail');
+            return redirect()->back()->withInput();
         } else {
             flash('Message sent successfully.')->success();
         }
