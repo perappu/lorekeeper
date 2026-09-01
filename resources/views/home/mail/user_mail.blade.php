@@ -23,11 +23,11 @@
     </h1>
 
     @if ($mail->parent)
-    <div class="card mb-3">
-        <div class="card-header">
-            <h5 class="mb-0">Message History</h5>
-        </div>
-        <ul class="list-group list-group-flush">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="mb-0">Message History</h5>
+            </div>
+            <ul class="list-group list-group-flush">
                 @php
                     // Get all ancestors in reverse order (oldest first)
                     $parents = [];
@@ -42,17 +42,17 @@
                     <li class="list-group-item card-header collapse-title collapsed" data-toggle="collapse" data-target="#message-{{ $index }}" aria-expanded="false" aria-controls="message-{{ $index }}">
                         <h6 class="font-weight-bold mb-0">"{{ $parent->subject }}" <small>{!! pretty_date($parent->created_at) !!} - {!! $parent->sender->displayName !!}</small> <i class="fa collapsible"></i></h6>
                     </li>
-                        <li id="message-{{ $index }}" class="list-group-item collapse">
-                            <div class="card-body">
-                                {!! $parent->message !!}
-                                <div class="text-right">
-                                    <a href="{{ $parent->viewUrl }}"><u>View Message</u></a>
-                                </div>
+                    <li id="message-{{ $index }}" class="list-group-item collapse">
+                        <div class="card-body">
+                            {!! $parent->message !!}
+                            <div class="text-right">
+                                <a href="{{ $parent->viewUrl }}"><u>View Message</u></a>
                             </div>
-                        </li>
+                        </div>
+                    </li>
                 @endforeach
-        </ul>
-    </div>
+            </ul>
+        </div>
     @endif
 
     <div class="card mb-3">
@@ -77,27 +77,28 @@
         </div>
     </div>
 
-    
-    @if ($mail->children->count() > 0)    
+
+    @if ($mail->children->count() > 0)
         <div class="card mb-3">
             <ul class="list-group list-group-flush">
                 <li class="list-group-item card-header font-weight-bold">
-                    <span class="font-weight-bold mb-0">There are multiple replies to this message. <div class="btn btn-sm btn-faded h6 font-weight-bold collapsed mb-0" data-toggle="collapse" data-target="#child-messages" aria-expanded="false" aria-controls="child-messages">Show Replies <i class="fa collapsible"></i></div></span>
+                    <span class="font-weight-bold mb-0">There are multiple replies to this message. <div class="btn btn-sm btn-faded h6 font-weight-bold collapsed mb-0" data-toggle="collapse" data-target="#child-messages" aria-expanded="false"
+                            aria-controls="child-messages">Show Replies <i class="fa collapsible"></i></div></span>
                 </li>
                 <li class="list-group-item p-0 collapse" id="child-messages">
                     @foreach ($mail->children as $index => $child)
-                    <div class="list-group-item collapse-title collapsed" type="button" data-toggle="collapse" data-target="#child-message-{{ $index }}" aria-expanded="false" aria-controls="child-message-{{ $index }}">
-                        <h6 class="font-weight-bold mb-0">"{{ $child->subject }}" <small>{!! pretty_date($child->created_at) !!} - {!! $child->sender->displayName !!} <i class="fa collapsible"></i></small></h6>
-                    </div>
-                    <div id="child-message-{{ $index }}" class="collapse">
-                        <div class="card-body">
-                            {!! $child->message !!}
+                        <div class="list-group-item collapse-title collapsed" type="button" data-toggle="collapse" data-target="#child-message-{{ $index }}" aria-expanded="false" aria-controls="child-message-{{ $index }}">
+                            <h6 class="font-weight-bold mb-0">"{{ $child->subject }}" <small>{!! pretty_date($child->created_at) !!} - {!! $child->sender->displayName !!} <i class="fa collapsible"></i></small></h6>
+                        </div>
+                        <div id="child-message-{{ $index }}" class="collapse">
+                            <div class="card-body">
+                                {!! $child->message !!}
 
-                            <div class="text-right">
-                                <a href="{{ $child->viewUrl }}"><u>View Reply</u></a>
+                                <div class="text-right">
+                                    <a href="{{ $child->viewUrl }}"><u>View Reply</u></a>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     @endforeach
                 </li>
             </ul>

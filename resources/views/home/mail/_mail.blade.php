@@ -10,7 +10,7 @@
             <div class="col-6 {{ $showSeen ? 'col-md-3' : 'col-md-5' }}">
                 <div class="logs-table-cell">From</div>
             </div>
-            @if($showSeen)
+            @if ($showSeen)
                 <div class="col-2 col-md-2">
                     <div class="logs-table-cell">Seen</div>
                 </div>
@@ -35,7 +35,7 @@
                     <div class="col-6 col-md-3 {{ $showSeen ? 'col-md-3' : 'col-md-5' }}">
                         <div class="logs-table-cell">{!! $mail->sender?->displayName !!} {!! pretty_date($mail->created_at) !!}</div>
                     </div>
-                    @if($showSeen)
+                    @if ($showSeen)
                         <div class="col-2 col-md-2">
                             <div class="logs-table-cell">{!! $mail->seen ? '<i class="fas fa-check text-success"></i>' : '<i class="fas fa-times text-danger"></i>' !!}</div>
                         </div>
