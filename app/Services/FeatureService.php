@@ -100,11 +100,7 @@ class FeatureService extends Service {
                 throw new \Exception('Failed to log admin action.');
             }
 
-            if (!$this->logAdminAction($user, 'Updated Feature Category', 'Updated '.$category->displayName)) {
-                throw new \Exception('Failed to log admin action.');
-            }
-
-            if ($category) {
+            if ($image) {
                 $this->handleImage($image, $category->categoryImagePath, $category->categoryImageFileName);
             }
 
@@ -293,7 +289,7 @@ class FeatureService extends Service {
                 }
             }
 
-            $data = $this->populateData($data);
+            $data = $this->populateData($data, $feature);
 
             $image = null;
             if (isset($data['image']) && $data['image']) {
@@ -309,7 +305,7 @@ class FeatureService extends Service {
                 throw new \Exception('Failed to log admin action.');
             }
 
-            if ($feature) {
+            if ($image) {
                 $this->handleImage($image, $feature->imagePath, $feature->imageFileName);
             }
 

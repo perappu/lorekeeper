@@ -294,11 +294,11 @@ class CharacterManager extends Service {
 
                 $wmScale = config('lorekeeper.settings.watermark_percent');
 
-                //Assume Landscape by Default
+                // Assume Landscape by Default
                 $maxSize = $imageWidth * $wmScale;
 
                 if ($imageWidth > $imageHeight) {
-                    //Landscape
+                    // Landscape
                     $maxSize = $imageWidth * $wmScale;
                 } else {
                     // Portrait
@@ -306,7 +306,7 @@ class CharacterManager extends Service {
                 }
 
                 if ($wmWidth > $wmHeight) {
-                    //Landscape
+                    // Landscape
                     $watermark->resize($maxSize, null, function ($constraint) {
                         $constraint->aspectRatio();
                     });
@@ -402,11 +402,11 @@ class CharacterManager extends Service {
 
                     $wmScale = config('lorekeeper.settings.watermark_percent');
 
-                    //Assume Landscape by Default
+                    // Assume Landscape by Default
                     $maxSize = $imageWidth * $wmScale;
 
                     if ($imageWidth > $imageHeight) {
-                        //Landscape
+                        // Landscape
                         $maxSize = $imageWidth * $wmScale;
                     } else {
                         // Portrait
@@ -414,7 +414,7 @@ class CharacterManager extends Service {
                     }
 
                     if ($wmWidth > $wmHeight) {
-                        //Landscape
+                        // Landscape
                         $watermark->resize($maxSize, null, function ($constraint) {
                             $constraint->aspectRatio();
                         });
@@ -623,6 +623,15 @@ class CharacterManager extends Service {
                 if (!$subtype || $subtype->species_id != $data['species_id']) {
                     throw new \Exception('Selected subtype invalid or does not match species.');
                 }
+            }
+
+            // Check that species & rarity are selected
+            if (!(isset($data['species_id']) && $data['species_id'])) {
+                throw new \Exception('Characters require a species.');
+            }
+
+            if (!(isset($data['rarity_id']) && $data['rarity_id'])) {
+                throw new \Exception('Characters require a rarity.');
             }
 
             if (!$this->logAdminAction($user, 'Updated Image', 'Updated character image features on <a href="'.$image->character->url.'">#'.$image->id.'</a>')) {
@@ -1020,12 +1029,12 @@ class CharacterManager extends Service {
 
             $count = 0;
             foreach ($images as $image) {
-                //if($count == 1)
-                //{
+                // if($count == 1)
+                // {
                 //    // Set the first one as the active image
                 //    $image->character->image_id = $image->id;
                 //    $image->character->save();
-                //}
+                // }
                 $image->sort = $count;
                 $image->save();
                 $count++;
@@ -1523,7 +1532,7 @@ class CharacterManager extends Service {
             if ($sender) {
                 Notifications::create('CHARACTER_SENT', $sender, [
                     'character_name' => $character->slug,
-                    'character_slug' => $character->slug,
+                    'character_url'  => $character->is_myo_slot ? 'myo/'.$character->id : 'character/'.$character->slug,
                     'sender_name'    => $user->name,
                     'sender_url'     => $user->url,
                     'recipient_name' => is_object($recipient) ? $recipient->name : prettyProfileName($recipient),
@@ -1533,7 +1542,7 @@ class CharacterManager extends Service {
             if (is_object($recipient)) {
                 Notifications::create('CHARACTER_RECEIVED', $recipient, [
                     'character_name' => $character->slug,
-                    'character_slug' => $character->slug,
+                    'character_url'  => $character->is_myo_slot ? 'myo/'.$character->id : 'character/'.$character->slug,
                     'sender_name'    => $user->name,
                     'sender_url'     => $user->url,
                 ]);
@@ -1571,7 +1580,7 @@ class CharacterManager extends Service {
 
                 // Process the character move if the transfer has already been approved
                 if ($transfer->is_approved) {
-                    //check the cooldown saved
+                    // check the cooldown saved
                     if (isset($transfer->data['cooldown'])) {
                         $cooldown = $transfer->data['cooldown'];
                     }
