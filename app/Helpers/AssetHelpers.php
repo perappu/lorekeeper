@@ -156,7 +156,7 @@ function getAssetModelString($type, $namespaced = true) {
                 return 'Pet';
             }
             break;
-            
+
         case 'dynamic':
             if ($namespaced) {
                 return '\App\Models\Limit\DynamicLimit';

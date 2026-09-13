@@ -2,10 +2,7 @@
 
 namespace App\Models\Limit;
 
-use App\Models\Currency\Currency;
-use App\Models\Item\Item;
 use App\Models\Model;
-use App\Models\Prompt\Prompt;
 
 class Limit extends Model {
     /**
@@ -38,7 +35,7 @@ class Limit extends Model {
         RELATIONS
 
     **********************************************************************************************/
-    
+
     /**
      * Get the object that this limit is attached to as something that morphMany will accept.
      */
