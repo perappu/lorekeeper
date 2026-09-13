@@ -7,6 +7,8 @@ use App\Models\Model;
 use Carbon\Carbon;
 
 class Shop extends Model {
+    use Limitable;
+
     /**
      * The attributes that are mass assignable.
      *
