@@ -108,11 +108,11 @@
                             ]) !!}
                         </div>
                         <div class="col-md-4 limit-modifiers {{ in_array($limit->limit_type, $debitableLimits) || in_array($limit->limit_type, $countableLimits) ? '' : 'hide' }}">
-                            <div class="form-group quantity {{ in_array($limit->limit_type, $debitableLimits) ? '' : 'hide' }}">
+                            <div class="form-group quantity {{ in_array($limit->limit_type, $countableLimits) ? '' : 'hide' }}">
                                 {!! Form::label('Quantity') !!}
                                 {!! Form::number('quantity[]', $limit->quantity, ['class' => 'form-control', 'placeholder' => 'Enter Quantity', 'min' => 0, 'step' => 1]) !!}
                             </div>
-                            <div class="form-group debit {{ in_array($limit->limit_type, $countableLimits) ? '' : 'hide' }}">
+                            <div class="form-group debit {{ in_array($limit->limit_type, $debitableLimits) ? '' : 'hide' }}">
                                 {!! Form::label('Debit') !!}
                                 {!! Form::select('debit[]', [true => 'Debit', false => 'Don\'t Debit'], $limit->debit, ['class' => 'form-control']) !!}
                             </div>
