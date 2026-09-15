@@ -83,7 +83,7 @@
                             This option is not suitable for objects that should have limits as part of an action workflow, ex. prompt submissions.
                         </div>
                         </p>
-                        {!! Form::select('is_auto_unlocked', [true => 'Yes', false => 'No'], count($limits) ? $limits->first()->is_auto_unlocked : false, ['class' => 'form-control']) !!}
+                        {!! Form::select('is_auto_unlocked', [true => 'Yes', false => 'No'], $limits ? $limits->first()->is_auto_unlocked : false, ['class' => 'form-control']) !!}
                     </div>
                 @else
                     {!! Form::hidden('is_auto_unlocked', true) !!}
