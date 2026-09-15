@@ -2,12 +2,16 @@
     // map the keys and the 'name' value of config('lorekeeper.limits.limit_types')
     $limitTypes = getLimitTypes();
     $limitData = getLimitData();
-    $debitableLimits = array_keys(array_filter(config('lorekeeper.limits.limit_types'), function ($limit) {
-        return $limit['debitable'] == true;
-    }));
-    $countableLimits = array_keys(array_filter(config('lorekeeper.limits.limit_types'), function ($limit) {
-        return $limit['countable'] == true;
-    }));
+    $debitableLimits = array_keys(
+        array_filter(config('lorekeeper.limits.limit_types'), function ($limit) {
+            return $limit['debitable'] == true;
+        }),
+    );
+    $countableLimits = array_keys(
+        array_filter(config('lorekeeper.limits.limit_types'), function ($limit) {
+            return $limit['countable'] == true;
+        }),
+    );
 
     $limits = hasLimits($object) ? getLimits($object) : null;
 
@@ -99,11 +103,11 @@
                         <div class="col-md-4 form-group limit-select">
                             {!! Form::label('limit_id[]', 'Limit') !!}
                             {!! Form::select('limit_id[]', $limitData[$limit->limit_type], $limit->limit_id, [
-                            'class' => 'form-control limit-selectize ' . strtolower($limit->limit_type) . '-select',
-                            'placeholder' => 'Select ' . ($limitTypes[$limit->limit_type] ?? 'Limit'),
-                        ]) !!}
+                                'class' => 'form-control limit-selectize ' . strtolower($limit->limit_type) . '-select',
+                                'placeholder' => 'Select ' . ($limitTypes[$limit->limit_type] ?? 'Limit'),
+                            ]) !!}
                         </div>
-                        <div class="col-md-4 limit-modifiers {{ (in_array($limit->limit_type, $debitableLimits) || in_array($limit->limit_type, $countableLimits))  ? '' : 'hide' }}">
+                        <div class="col-md-4 limit-modifiers {{ in_array($limit->limit_type, $debitableLimits) || in_array($limit->limit_type, $countableLimits) ? '' : 'hide' }}">
                             <div class="form-group quantity {{ in_array($limit->limit_type, $debitableLimits) ? '' : 'hide' }}">
                                 {!! Form::label('Quantity') !!}
                                 {!! Form::number('quantity[]', $limit->quantity, ['class' => 'form-control', 'placeholder' => 'Enter Quantity', 'min' => 0, 'step' => 1]) !!}
@@ -113,7 +117,7 @@
                                 {!! Form::select('debit[]', [true => 'Debit', false => 'Don\'t Debit'], $limit->debit, ['class' => 'form-control']) !!}
                             </div>
                         </div>
-                        <div class="limit-delete {{ (in_array($limit->limit_type, $debitableLimits) || in_array($limit->limit_type, $countableLimits)) ? 'col-md-1' : 'col-md-5' }} d-flex align-items-center">
+                        <div class="limit-delete {{ in_array($limit->limit_type, $debitableLimits) || in_array($limit->limit_type, $countableLimits) ? 'col-md-1' : 'col-md-5' }} d-flex align-items-center">
                             <div class="btn btn-danger remove-limit mx-auto">X</div>
                         </div>
                     </div>
@@ -221,7 +225,7 @@
             if (debitable || countable) {
                 node.closest('.limit-row').find('.limit-modifiers').removeClass('hide');
                 node.closest('.limit-row').find('.limit-delete').addClass('col-md-1');
-                 if (debitable) {
+                if (debitable) {
                     node.closest('.limit-row').find('.debit').removeClass('hide');
                 } else {
                     node.closest('.limit-row').find('.debit').addClass('hide');

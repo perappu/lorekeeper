@@ -558,7 +558,9 @@ function hasRewards($object) {
  * @return array
  */
 function getLimitTypes() {
-    return array_map(function($limit) {return $limit['name'];}, config('lorekeeper.limits.limit_types'));
+    return array_map(function ($limit) {
+        return $limit['name'];
+    }, config('lorekeeper.limits.limit_types'));
 }
 
 /**
@@ -567,7 +569,7 @@ function getLimitTypes() {
  * Builds an array structured to match keys with the above getLimitTypes.
  * For example:
  * [ 'item' => $items, 'currency' => $currencies]
- * 
+ *
  * @return array
  */
 function getLimitData() {
@@ -583,16 +585,16 @@ function getLimitData() {
 
         switch ($limitKey) {
             case 'item':
-                $query = \App\Models\Item\Item::orderBy('name');
+                $query = App\Models\Item\Item::orderBy('name');
                 break;
             case 'currency':
-                $query = \App\Models\Currency\Currency::where('is_user_owned', 1)->orderBy('name');
+                $query = App\Models\Currency\Currency::where('is_user_owned', 1)->orderBy('name');
                 break;
             case 'prompt':
-                $query = \App\Models\Prompt\Prompt::orderBy('name');
+                $query = App\Models\Prompt\Prompt::orderBy('name');
                 break;
             case 'dynamic':
-                $query = \App\Models\Limit\DynamicLimit::orderBy('name')->orderBy('name');
+                $query = App\Models\Limit\DynamicLimit::orderBy('name')->orderBy('name');
                 break;
                 // Add the query builder for your other limits here, set with the matching key in config('lorekeeper.limits.limit_types')
                 // If your limit type does not have a model, you may need to add special handling here.
