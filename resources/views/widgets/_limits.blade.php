@@ -97,7 +97,7 @@
         @endif
     @else
         <div class="alert alert-{{ $limits->first()->is_unlocked && $limits->first()->isUnlocked(Auth::user() ?? null) ? 'info' : 'danger' }} p-1 mt-2 d-flex">
-            @if($limits->first()->is_unlocked)
+            @if ($limits->first()->is_unlocked)
                 <div class="d-flex align-items-center pr-1">
                     @if ($limits->first()->isUnlocked(Auth::user() ?? null))
                         <span class="badge badge-success" data-toggle="tooltip" title="You have unlocked this limit.">
@@ -110,12 +110,16 @@
                     @endif
                 </div>
             @endif
-            <small class="d-flex align-items-center {{ $hideUnlock ? 'flex-row' : 'flex-column w-100'}}">
-                {!! $limits->where('debit', false)->count() ? 'Requires ' . 
-                    implode(', ', $limits->where('debit', false)->map(function ($limit) use ($limitTypes) {
-                            return ($limit->quantity ? $limit->quantity . ' ' : '') . $limit->limit->name;
-                        })->toArray()) : ''
-                !!}
+            <small class="d-flex align-items-center {{ $hideUnlock ? 'flex-row' : 'flex-column w-100' }}">
+                {!! $limits->where('debit', false)->count()
+                    ? 'Requires ' .
+                        implode(
+                            ', ',
+                            $limits->where('debit', false)->map(function ($limit) use ($limitTypes) {
+                                    return ($limit->quantity ? $limit->quantity . ' ' : '') . $limit->limit->name;
+                                })->toArray(),
+                        )
+                    : '' !!}
                 {!! $limits->where('debit', true)->count() ? ($limits->where('debit', false)->count() ? 'and debits' : 'Debits') : '' !!}
                 {!! $limits->where('debit', true)->count()
                     ? implode(
