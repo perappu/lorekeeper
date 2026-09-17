@@ -106,8 +106,8 @@
                         $promptDetails.load('{{ url('submissions/new/prompt') }}/' + $(this).val());
                         $requirementsWarning.load('{{ url('submissions/new/prompt') }}/' + $(this).val() + '/requirements');
 
-                        $('.character-prompt-count').each(function(index, element) {
-                            var $characterId = $(this).closest('.submission-character').find('.character-code').val();
+                        $('#characters .character-prompt-count').each(function(index, element) {
+                            var characterId = $(this).closest('.submission-character').find('.character-code').val();
                             $(this).load('{{ url('submissions/counts/character') }}/' + $prompt.val() + '/' + characterId);
                         });
                     });
@@ -115,8 +115,8 @@
                     if ($prompt.val()) {
                         $promptDetails.load('{{ url('submissions/new/prompt') }}/' + $prompt.val());
                         $requirementsWarning.load('{{ url('submissions/new/prompt') }}/' + $prompt.val() + '/requirements');
-                        $('.character-prompt-count').each(function(index, element) {
-                            var $characterId = $(this).closest('.submission-character').find('.character-code').val();
+                        $('#characters .character-prompt-count').each(function(index, element) {
+                            var characterId = $(this).closest('.submission-character').find('.character-code').val();
                             $(this).load('{{ url('submissions/counts/character') }}/' + $prompt.val() + '/' + characterId);
                         });
                     }

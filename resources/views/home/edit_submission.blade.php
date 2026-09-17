@@ -136,7 +136,7 @@
                         $requirementsWarning.html('');
                         $requirementsWarning.load('{{ url('submissions/new/prompt') }}/' + $(this).val() + '/requirements');
                     
-                        $('.character-prompt-count').each(function(index, element) {
+                        $('#characters .character-prompt-count').each(function(index, element) {
                             var $characterId = $(this).closest('.submission-character').find('.character-code').val();
                             $(this).load('{{ url('submissions/counts/character') }}/' + $prompt.val() + '/' + characterId);
                         });
