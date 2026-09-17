@@ -29,7 +29,7 @@
                     <div class="character-prompt-count">
                         @include('widgets._character_prompt_count', [
                             'character' => $character->character ? $character->character : $character,
-                            'prompt' => $submission->prompt ?? null
+                            'prompt' => $submission->prompt ?? null,
                         ])
                     </div>
                 @endif

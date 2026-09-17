@@ -616,11 +616,12 @@ class SubmissionController extends Controller {
 
         return redirect()->to('claims/draft/'.$submission->id);
     }
-    
+
     /**
      * Shows character prompt count information.
      *
-     * @param int $id
+     * @param int   $id
+     * @param mixed $slug
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -630,11 +631,10 @@ class SubmissionController extends Controller {
         if (!$prompt || !$character) {
             return response(404);
         }
-        
+
         return view('widgets._character_prompt_count', [
-            'prompt' => $prompt,
-            'character'  => $character
+            'prompt'     => $prompt,
+            'character'  => $character,
         ]);
     }
-
 }

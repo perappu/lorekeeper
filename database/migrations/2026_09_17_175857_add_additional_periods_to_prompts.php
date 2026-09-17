@@ -5,13 +5,11 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
+    public function up(): void {
         Schema::table('prompts', function (Blueprint $table) {
             $table->string('limit_period')->nullable()->default(null)->change();
         });
@@ -20,8 +18,7 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
+    public function down(): void {
         // enums are weird, can not do change() with an enum column
         DB::statement("ALTER TABLE prompts CHANGE COLUMN limit_period limit_period ENUM('Hour', 'Day', 'Week', 'Month', 'Year') NULL DEFAULT NULL");
     }
