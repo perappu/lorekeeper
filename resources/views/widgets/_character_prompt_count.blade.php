@@ -2,7 +2,7 @@
     @php
         $count = $prompt->getCount($character->user, collect($character));
     @endphp
-    @if($prompt->limit && $prompt->limit_character)
+    @if ($prompt->limit && $prompt->limit_character)
         <div class="text-danger">
             {{ $character->fullName . ' can be included on this prompt ' . $prompt->limit . ' time(s)' }}
             {{ $prompt->limit_period ? ' per ' . strtolower(config('lorekeeper.extensions.limit_periods')[$prompt->limit_period]) : '' }}
