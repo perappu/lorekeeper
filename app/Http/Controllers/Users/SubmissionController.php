@@ -177,7 +177,7 @@ class SubmissionController extends Controller {
             'page'                   => 'submission',
             'expanded_rewards'       => config('lorekeeper.extensions.character_reward_expansion.expanded'),
             'selectedInventory'      => isset($submission->data['user']) ? parseAssetData($submission->data['user']) : null,
-            'count'                  => $submission->prompt ? $submission->prompt->getCount(Auth::user(), $submission->characters->pluck('character_id')->toArray()) : [],
+            'count'                  => $submission->prompt ? $submission->prompt->getCount(Auth::user(), $submission->characters->pluck('character')) : [],
             'userGallerySubmissions' => $gallerySubmissions,
         ]));
     }
