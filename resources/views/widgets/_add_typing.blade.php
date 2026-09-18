@@ -1,5 +1,6 @@
 @php
     $elements = \App\Models\Element\Element::orderBy('name')->pluck('name', 'id');
+    $typings = isset($typings) ? $typings : $object->typings;
 @endphp
 
 <div class="card p-4 mb-2 mt-2" id="typing-card">
@@ -14,7 +15,7 @@
         <div class="d-flex justify-content-between mb-3">
             <div>
                 <h5 class="mb-0">Typing for {!! $object->displayName !!}</h5>
-                Current Typing: {!! $object->elementNames !!}
+                Current Typing: {!! implode(', ', $typings->pluck('element')->pluck('displayName')->toArray()) !!}
             </div>
             <div class="text-right">
                 <div class="btn btn-secondary" id="add-element">Add Element</div>
@@ -22,8 +23,8 @@
         </div>
         <hr>
         <div id="elements">
-            @if ($object->typings)
-                @foreach ($object->typings as $typing)
+            @if ($typings)
+                @foreach ($typings as $typing)
                     <div class="row no-gutters">
                         <div class="col-11 form-group">
                             {!! Form::select('element_ids[]', $elements, $typing->element_id, ['class' => 'form-control element-selectize', 'placeholder' => 'Select Element']) !!}
@@ -37,12 +38,12 @@
         </div>
         <hr>
         <div class="text-right">
-            <div class="btn btn-primary" id="submit-typing">{{ $object->typings ? 'Edit' : 'Create' }} Typing</div>
-            @if ($object->typings)
+            <div class="btn btn-primary" id="submit-typing">{{ $typings ? 'Edit' : 'Create' }} Typing</div>
+            @if ($typings)
                 <i class="fas fa-trash text-danger float-right mt-2 mx-2 fa-2x" data-toggle="tooltip" title="To delete typings, simply remove all existing typings and click 'Edit Typings'"></i>
             @endif
         </div>
-    </div>
+</div>
 </div>
 
 <div class="row no-gutters hide element-row">
