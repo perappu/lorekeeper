@@ -651,3 +651,31 @@ function getLimitData() {
 
     return $limitData;
 }
+
+/**
+ * Returns the given objects rewards, if any.
+ *
+ * @param mixed $object
+ *
+ * @return bool
+ */
+function getTypings($object) {
+    if (in_array(App\Traits\Typeable::class, class_uses_recursive(get_class($object)))) {
+        return $object->typings;
+    } else {
+        return null;
+    }
+}
+
+/**
+ * checks if a certain object has any rewards.
+ *
+ * @param mixed $object
+ */
+function hasTypings($object) {
+    if (in_array(App\Traits\Typeable::class, class_uses_recursive(get_class($object)))) {
+        return $object->hasTypings;
+    } else {
+        return false;
+    }
+}

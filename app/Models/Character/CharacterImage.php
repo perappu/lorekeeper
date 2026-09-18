@@ -7,10 +7,11 @@ use App\Models\Rarity;
 use App\Models\Species\Species;
 use App\Models\Species\Subtype;
 use App\Models\User\User;
+use App\Traits\Typeable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CharacterImage extends Model {
-    use SoftDeletes;
+    use SoftDeletes, Typeable;
 
     /**
      * The attributes that are mass assignable.
