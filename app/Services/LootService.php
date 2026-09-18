@@ -160,6 +160,11 @@ class LootService extends Service {
                 ];
             }
 
+            if ($type == 'None') {
+                $type = null;
+                $data['rewardable_id'][$key] = null;
+            }
+
             Loot::create([
                 'loot_table_id'   => $table->id,
                 'rewardable_type' => $type,
