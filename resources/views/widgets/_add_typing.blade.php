@@ -43,7 +43,7 @@
                 <i class="fas fa-trash text-danger float-right mt-2 mx-2 fa-2x" data-toggle="tooltip" title="To delete typings, simply remove all existing typings and click 'Edit Typings'"></i>
             @endif
         </div>
-</div>
+    </div>
 </div>
 
 <div class="row no-gutters hide element-row">
