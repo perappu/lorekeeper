@@ -26,13 +26,16 @@ return new class extends Migration
             $elements = json_decode($typing->element_ids);
 
             foreach($elements as $element) {
-                DB::table('typings')->insert([
-                    'typing_model' => $typing->typing_model,
-                    'typing_id' => $typing->typing_id,
-                    'element_id' => $element,
-                    // needs placeholder value because the column is non-nullable and we haven't dropped it yet
-                    'element_ids' => '[]' 
-                ]);
+                // filter out typings that just have a singular null value in them
+                if(isset($element)) {
+                    DB::table('typings')->insert([
+                        'typing_model' => $typing->typing_model,
+                        'typing_id' => $typing->typing_id,
+                        'element_id' => $element,
+                        // needs placeholder value because the column is non-nullable and we haven't dropped it yet
+                        'element_ids' => '[]' 
+                    ]);
+                }
             }
             DB::table('typings')->where('id', '=', $typing->id)->delete();
         }
