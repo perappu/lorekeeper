@@ -77,14 +77,13 @@ class Loot extends Model {
     **********************************************************************************************/
 
     /**
-     * Override the rewardable type value 
-     * we get None for site functions, but null for database relationship
+     * Override the rewardable type value
+     * we get None for site functions, but null for database relationship.
      */
-    protected function rewardableType(): Attribute
-    {
+    protected function rewardableType(): Attribute {
         return Attribute::make(
-            get: fn (string|null $value) => $value ? $value : 'None',
-            set: fn (string|null $value) => $value,
+            get: fn (?string $value) => $value ? $value : 'None',
+            set: fn (?string $value) => $value,
         );
     }
 }

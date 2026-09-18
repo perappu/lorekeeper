@@ -160,7 +160,7 @@ class LootService extends Service {
                 ];
             }
 
-            if($type == 'None') {
+            if ($type == 'None') {
                 $type = null;
                 $data['rewardable_id'][$key] = null;
             }
