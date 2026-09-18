@@ -9,7 +9,7 @@ use App\Models\Element\Typing;
  */
 trait Typeable {
     public function typings() {
-        return $this->morphMany(Typing::class, 'typable', 'typing_model', 'typing_id');
+        return $this->morphMany(Typing::class, 'typeable', 'typing_model', 'typing_id');
     }
 
     public function getHasTypingAttribute() {
