@@ -84,5 +84,6 @@ class UpdateStaffRewardActions extends Command {
         }
 
         $this->info("\n".'All actions have been added.'."\n");
+        return Command::SUCCESS;
     }
 }
