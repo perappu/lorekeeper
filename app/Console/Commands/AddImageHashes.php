@@ -101,6 +101,7 @@ class AddImageHashes extends Command {
         } else {
             $this->line('No images need updating!');
         }
+
         return Command::SUCCESS;
     }
 }
