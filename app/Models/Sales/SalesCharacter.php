@@ -111,7 +111,7 @@ class SalesCharacter extends Model {
                 return 'PWYW';
                 break;
         }
-        
+
         return '';
     }
 
@@ -144,7 +144,7 @@ class SalesCharacter extends Model {
                 return 'Claim Here';
                 break;
         }
-        
+
         return '';
     }
 

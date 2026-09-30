@@ -75,6 +75,5 @@ class UpdateLorekeeperV3 extends Command {
             $this->line('Aborting! Please run composer update and then run this command again.');
         }
 
-        return;
     }
 }

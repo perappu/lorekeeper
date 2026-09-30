@@ -218,9 +218,9 @@ class UserService extends Service {
     /**
      * Confirms a user's two-factor auth.
      *
-     * @param string           $code
-     * @param array            $data
-     * @param User $user
+     * @param string $code
+     * @param array  $data
+     * @param User   $user
      *
      * @return bool
      */
@@ -249,7 +249,7 @@ class UserService extends Service {
      * Disables a user's two-factor auth.
      *
      * @param object $code
-     * @param User $user
+     * @param User   $user
      *
      * @return bool
      */

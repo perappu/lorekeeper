@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
 class AdminEdit extends Component {
-    
     /** @var object The model object. */
     public object $object;
 

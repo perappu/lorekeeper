@@ -68,6 +68,5 @@ class WatermarkOldImages extends Command {
             $this->line('Bye.');
         }
 
-        return;
     }
 }
