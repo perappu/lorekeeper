@@ -220,7 +220,7 @@ class UserService extends Service {
      *
      * @param string           $code
      * @param array            $data
-     * @param \App\Models\User $user
+     * @param User $user
      *
      * @return bool
      */
@@ -248,8 +248,8 @@ class UserService extends Service {
     /**
      * Disables a user's two-factor auth.
      *
-     * @param string           $code
-     * @param \App\Models\User $user
+     * @param object $code
+     * @param User $user
      *
      * @return bool
      */

@@ -112,7 +112,7 @@ class InventoryController extends Controller {
     /**
      * Edits the inventory of involved users.
      *
-     * @param App\Services\InventoryManager $service
+     * @param InventoryManager $service
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -289,7 +289,7 @@ class InventoryController extends Controller {
     /**
      * Transfers inventory items to another user.
      *
-     * @param App\Services\InventoryManager $service
+     * @param InventoryManager $service
      *
      * @return \Illuminate\Http\RedirectResponse
      */

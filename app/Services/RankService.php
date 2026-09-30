@@ -161,7 +161,7 @@ class RankService extends Service {
     /**
      * Sorts user ranks.
      *
-     * @param array $data
+     * @param string $data
      * @param User  $user
      *
      * @return bool

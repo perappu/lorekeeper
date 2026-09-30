@@ -393,6 +393,7 @@ function checkAlias($url, $failOnError = true) {
 
         return $recipient;
     }
+    return '';
 }
 
 /**
