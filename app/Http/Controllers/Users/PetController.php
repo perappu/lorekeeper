@@ -344,7 +344,7 @@ class PetController extends Controller {
     public function postClaimAllPetDrops(PetDropService $service) {
         $user_pets = UserPet::where('user_id', Auth::user()->id)->whereHas('drops.dropData')->whereRelation('drops', 'drops_available', '>', 0)->get();
 
-        if(!($user_pets->count())) {
+        if (!($user_pets->count())) {
             flash('No drops to claim.')->info();
         } else {
             $rewards = createAssetsArray();
