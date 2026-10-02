@@ -86,33 +86,6 @@ class UserPet extends Model {
      * Get the pet's pet drop data.
      */
     public function drops() {
-        if (!$this->pet->dropData) {
-            return $this->belongsTo('App\Models\Loot\Loot', 'rewardable_id', 'loot_table_id')->whereNull('loot_table_id');
-        }
-        if (!PetDrop::where('user_pet_id', $this->id)->first()) {
-            PetDrop::create([
-                'drop_id'         => $this->pet->dropData->id,
-                'user_pet_id'     => $this->id,
-                'parameters'      => $this->pet->dropData->rollParameters(),
-                'drops_available' => 0,
-                'next_day'        => Carbon::now()
-                    ->add($this->pet->dropData->frequency, $this->pet->dropData->interval)
-                    ->startOf($this->pet->dropData->interval),
-            ]);
-            // if we delete old drop data, populate with new
-        } elseif (!PetDrop::where('user_pet_id', $this->id)->where('drop_id', $this->pet->dropData->id)->first()) {
-            PetDrop::where('user_pet_id', $this->id)->delete();
-            PetDrop::create([
-                'drop_id'         => $this->pet->dropData->id,
-                'user_pet_id'     => $this->id,
-                'parameters'      => $this->pet->dropData->rollParameters(),
-                'drops_available' => 0,
-                'next_day'        => Carbon::now()
-                    ->add($this->pet->dropData->frequency, $this->pet->dropData->interval)
-                    ->startOf($this->pet->dropData->interval),
-            ]);
-        }
-
         return $this->hasOne(PetDrop::class, 'user_pet_id');
     }
 

@@ -343,12 +343,10 @@ class PetController extends Controller {
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postClaimAllPetDrops(PetDropService $service) {
-        $user_pet_ids = UserPet::where('user_id', Auth::user()->id)->pluck('id');
-        $pet_drops = PetDrop::whereIn('user_pet_id', $user_pet_ids)->where('drops_available', '>', 0)->pluck('user_pet_id');
-        $pets = UserPet::whereIn('id', $pet_drops)->get();
+        $user_pets = UserPet::where('user_id', Auth::user()->id)->whereHas('drops.dropData')->whereRelation('drops', 'drops_available', '>', 0)->get();
 
         $rewards = createAssetsArray();
-        foreach ($pets as $pet) {
+        foreach ($user_pets as $pet) {
             if ($assets = $service->claimPetDrops($pet, false)) {
                 $rewards = mergeAssetsArrays($rewards, $assets);
             } else {
