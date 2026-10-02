@@ -349,7 +349,8 @@ class PetController extends Controller {
         } else {
             $rewards = createAssetsArray();
             foreach ($user_pets as $pet) {
-                if ($assets = $service->claimPetDrops($pet, true)) {
+                // set the below to "true" to flash the individual drops from each pet
+                if ($assets = $service->claimPetDrops($pet, false)) {
                     $rewards = mergeAssetsArrays($rewards, $assets);
                 } else {
                     foreach ($service->errors()->getMessages()['error'] as $error) {
