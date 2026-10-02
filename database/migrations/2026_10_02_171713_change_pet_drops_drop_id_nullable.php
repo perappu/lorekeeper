@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->integer('drop_id')->unsigned()->nullable()->change();
         });
 
-        $output = new ConsoleOutput();
+        $output = new ConsoleOutput;
         $output->writeln("\n<info>Calling fix-pet-drop-ids command to fix pet data inconsistency. Please do not kill the console until it is completed.</info>");
         Artisan::call(FixPetDropIds::class, [], $output);
         $output->writeln("\n<info>Command finished. You may run it again with php artisan fix-pet-drop-ids if needed.</info>");
