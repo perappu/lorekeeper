@@ -106,7 +106,7 @@ class PetDropData extends Model {
 
         return $paramArray;
     }
-    
+
     /**
      * Check if the drop data is active or not.
      *

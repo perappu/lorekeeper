@@ -7,19 +7,17 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
+    public function up(): void {
         Schema::table('pet_drops', function (Blueprint $table) {
             // Specific drop data being used, as well as associated character
             $table->integer('drop_id')->unsigned()->nullable()->change();
         });
 
-        $output = new ConsoleOutput();
+        $output = new ConsoleOutput;
         $output->writeln("\n<error>Calling fix-pet-drop-ids command to fix pet data inconsistency. Please do not kill the console until it is completed.</error>");
         Artisan::call(FixPetDropIds::class, [], $output);
         $output->writeln("\n<info>Command finished. You may run it again with php artisan fix-pet-drop-ids if needed.</info>");
@@ -28,8 +26,7 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
+    public function down(): void {
         Schema::table('pet_drops', function (Blueprint $table) {
             // Specific drop data being used, as well as associated character
             $table->integer('drop_id')->unsigned()->change();

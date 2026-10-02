@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Facades\Notifications;
 use App\Models\Character\Character;
 use App\Models\Pet\Pet;
-use App\Models\Pet\PetDrop;
 use App\Models\User\User;
 use App\Models\User\UserItem;
 use App\Models\User\UserPet;
