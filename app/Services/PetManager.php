@@ -467,10 +467,6 @@ class PetManager extends Service {
                 $isDefault = false;
             }
 
-            if ($id == null) {
-                throw new \Exception('Pet is already the default variant.');
-            }
-
             if (!$isStaff || !Auth::user()->isStaff) {
                 if (!$stack_id) {
                     throw new \Exception('No item selected.');
@@ -482,11 +478,14 @@ class PetManager extends Service {
                 if (!$tag) {
                     throw new \Exception('Item is not a splice.');
                 }
-                if ($isDefault == true && $tag->data['variant_ids'] && !in_array('default', $tag->data['variant_ids'])) {
+                if ($isDefault && $tag->data['variant_ids'] && !in_array('default', $tag->data['variant_ids'])) {
                     throw new \Exception('Item can not change pet into the default variant.');
                 }
-                if ($isDefault == false && $tag->data['variant_ids'] && !in_array($id, $tag->data['variant_ids'])) {
+                if (!$isDefault && $tag->data['variant_ids'] && !in_array($id, $tag->data['variant_ids'])) {
                     throw new \Exception('Item is not a splice for this variant.');
+                }
+                if ($isDefault && $id == null) {
+                    throw new \Exception('Pet is already the default variant.');
                 }
                 if ($id == $pet->pet_id) {
                     throw new \Exception('Pet is already this variant.');
@@ -500,6 +499,10 @@ class PetManager extends Service {
                     throw new \Exception('Could not debit item.');
                 }
             } else {
+                if ($isDefault && $id == null) {
+                    throw new \Exception('Pet is already the default variant.');
+                }
+
                 $this->logAdminAction($pet->user, 'Pet Variant Changed', 'Changed pet to '.$pet->pet->name.' variant');
             }
 
