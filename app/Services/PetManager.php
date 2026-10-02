@@ -511,11 +511,11 @@ class PetManager extends Service {
             if ($pet->drops && isset($pet->pet->dropData)) {
                 $pet->drops->update([
                     'drop_id'         => $pet->pet->dropData->id,
-                    'parameters'      => $pet->dropData->rollParameters(),
+                    'parameters'      => $pet->pet->dropData->rollParameters(),
                     'drops_available' => 0,
                     'next_day'        => Carbon::now()
-                        ->add($pet->dropData->frequency, $pet->dropData->interval)
-                        ->startOf($pet->dropData->interval),
+                        ->add($pet->pet->dropData->frequency, $pet->pet->dropData->interval)
+                        ->startOf($pet->pet->dropData->interval),
                 ]);
             } else {
                 $pet->drops->update([
