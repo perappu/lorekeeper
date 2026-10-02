@@ -10,7 +10,7 @@
     @endif
 </h4>
 <div class="alert alert-info mt-3">
-    <i class="fas fa-info-circle"></i> Drops every {{ $pet->drops->dropData->frequency > 1 ? ($pet->drops->dropData->frequency . ' ' . Str::plural($pet->drops->dropData->interval)) : $pet->drops->dropData->interval }}.
+    <i class="fas fa-info-circle"></i> Drops every {{ $pet->drops->dropData->frequency > 1 ? $pet->drops->dropData->frequency . ' ' . Str::plural($pet->drops->dropData->interval) : $pet->drops->dropData->interval }}.
 </div>
 <a class="btn btn-primary mb-2" data-toggle="collapse" href="#drops" role="button" aria-expanded="false" aria-controls="drops">
     View Drops
@@ -28,18 +28,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                        @foreach ($pet->availabledrops->rewards(true)[strtolower($pet->drops->parameters)] as $reward)
-                            <tr>
-                                @php $reward_object = $reward->rewardable_type::find($reward->rewardable_id); @endphp
-                                <td>
-                                    @if ($reward_object->has_image)
-                                        <img class="img-fluid" style="max-height: 10em;" src="{{ $reward_object->imageUrl }}"><br />
-                                    @endif
-                                    {!! $reward_object->displayName !!}
-                                </td>
-                                <td>Between {{ $reward->min_quantity . ' and ' . $reward->max_quantity }}</td>
-                            </tr>
-                        @endforeach
+                    @foreach ($pet->availabledrops->rewards(true)[strtolower($pet->drops->parameters)] as $reward)
+                        <tr>
+                            @php $reward_object = $reward->rewardable_type::find($reward->rewardable_id); @endphp
+                            <td>
+                                @if ($reward_object->has_image)
+                                    <img class="img-fluid" style="max-height: 10em;" src="{{ $reward_object->imageUrl }}"><br />
+                                @endif
+                                {!! $reward_object->displayName !!}
+                            </td>
+                            <td>Between {{ $reward->min_quantity . ' and ' . $reward->max_quantity }}</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         @else
