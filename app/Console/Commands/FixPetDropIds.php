@@ -27,13 +27,12 @@ class FixPetDropIds extends Command {
      * Execute the console command.
      */
     public function handle() {
-
         // this uses Symfony functions directly so that it doesn't look as haywire when called via the migration
         // it still looks a little haywire but not as much
         $symfonyOutput = $this->output->getOutput();
 
         $user_pets = UserPet::all();
-        ProgressBar::setFormatDefinition('custom', "<info>[%bar%] %current%/%max%</info> - Fixing user pets...");
+        ProgressBar::setFormatDefinition('custom', '<info>[%bar%] %current%/%max%</info> - Fixing user pets...');
         $progressBar = new ProgressBar($symfonyOutput, $user_pets->count());
         $progressBar->setFormat('custom');
         $progressBar->setMessage('');
@@ -41,8 +40,8 @@ class FixPetDropIds extends Command {
 
         $missingDrops = 0;
 
-        foreach($user_pets as $user_pet) {
-            if(!($user_pet->drops)) {
+        foreach ($user_pets as $user_pet) {
+            if (!($user_pet->drops)) {
                 // do it got drops?
                 if ($user_pet->pet->hasDrops) {
                     // create drops for pets who need them
@@ -77,7 +76,7 @@ class FixPetDropIds extends Command {
                         ->startOf($user_pet->pet->dropData->interval),
                 ]);
                 $symfonyOutput->writeln('<comment>Corrected pet ID #'.$user_pet->id.' (wrong drop_id)</comment>');
-            } elseif(!isset($user_pet->pet->dropData) && $user_pet->drops->drop_id) {
+            } elseif (!isset($user_pet->pet->dropData) && $user_pet->drops->drop_id) {
                 // fix pets that had drops that no longer do
                 $user_pet->drops->update([
                     'drop_id'         => null,
@@ -86,10 +85,10 @@ class FixPetDropIds extends Command {
                     'next_day'        => null,
                 ]);
                 $symfonyOutput->writeln('<comment>Corrected pet ID #'.$user_pet->id.' (removed non-existent drops)</comment>');
-            } elseif(isset($user_pet->pet->dropData)) {
+            } elseif (isset($user_pet->pet->dropData)) {
                 // even if everything else looks fine, the parameters can still be out of sync
                 // so let's fix that
-                if(!in_array($user_pet->drops->parameters, array_keys($user_pet->pet->dropData->parameters))) {
+                if (!in_array($user_pet->drops->parameters, array_keys($user_pet->pet->dropData->parameters))) {
                     $user_pet->drops->update([
                         'parameters' => $user_pet->pet->dropData->rollParameters(),
                     ]);
@@ -99,17 +98,17 @@ class FixPetDropIds extends Command {
             $progressBar->advance();
         }
         $progressBar->finish();
-        $symfonyOutput->writeln("\n<comment>". $missingDrops .' pets needed drop data rows created.</comment>');
+        $symfonyOutput->writeln("\n<comment>".$missingDrops.' pets needed drop data rows created.</comment>');
 
         $symfonyOutput->writeln('');
 
         $deletedDrops = PetDrop::whereDoesntHave('user_pet')->get();
-        if($deletedDrops->count()) {
+        if ($deletedDrops->count()) {
             $progressBar = new ProgressBar($symfonyOutput, $deletedDrops->count());
             $progressBar->setFormat('custom');
             $progressBar->setMessage('Deleting invalid drops...');
             $progressBar->start();
-            foreach($deletedDrops as $deletedDrop) {
+            foreach ($deletedDrops as $deletedDrop) {
                 // just a double check
                 if ($deletedDrop->user_pet !== null) {
                     // the pet is deleted and the PetDrop is no longer needed
@@ -123,6 +122,6 @@ class FixPetDropIds extends Command {
             $symfonyOutput->write('No invalid drops to delete.');
         }
 
-        return COMMAND::SUCCESS;
+        return Command::SUCCESS;
     }
 }

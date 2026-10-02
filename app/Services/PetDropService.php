@@ -2,11 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Currency\Currency;
-use App\Models\Item\Item;
-use App\Models\Loot\LootTable;
 use App\Models\Pet\Pet;
-use App\Models\Pet\PetDrop;
 use App\Models\Pet\PetDropData;
 use App\Models\User\UserPet;
 use Carbon\Carbon;
@@ -45,7 +41,7 @@ class PetDropService extends Service {
             // Collect parameter data and encode it
             $paramData = [];
             foreach ($data['label'] as $key => $param) {
-                if(preg_match('/\s/', $param)) {
+                if (preg_match('/\s/', $param)) {
                     throw new \Exception('Group labels can not have spaces.');
                 }
                 $paramData[$param] = $data['weight'][$key];
@@ -64,7 +60,7 @@ class PetDropService extends Service {
 
             // update existing pets to have the new drop data
             $existingPets = UserPet::where('pet_id', $data['pet_id'])->get();
-            foreach($existingPets as $pet) {
+            foreach ($existingPets as $pet) {
                 $pet->drops->update([
                     'drop_id'         => $drop->id,
                     'parameters'      => $drop->rollParameters(),
@@ -99,7 +95,7 @@ class PetDropService extends Service {
             $paramData = [];
             if (isset($data['label'])) {
                 foreach ($data['label'] as $key => $param) {
-                    if(preg_match('/\s/', $param)) {
+                    if (preg_match('/\s/', $param)) {
                         throw new \Exception('Group labels can not have spaces.');
                     }
                     $paramData[$param] = $data['weight'][$key];
@@ -126,10 +122,10 @@ class PetDropService extends Service {
             // update existing pets to have the new drop data
             // the changes are limited to avoid removing things from players
             $existingPets = UserPet::where('pet_id', $drop->pet_id)->get();
-            foreach($existingPets as $pet) {
+            foreach ($existingPets as $pet) {
                 $petDrop = $pet->drops;
                 // update the parameters if parameter no longer exists
-                if(!in_array($petDrop->parameters, $data['label'])) {
+                if (!in_array($petDrop->parameters, $data['label'])) {
                     $petDrop->parameters = $drop->rollParameters();
                 }
                 $petDrop->save();
@@ -156,7 +152,7 @@ class PetDropService extends Service {
         try {
             // instead of deleting pet drops now, we set all of the relevant ones to null
             $drops = $drop->petDrops;
-            foreach($drops as $drop) {
+            foreach ($drops as $drop) {
                 $drop->update([
                     'drop_id'         => null,
                     'parameters'      => null,

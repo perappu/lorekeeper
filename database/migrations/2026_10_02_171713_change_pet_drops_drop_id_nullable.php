@@ -7,13 +7,11 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
+    public function up(): void {
         Schema::table('pet_drops', function (Blueprint $table) {
             // Specific drop data being used, as well as associated character
             $table->integer('drop_id')->unsigned()->nullable()->change();
@@ -28,8 +26,7 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
+    public function down(): void {
         Schema::table('pet_drops', function (Blueprint $table) {
             // Specific drop data being used, as well as associated character
             $table->integer('drop_id')->unsigned()->change();
