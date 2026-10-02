@@ -344,22 +344,24 @@ class PetController extends Controller {
     public function postClaimAllPetDrops(PetDropService $service) {
         $user_pets = UserPet::where('user_id', Auth::user()->id)->whereHas('drops.dropData')->whereRelation('drops', 'drops_available', '>', 0)->get();
 
-        $rewards = createAssetsArray();
-        foreach ($user_pets as $pet) {
-            if ($assets = $service->claimPetDrops($pet, false)) {
-                $rewards = mergeAssetsArrays($rewards, $assets);
-            } else {
-                foreach ($service->errors()->getMessages()['error'] as $error) {
-                    flash($error)->error();
+        if(!($user_pets->count())) {
+            flash('No drops to claim.')->info();
+        } else {
+            $rewards = createAssetsArray();
+            foreach ($user_pets as $pet) {
+                if ($assets = $service->claimPetDrops($pet, true)) {
+                    $rewards = mergeAssetsArrays($rewards, $assets);
+                } else {
+                    foreach ($service->errors()->getMessages()['error'] as $error) {
+                        flash($error)->error();
+                    }
                 }
             }
+            if (createRewardsString($rewards)) {
+                flash('You received: '.createRewardsString($rewards))->info();
+            }
+            flash('Drops claimed successfully.')->success();
         }
-        if (createRewardsString($rewards)) {
-            flash('You received: '.createRewardsString($rewards))->info();
-        } else {
-            flash('No drops to claim.')->info();
-        }
-        flash('Drops claimed successfully.')->success();
 
         return redirect()->back();
     }
