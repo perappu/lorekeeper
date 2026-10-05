@@ -184,6 +184,7 @@ class SetupAdminUser extends Command {
             return Command::SUCCESS;
         }
         $this->line('Action cancelled.');
+
         return Command::SUCCESS;
     }
 }
