@@ -99,9 +99,9 @@
     @parent
     <script>
         $(document).ready(function() {
-            $('.delete-rarity-button').on('click', function(e) {
-                e.preventDefault();
-                loadModal("{{ url('admin/data/rarities/delete') }}/{{ $rarity->id }}", 'Delete Rarity');
-            });
-        </script>
-    @endsection
+                    $('.delete-rarity-button').on('click', function(e) {
+                        e.preventDefault();
+                        loadModal("{{ url('admin/data/rarities/delete') }}/{{ $rarity->id }}", 'Delete Rarity');
+                    });
+    </script>
+@endsection
