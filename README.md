@@ -41,7 +41,7 @@ This is probably why you're here.
 - `extension/external-characters`
     > Allows for external characters to be added to prompt and gallery submissions, defined as a paired name and a link.
     > 
-    > Just like normal characters, external characters be added/removed on prompt submission drafts, as well as by admins at submission approval time. [(Link to announcement in LK discord)](https://discord.com/channels/678909186683437056/770140416803602452/1449422682058915941)
+    > Just like normal characters, external characters be added/removed on prompt submission drafts, as well as by admins at submission approval time.
 - `extension/sortable-prompts`
     > Adds a draggable sort to individual prompts, much like you can sort shops or prompt categories.
     > 
