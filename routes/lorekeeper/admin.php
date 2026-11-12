@@ -238,6 +238,27 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('prompts/create', 'PromptController@postCreateEditPrompt');
     Route::post('prompts/edit/{id?}', 'PromptController@postCreateEditPrompt');
     Route::post('prompts/delete/{id}', 'PromptController@postDeletePrompt');
+
+    // GAMES
+    Route::get('games', 'GameController@getIndex');
+    Route::get('games/create', 'GameController@getCreateGame');
+    Route::get('games/edit/{id}', 'GameController@getEditGame');
+    Route::get('games/delete/{id}', 'GameController@getDeleteGame');
+    Route::post('games/create', 'GameController@postCreateEditGame');
+    Route::post('games/edit/{id?}', 'GameController@postCreateEditGame');
+    Route::post('games/delete/{id}', 'GameController@postDeleteGame');
+    Route::post('games/sort', 'GameController@postSortGame');
+    Route::post('games/data/add/{id}', 'GameController@postAddGameData');
+    Route::post('games/data/edit/{id}', 'GameController@postEditGameData');
+
+    Route::get('game-categories', 'GameController@getCategoryIndex');
+    Route::get('game-categories/create', 'GameController@getCreateGameCategory');
+    Route::get('game-categories/edit/{id}', 'GameController@getEditGameCategory');
+    Route::get('game-categories/delete/{id}', 'GameController@getDeleteGameCategory');
+    Route::post('game-categories/create', 'GameController@postCreateEditGameCategory');
+    Route::post('game-categories/edit/{id?}', 'GameController@postCreateEditGameCategory');
+    Route::post('game-categories/delete/{id}', 'GameController@postDeleteGameCategory');
+    Route::post('game-categories/sort', 'GameController@postSortGameCategory');
 });
 
 // PAGES

@@ -13,6 +13,9 @@ return [
     |
     */
 
+    'game_test'  => [
+        'name'             => 'Test Game',
+    ],
     'flappy'  => [
         'name'             => 'Flappy',
     ],

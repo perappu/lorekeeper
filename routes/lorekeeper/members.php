@@ -225,3 +225,22 @@ Route::group(['prefix' => 'comments', 'namespace' => 'Comments'], function () {
     Route::post('/{id}/like/{action}', 'CommentController@like')->name('comments.like');
     Route::get('/liked', 'CommentController@getLikedComments');
 });
+
+/**************************************************************************************************
+    Games
+**************************************************************************************************/
+Route::group(['prefix' => 'games'], function () {
+    Route::get('/', 'GameController@getIndex');
+    Route::get('{id}', 'GameController@getGame')->where(['id' => '[0-9]+']);
+    Route::post('data/{id}', 'GameController@postGameData')->where(['id' => '[0-9]+']);
+    Route::post('/score', 'GameController@postSubmitScore');
+    Route::get('/score', function () {
+        return csrf_token();
+    });
+    Route::post('/score/check', 'GameController@postCanSubmitScore');
+    Route::post('/charge', 'GameController@postChargeCurrency');
+
+    /*********** ROUTES FOR SPECIFIC GAMES BELOW THIS COMMENT *************/
+
+    /*********** END ROUTES FOR SPECIFIC GAMES ****************************/
+});
