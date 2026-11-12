@@ -239,7 +239,7 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('prompts/edit/{id?}', 'PromptController@postCreateEditPrompt');
     Route::post('prompts/delete/{id}', 'PromptController@postDeletePrompt');
 
-    //RANDOM GENERATOR
+    // RANDOM GENERATOR
     Route::get('random', 'GeneratorController@getIndex');
     Route::get('random/create/{id}', 'GeneratorController@getCreateRandom');
     Route::get('random/edit/{id}', 'GeneratorController@getEditRandom');

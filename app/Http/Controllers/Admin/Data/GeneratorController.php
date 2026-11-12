@@ -175,7 +175,7 @@ class GeneratorController extends Controller {
         }
 
         return view('admin.generator.create_edit_random_object', [
-            'object'    => new RandomObject(),
+            'object'    => new RandomObject,
             'generator' => $generator,
         ]);
     }

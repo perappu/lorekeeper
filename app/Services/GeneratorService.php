@@ -221,8 +221,8 @@ class GeneratorService extends Service {
     /**
      * Processes user input for creating/updating a generator.
      *
-     * @param array                                 $data
-     * @param \App\Models\Generator\RandomGenerator $generator
+     * @param array           $data
+     * @param RandomGenerator $generator
      *
      * @return array
      */
