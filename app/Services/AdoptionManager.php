@@ -24,8 +24,8 @@ class AdoptionManager extends Service {
     /**
      * Buys an character from a adoption.
      *
-     * @param array                 $data
-     * @param \App\Models\User\User $user
+     * @param array $data
+     * @param User  $user
      *
      * @return App\Models\Adoption\Adoption|bool
      */
@@ -107,8 +107,8 @@ class AdoptionManager extends Service {
             $data['recipient_id'] = $user->id;
             $data['reason'] = 'Bought from adoption center';
             $adopt = Character::find($adoptionStock->character_id);
-            //there's a chance the adoption center user isn't an admin, so
-            //using the same logic as SetupAdminUser instead
+            // there's a chance the adoption center user isn't an admin, so
+            // using the same logic as SetupAdminUser instead
             $adminRank = Rank::orderBy('sort', 'DESC')->first();
             $admin = User::where('rank_id', $adminRank->id)->first();
 

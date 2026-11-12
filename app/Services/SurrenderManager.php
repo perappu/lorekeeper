@@ -25,8 +25,8 @@ class SurrenderManager extends Service {
     /**
      * Creates a new surrender.
      *
-     * @param array                 $data
-     * @param \App\Models\User\User $user
+     * @param array $data
+     * @param User  $user
      *
      * @return mixed
      */
@@ -63,8 +63,8 @@ class SurrenderManager extends Service {
     /**
      * Rejects a surrender.
      *
-     * @param array                 $data
-     * @param \App\Models\User\User $user
+     * @param array $data
+     * @param User  $user
      *
      * @return mixed
      */
@@ -113,8 +113,8 @@ class SurrenderManager extends Service {
     /**
      * Approves a surrender.
      *
-     * @param array                 $data
-     * @param \App\Models\User\User $user
+     * @param array $data
+     * @param User  $user
      *
      * @return mixed
      */

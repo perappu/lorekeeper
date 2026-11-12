@@ -173,9 +173,9 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('shops/sort', 'ShopController@postSortShop');
 
     // ADOPTIONS
-    //Route::get('adoptions', 'AdoptionController@getIndex');
+    // Route::get('adoptions', 'AdoptionController@getIndex');
     Route::get('stock', 'AdoptionController@getStockIndex');
-    //Route::get('adoptions/edit', 'AdoptionController@getEditAdoption');
+    // Route::get('adoptions/edit', 'AdoptionController@getEditAdoption');
     Route::get('adoptions', 'AdoptionController@getEditAdoption');
     Route::get('stock/create', 'AdoptionController@getCreateStock');
     Route::get('stock/edit/{id}', 'AdoptionController@getEditStock');

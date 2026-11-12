@@ -32,7 +32,7 @@ class AdoptionController extends Controller {
         if (!$adoption) {
             abort(404);
         }
-        //check if the adoption center is active
+        // check if the adoption center is active
         if (!$adoption->is_active) {
             abort(404);
         }
@@ -56,7 +56,7 @@ class AdoptionController extends Controller {
      */
     public function getAdoptionStock(AdoptionManager $service, $id, $stockId) {
         $adoption = Adoption::orderBy('id', 'ASC')->first();
-        //check if the adoption center is active
+        // check if the adoption center is active
         if (!$adoption->is_active) {
             abort(404);
         }

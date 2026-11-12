@@ -26,11 +26,11 @@ class AdoptionService extends Service {
     /**
      * Updates a adoption.
      *
-     * @param \App\Models\Adoption\Adoption $adoption
-     * @param array                         $data
-     * @param \App\Models\User\User         $user
+     * @param Adoption              $adoption
+     * @param array                 $data
+     * @param \App\Models\User\User $user
      *
-     * @return \App\Models\Adoption\Adoption|bool
+     * @return Adoption|bool
      */
     public function updateAdoption($adoption, $data, $user) {
         DB::beginTransaction();
@@ -69,7 +69,7 @@ class AdoptionService extends Service {
      *
      * @param array $data
      *
-     * @return \App\Models\Adoption\Adoption|bool
+     * @return Adoption|bool
      */
     public function createAdoptionStock($data) {
         DB::beginTransaction();
@@ -113,11 +113,11 @@ class AdoptionService extends Service {
     /**
      * Updates adoption stock.
      *
-     * @param \App\Models\Adoption\Adoption $adoption
-     * @param array                         $data
-     * @param mixed                         $id
+     * @param Adoption $adoption
+     * @param array    $data
+     * @param mixed    $id
      *
-     * @return \App\Models\Adoption\Adoption|bool
+     * @return Adoption|bool
      */
     public function updateAdoptionStock($adoption, $data, $id) {
         DB::beginTransaction();
@@ -189,8 +189,8 @@ class AdoptionService extends Service {
     /**
      * Processes user input for creating/updating a adoption.
      *
-     * @param array                         $data
-     * @param \App\Models\Adoption\Adoption $adoption
+     * @param array    $data
+     * @param Adoption $adoption
      *
      * @return array
      */

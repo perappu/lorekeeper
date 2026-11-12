@@ -20,7 +20,7 @@ class AddSurrenderCurrency extends Migration {
      */
     public function down() {
         //
-        schema::table('surrenders', function (Blueprint $table) {
+        Schema::table('surrenders', function (Blueprint $table) {
             $table->dropColumn('currency_id');
         });
     }
