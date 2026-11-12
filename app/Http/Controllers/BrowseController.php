@@ -33,7 +33,7 @@ class BrowseController extends Controller {
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getUsers(Request $request) {
-        $query = User::visible()->join('ranks', 'users.rank_id', '=', 'ranks.id')->select('ranks.name AS rank_name', 'users.*');
+        $query = User::visible()->with('primaryAlias')->join('ranks', 'users.rank_id', '=', 'ranks.id')->select('ranks.name AS rank_name', 'users.*');
         $sort = $request->only(['sort']);
 
         if ($request->get('name')) {
@@ -107,7 +107,7 @@ class BrowseController extends Controller {
             'canView' => $canView,
             'privacy' => $privacy,
             'key'     => $key,
-            'users'   => $canView ? User::where('is_deactivated', 1)->orderBy('users.name')->paginate(30)->appends($request->query()) : null,
+            'users'   => $canView ? User::where('is_deactivated', 1)->with('primaryAlias', 'settings')->orderBy('users.name')->paginate(30)->appends($request->query()) : null,
         ]);
     }
 
@@ -138,7 +138,7 @@ class BrowseController extends Controller {
             'canView' => $canView,
             'privacy' => $privacy,
             'key'     => $key,
-            'users'   => $canView ? User::where('is_banned', 1)->orderBy('users.name')->paginate(30)->appends($request->query()) : null,
+            'users'   => $canView ? User::where('is_banned', 1)->with('primaryAlias', 'settings')->orderBy('users.name')->paginate(30)->appends($request->query()) : null,
         ]);
     }
 
@@ -148,8 +148,8 @@ class BrowseController extends Controller {
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getCharacters(Request $request) {
-        $query = Character::with('user.rank')->with('image.features')->with('rarity')->with('image.species')->myo(0);
-        $imageQuery = CharacterImage::images(Auth::check() ? Auth::user() : null)->with('features')->with('rarity')->with('species')->with('features');
+        $query = Character::with('user.rank', 'image.features', 'rarity', 'image.species', 'image.rarity')->myo(0);
+        $imageQuery = CharacterImage::images(Auth::check() ? Auth::user() : null)->with('features', 'rarity', 'species', 'features');
 
         if ($sublists = Sublist::where('show_main', 0)->get()) {
             $subCategories = [];
@@ -197,9 +197,11 @@ class BrowseController extends Controller {
 
         if ($request->get('owner')) {
             $owner = User::find($request->get('owner'));
-            $query->where(function ($query) use ($owner) {
-                $query->where('user_id', $owner->id);
-            });
+            if ($owner) {
+                $query->where(function ($query) use ($owner) {
+                    $query->where('user_id', $owner->id);
+                });
+            }
         }
         if ($request->get('owner_url')) {
             $ownerUrl = $request->get('owner_url');
@@ -242,15 +244,19 @@ class BrowseController extends Controller {
 
         if ($request->get('artist')) {
             $artist = User::find($request->get('artist'));
-            $imageQuery->whereHas('artists', function ($query) use ($artist) {
-                $query->where('user_id', $artist->id);
-            });
+            if ($artist) {
+                $imageQuery->whereHas('artists', function ($query) use ($artist) {
+                    $query->where('user_id', $artist->id);
+                });
+            }
         }
         if ($request->get('designer')) {
             $designer = User::find($request->get('designer'));
-            $imageQuery->whereHas('designers', function ($query) use ($designer) {
-                $query->where('user_id', $designer->id);
-            });
+            if ($designer) {
+                $imageQuery->whereHas('designers', function ($query) use ($designer) {
+                    $query->where('user_id', $designer->id);
+                });
+            }
         }
         if ($request->get('artist_url')) {
             $artistUrl = $request->get('artist_url');
@@ -342,9 +348,9 @@ class BrowseController extends Controller {
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getMyos(Request $request) {
-        $query = Character::with('user.rank')->with('image.features')->with('rarity')->with('image.species')->myo(1);
+        $query = Character::with('user.rank', 'image.features', 'rarity', 'image.species', 'image.rarity')->myo(1);
 
-        $imageQuery = CharacterImage::images(Auth::check() ? Auth::user() : null)->with('features')->with('rarity')->with('species')->with('features');
+        $imageQuery = CharacterImage::images(Auth::check() ? Auth::user() : null)->with('features', 'rarity', 'species', 'features');
 
         if ($request->get('name')) {
             $query->where(function ($query) use ($request) {
@@ -377,9 +383,11 @@ class BrowseController extends Controller {
 
         if ($request->get('owner')) {
             $owner = User::find($request->get('owner'));
-            $query->where(function ($query) use ($owner) {
-                $query->where('user_id', $owner->id);
-            });
+            if ($owner) {
+                $query->where(function ($query) use ($owner) {
+                    $query->where('user_id', $owner->id);
+                });
+            }
         }
         if ($request->get('owner_url')) {
             $ownerUrl = $request->get('owner_url');
@@ -399,15 +407,19 @@ class BrowseController extends Controller {
         }
         if ($request->get('artist')) {
             $artist = User::find($request->get('artist'));
-            $imageQuery->whereHas('artists', function ($query) use ($artist) {
-                $query->where('user_id', $artist->id);
-            });
+            if ($artist) {
+                $imageQuery->whereHas('artists', function ($query) use ($artist) {
+                    $query->where('user_id', $artist->id);
+                });
+            }
         }
         if ($request->get('designer')) {
             $designer = User::find($request->get('designer'));
-            $imageQuery->whereHas('designers', function ($query) use ($designer) {
-                $query->where('user_id', $designer->id);
-            });
+            if ($designer) {
+                $imageQuery->whereHas('designers', function ($query) use ($designer) {
+                    $query->where('user_id', $designer->id);
+                });
+            }
         }
         if ($request->get('artist_url')) {
             $artistUrl = $request->get('artist_url');
@@ -456,7 +468,7 @@ class BrowseController extends Controller {
 
         return view('browse.myo_masterlist', [
             'isMyo'       => true,
-            'slots'       => $query->paginate(30)->appends($request->query()),
+            'slots'       => $query->paginate(24)->appends($request->query()),
             'specieses'   => [0 => 'Any Species'] + Species::visible(Auth::check() ? Auth::user() : null)->orderBy('specieses.sort', 'DESC')->pluck('name', 'id')->toArray(),
             'rarities'    => [0 => 'Any Rarity'] + Rarity::orderBy('rarities.sort', 'DESC')->pluck('name', 'id')->toArray(),
             'features'    => Feature::getDropdownItems(),
@@ -473,8 +485,8 @@ class BrowseController extends Controller {
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getSublist(Request $request, $key) {
-        $query = Character::with('user.rank')->with('image.features')->with('rarity')->with('image.species')->myo(0);
-        $imageQuery = CharacterImage::with('features')->with('rarity')->with('species')->with('features');
+        $query = Character::with('user.rank', 'image.features', 'rarity', 'image.species', 'image.rarity')->myo(0);
+        $imageQuery = CharacterImage::with('features', 'rarity', 'species', 'features');
 
         $sublist = Sublist::where('key', $key)->first();
         if (!$sublist) {
@@ -550,9 +562,11 @@ class BrowseController extends Controller {
 
         if ($request->get('owner')) {
             $owner = User::find($request->get('owner'));
-            $query->where(function ($query) use ($owner) {
-                $query->where('user_id', $owner->id);
-            });
+            if ($owner) {
+                $query->where(function ($query) use ($owner) {
+                    $query->where('user_id', $owner->id);
+                });
+            }
         }
         if ($request->get('owner_url')) {
             $ownerUrl = $request->get('owner_url');
@@ -595,15 +609,19 @@ class BrowseController extends Controller {
 
         if ($request->get('artist')) {
             $artist = User::find($request->get('artist'));
-            $imageQuery->whereHas('artists', function ($query) use ($artist) {
-                $query->where('user_id', $artist->id);
-            });
+            if ($artist) {
+                $imageQuery->whereHas('artists', function ($query) use ($artist) {
+                    $query->where('user_id', $artist->id);
+                });
+            }
         }
         if ($request->get('designer')) {
             $designer = User::find($request->get('designer'));
-            $imageQuery->whereHas('designers', function ($query) use ($designer) {
-                $query->where('user_id', $designer->id);
-            });
+            if ($designer) {
+                $imageQuery->whereHas('designers', function ($query) use ($designer) {
+                    $query->where('user_id', $designer->id);
+                });
+            }
         }
         if ($request->get('artist_url')) {
             $artistUrl = $request->get('artist_url');
