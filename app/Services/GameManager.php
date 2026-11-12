@@ -81,7 +81,7 @@ class GameManager extends Service {
                 $gameScore = GameScore::create($data);
             }
 
-            //grant currency
+            // grant currency
             $user = User::where('id', $data['user_id'])->first();
             $reward = ceil($data['score'] * $game->score_ratio);
 
@@ -116,7 +116,7 @@ class GameManager extends Service {
             $currency = Currency::find($data['currency_id']);
 
             $currencyManager = new CurrencyManager;
-            //this will ALWAYS subtract the number given, even if it's initially negative. no player circumventing!
+            // this will ALWAYS subtract the number given, even if it's initially negative. no player circumventing!
             $currencyManager->debitCurrency($user, null, 'Game Payment', $game->displayName, $currency, abs($data['amount']));
 
             return $this->commitReturn(true);

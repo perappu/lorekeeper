@@ -84,7 +84,7 @@ class GameData extends Model {
     public function getServiceAttribute() {
         $class = 'App\Services\Game\\'.str_replace(' ', '', ucwords(str_replace('_', ' ', $this->game))).'Service';
 
-        return new $class();
+        return new $class;
     }
 
     /**********************************************************************************************

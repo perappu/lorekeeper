@@ -219,7 +219,7 @@ class GameController extends Controller {
      */
     public function getCreateGameCategory() {
         return view('admin.games.create_edit_game_category', [
-            'category'       => new GameCategory(),
+            'category'       => new GameCategory,
         ]);
     }
 

@@ -106,7 +106,7 @@ class GameService extends Service {
     /**
      * Deletes a game.
      *
-     * @param \App\Models\Game\Game $game
+     * @param Game $game
      *
      * @return bool
      */
@@ -114,8 +114,8 @@ class GameService extends Service {
         DB::beginTransaction();
 
         try {
-            //since data is tied to the tag rather than the game itself, any uploaded files are preserved
-            //they will need to be manually removed/removed using the UI if available
+            // since data is tied to the tag rather than the game itself, any uploaded files are preserved
+            // they will need to be manually removed/removed using the UI if available
 
             if ($game->has_image) {
                 $this->deleteImage($game->gameImagePath, $game->gameImageFileName);
@@ -154,9 +154,9 @@ class GameService extends Service {
     /**
      * Adds game data tag to a game.
      *
-     * @param \App\Models\Game\Game $game
-     * @param mixed                 $user
-     * @param mixed                 $gameOption
+     * @param Game  $game
+     * @param mixed $user
+     * @param mixed $gameOption
      *
      * @return bool|string
      */
