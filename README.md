@@ -2,26 +2,27 @@
 
 Hello! This is where all my work surrounding Lorekeeper lives.
 
-> **Everything I have __personally__ created in this repository is under the MIT license. You do not need to ask permission to use it or create derivative works.** 
+> [!NOTE]
+> **Everything I have *personally* created in this repository is under the MIT license. You do not need to ask permission to use it or create derivative works.** 
 
 > [!IMPORTANT]
-> **Certain extension ports within this repo have been relicensed by the original author.** These will be under `extension/v3/[name]`. Please read the licenses before you pull them.
+> **Certain extension ports within this repo have been relicensed by the original author.** These branches will be under `extension/v3/[name]`. Please read the licenses before you pull them.
 
 ## table of contents
 
-> [!IMPORTANT]
+> [!CAUTION]
 > **`fix/`, `pr/`, `feat/`, and `extension-pr/` branches should be disregarded.** Please do not pull these unless you know what you're doing. They serve as contributions that are intended for other branches.
 
 ### `extension/` branches
 
 This is probably why you're here. 
 
-> ![IMPORTANT]
+> [!IMPORTANT]
 > **All extension branches are based the stable LK v3.0.0 branch.** 
 > 
 > I do my best to keep these on the very latest version of v3. If you have an older version of v3, you may end up pulling the most recent v3 alongside the extension. 
 > 
-> I recommend pulling the latest v3 from core **before** merging in any of my extensions.
+> I recommend pulling the latest v3 from core *before* merging in any of my extensions.
 
 - `extension/logo`
     > [View the Wiki Page](https://wiki.lorekeeper.me/index.php?title=Extensions:Logo)
@@ -59,10 +60,10 @@ This is probably why you're here.
 
 These are extensions and features that I have either ported forward from v2 or backwards from unstable.
 
-> ![INFO]
-> Much like my personal extensions, I do my best to keep these on the very latest version of v3. If you have an older version of v3, you may end up pulling the most recent v3 alongside the extension. I recommend pulling the latest v3 from core **before** merging.
+> [!NOTE]
+>Much like my personal extensions, I do my best to keep these on the very latest version of v3. If you have an older version of v3, you may end up pulling the most recent v3 alongside the extension. I recommend pulling the latest v3 from core **before** merging.
 
-> ![IMPORTANT]
+> [!IMPORTANT]
 > While I have contributed to many of these extensions, I am not their main author. For any branches that include a name, please verify if there is any custom license attached.
 
 #### v2 -> v3
@@ -95,7 +96,7 @@ My other games are distributed via Ko-fi, as this makes it much easier to bundle
  - [Plinko](https://ko-fi.com/s/eb3c7f0a37) (free)
  - [Blackjack](https://ko-fi.com/s/ff4d4a5856) (paid)
 
-> ![WARNING]
+> [!WARNING]
 > I can only provide support for the games I have personally developed. I can not help you with games that were created by a different developer. Pull them at your own risk.
 > 
 > I may eventually include a list of "verified" extensions, where I have personally been able to try them and confirm they work, but there are not any at this time.
@@ -128,5 +129,5 @@ These are branches that are minor tweaks to existing extensions that aren't wort
 
 ... and that's it! Thanks for reading. 
 
-> ![INFO]
+> [!NOTE]
 > Feel free to open an issue or otherwise contact me with questions or concerns. However, please keep in mind that I am very busy. I may not respond right away, or I may only be able to offer limited advice. If you require a mentor, I offer that at my [standard coding commission rate](https://perappu.blog/commission/lorekeeper#general-work).
