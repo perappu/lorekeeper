@@ -60,7 +60,7 @@ class CarouselService extends Service {
      * @param \App\Models\User\User $user
      * @param mixed                 $carousel
      *
-     * @return \App\Models\Carousel\Carousel|bool
+     * @return bool|Carousel
      */
     public function updateCarousel($carousel, $data, $user) {
         DB::beginTransaction();
