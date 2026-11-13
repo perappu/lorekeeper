@@ -99,7 +99,7 @@ My other games are distributed via Ko-fi, as this makes it much easier to bundle
 > [!WARNING]
 > I can only provide support for the games I have personally developed. I can not help you with games that were created by a different developer. Pull them at your own risk.
 > 
-> I may eventually include a list of "verified" extensions, where I have personally been able to try them and confirm they work, but there are not any at this time.
+> I may eventually include a list of "verified" games, where I have personally been able to try them and confirm they work, but there are not any at this time.
 
 ### `tools/` branches
 
