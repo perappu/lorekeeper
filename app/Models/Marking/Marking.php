@@ -2,6 +2,7 @@
 
 namespace App\Models\Marking;
 
+use App\Models\Carrier\Carrier;
 use App\Models\Model;
 use App\Models\Rarity;
 use App\Models\Species\Species;
@@ -79,6 +80,13 @@ class Marking extends Model {
      */
     public function species() {
         return $this->belongsTo(Species::class);
+    }
+
+    /**
+     * Get the carriers with this marking attached
+     */
+    public function carriers() {
+        return $this->belongsToMany(Carrier::class, 'marking_carriers');
     }
 
     /**********************************************************************************************

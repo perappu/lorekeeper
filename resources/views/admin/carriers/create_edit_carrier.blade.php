@@ -9,7 +9,7 @@
 
     <h1>{{ $carrier->id ? 'Edit' : 'Create' }} Carrier
         @if ($carrier->id)
-            <a href="#" class="btn btn-danger float-right delete-feature-button">Delete Carrier</a>
+            <a href="#" class="btn btn-danger float-right delete-carrier-button">Delete Carrier</a>
         @endif
     </h1>
 
@@ -25,8 +25,6 @@
             </div>
         </div>
     </div>
-
-
 
     <div class="form-group">
         {!! Form::label('Preview Image (Optional)') !!} {!! add_help('This image is used only on the carriers page.') !!}

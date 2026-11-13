@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Carrier\Carrier;
-use App\Models\Carrier\MarkingCarrier;
+use App\Models\Marking\MarkingCarrier;
 use App\Models\Marking\Marking;
 
 class MarkingController extends Controller {
@@ -12,10 +12,7 @@ class MarkingController extends Controller {
         if (!$marking) {
             abort(404);
         }
-
-        $carriers = MarkingCarrier::where('marking_id', $marking->id)->pluck('carrier_id')->toArray();
-        $active_carriers = Carrier::whereIn('id', $carriers)->get();
-
-        return view('designhub.marking', ['marking' => $marking], ['carriers' => $active_carriers]);
+        
+        return view('designhub.marking', ['marking' => $marking], ['carriers' => $marking->carriers]);
     }
 }

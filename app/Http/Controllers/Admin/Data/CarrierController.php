@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin\Data;
 
 use App\Http\Controllers\Controller;
 use App\Models\Carrier\Carrier;
-use App\Models\Carrier\MarkingCarrier;
 use App\Models\Marking\Marking;
 use App\Services\CarrierService;
 use Illuminate\Http\Request;
@@ -53,6 +52,7 @@ class CarrierController extends Controller {
     public function getCreateCarrier() {
         return view('admin.carriers.create_edit_carrier', [
             'carrier'    => new Carrier,
+            'active_markings' => null,
             'markings'   => Marking::orderBy('name', 'DESC')->pluck('name', 'id')->toArray(),
         ]);
     }
@@ -69,12 +69,10 @@ class CarrierController extends Controller {
         if (!$carrier) {
             abort(404);
         }
-
-        $active_markings = MarkingCarrier::where('carrier_id', $id)->pluck('marking_id')->toArray();
-
+        
         return view('admin.carriers.create_edit_carrier', [
             'carrier'         => $carrier,
-            'active_markings' => Marking::whereIn('id', $active_markings)->pluck('id')->toArray(),
+            'active_markings' => $carrier->markings->pluck('id')->toArray(),
             'markings'        => Marking::orderBy('name', 'DESC')->pluck('name', 'id')->toArray(),
         ]);
     }

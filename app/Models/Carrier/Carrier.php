@@ -3,6 +3,7 @@
 namespace App\Models\Carrier;
 
 use App\Models\Marking\Marking;
+use App\Models\Marking\MarkingCarrier;
 use App\Models\Model;
 
 class Carrier extends Model {
@@ -42,6 +43,20 @@ class Carrier extends Model {
         'description'         => 'nullable',
         'image'               => 'mimes:png',
     ];
+
+    /*
+     * Get markings attached to this carrier
+    */
+    public function markings() {
+        return $this->belongsToMany(Marking::class, 'marking_carriers');
+    }
+
+    /*
+     * Get pivot model for marking <-> carrier relationship
+    */
+    public function markingCarriers() {
+        return $this->hasMany(MarkingCarrier::class, 'carrier_id');
+    }
 
     /**********************************************************************************************
 
@@ -205,8 +220,7 @@ class Carrier extends Model {
      * @return string
      */
     public function getAttachedMarkingsAttribute() {
-        $attachments = MarkingCarrier::where('carrier_id', $this->id)->pluck('marking_id');
-        $markings = Marking::whereIn('id', $attachments)->pluck('name', 'slug')->toArray();
+        $markings = $this->markings->pluck('name', 'slug')->toArray();
 
         $row = [];
 

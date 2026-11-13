@@ -9,6 +9,8 @@
 
     <h1>Carriers</h1>
 
+    <div class="alert alert-warning">This is not implemented by default. You must define carrier behavior yourself in the code.</div>
+
     <p>This is a list of carriers that can be attached to markings. </p>
 
     <div class="text-right mb-3">
@@ -63,7 +65,7 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <div class="logs-table-cell">
-                                    {!! $carrier->getAttachedMarkingsAttribute() !!}
+                                    {!! $carrier->attachedMarkings !!}
                                 </div>
                             </div>
                             <div class="col-12 col-md-1">

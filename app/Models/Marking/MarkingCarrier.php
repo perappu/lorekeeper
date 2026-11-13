@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models\Carrier;
+namespace App\Models\Marking;
 
+use App\Models\Carrier\Carrier;
 use App\Models\Model;
 
 class MarkingCarrier extends Model {
@@ -39,6 +40,20 @@ class MarkingCarrier extends Model {
         'marking_id'          => 'required',
         'carrier_id'          => 'required',
     ];
+    
+    /**********************************************************************************************
+
+        RELATIONS
+
+    **********************************************************************************************/
+
+    public function marking() {
+        return $this->hasOne(Marking::class, 'marking_id');
+    }
+
+    public function carrier() {
+        return $this->hasOne(Carrier::class, 'carrier_id');
+    }
 
     /**********************************************************************************************
 
@@ -79,10 +94,4 @@ class MarkingCarrier extends Model {
     public function scopeSortOldest($query) {
         return $query->orderBy('id');
     }
-
-    /**********************************************************************************************
-
-        ACCESSORS
-
-    **********************************************************************************************/
 }
