@@ -3,7 +3,7 @@
 namespace App\Models\Carrier;
 
 use App\Models\Marking\Marking;
-use App\Models\Marking\MarkingCarrier;
+use App\Models\Carrier\CarrierMarking;
 use App\Models\Model;
 
 class Carrier extends Model {
@@ -54,8 +54,8 @@ class Carrier extends Model {
     /*
      * Get pivot model for marking <-> carrier relationship
     */
-    public function markingCarriers() {
-        return $this->hasMany(MarkingCarrier::class, 'carrier_id');
+    public function carrierMarkings() {
+        return $this->hasMany(CarrierMarking::class, 'carrier_id');
     }
 
     /**********************************************************************************************
@@ -202,7 +202,7 @@ class Carrier extends Model {
      * @return string
      */
     public function getAdminUrlAttribute() {
-        return url('admin/data/carrier/edit/'.$this->id);
+        return url('admin/data/carriers/edit/'.$this->id);
     }
 
     /**

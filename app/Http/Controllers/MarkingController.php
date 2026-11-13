@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Carrier\Carrier;
-use App\Models\Marking\MarkingCarrier;
 use App\Models\Marking\Marking;
 
 class MarkingController extends Controller {

@@ -5,7 +5,7 @@
 @endsection
 
 @section('admin-content')
-    {!! breadcrumbs(['Admin Panel' => 'admin', 'Carriers' => 'admin/data/carriers', ($carrier->id ? 'Edit' : 'Create') . ' Carrier' => $carrier->id ? 'admin/data/carrier/edit/' . $carrier->id : 'admin/data/carrier/create']) !!}
+    {!! breadcrumbs(['Admin Panel' => 'admin', 'Carriers' => 'admin/data/carriers', ($carrier->id ? 'Edit' : 'Create') . ' Carrier' => $carrier->id ? 'admin/data/carriers/edit/' . $carrier->id : 'admin/data/carriers/create']) !!}
 
     <h1>{{ $carrier->id ? 'Edit' : 'Create' }} Carrier
         @if ($carrier->id)
@@ -13,7 +13,7 @@
         @endif
     </h1>
 
-    {!! Form::open(['url' => $carrier->id ? 'admin/data/carrier/edit/' . $carrier->id : 'admin/data/carrier/create', 'files' => true]) !!}
+    {!! Form::open(['url' => $carrier->id ? 'admin/data/carriers/edit/' . $carrier->id : 'admin/data/carriers/create', 'files' => true]) !!}
 
     <h3>Basic Information</h3>
 
@@ -68,7 +68,7 @@
             });
             $('.delete-carrier-button').on('click', function(e) {
                 e.preventDefault();
-                loadModal("{{ url('admin/data/carrier/delete') }}/{{ $carrier->id }}", 'Delete Carrier');
+                loadModal("{{ url('admin/data/carriers/delete') }}/{{ $carrier->id }}", 'Delete Carrier');
             });
         });
     </script>

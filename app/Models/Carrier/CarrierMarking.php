@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Models\Marking;
+namespace App\Models\Carrier;
 
 use App\Models\Carrier\Carrier;
+use App\Models\Marking\Marking;
 use App\Models\Model;
 
-class MarkingCarrier extends Model {
+class CarrierMarking extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -20,7 +21,7 @@ class MarkingCarrier extends Model {
      *
      * @var string
      */
-    protected $table = 'marking_carriers';
+    protected $table = 'carrier_markings';
     /**
      * Validation rules for creation.
      *

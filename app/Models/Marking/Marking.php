@@ -220,7 +220,7 @@ class Marking extends Model {
      * @return string
      */
     public function getImageUrlAttribute() {
-        if (!$this->slug) {
+        if (!file_exists($this->imageDirectory.'/'.$this->imageFileName)) {
             return null;
         }
 

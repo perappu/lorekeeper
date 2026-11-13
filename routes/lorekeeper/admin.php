@@ -202,21 +202,21 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
 
     // BASES
     Route::get('bases', 'BaseController@getBasesIndex');
-    Route::get('base/create', 'BaseController@getCreateBase');
-    Route::get('base/edit/{id}', 'BaseController@getEditBase');
-    Route::get('base/delete/{id}', 'BaseController@getDeleteBase');
-    Route::post('base/create', 'BaseController@postCreateEditBase');
-    Route::post('base/edit/{id}', 'BaseController@postCreateEditBase');
-    Route::post('base/delete/{id}', 'BaseController@postDeleteBase');
+    Route::get('bases/create', 'BaseController@getCreateBase');
+    Route::get('bases/edit/{id}', 'BaseController@getEditBase');
+    Route::get('bases/delete/{id}', 'BaseController@getDeleteBase');
+    Route::post('bases/create', 'BaseController@postCreateEditBase');
+    Route::post('bases/edit/{id}', 'BaseController@postCreateEditBase');
+    Route::post('bases/delete/{id}', 'BaseController@postDeleteBase');
 
     // BASES
     Route::get('carriers', 'CarrierController@getCarriersIndex');
-    Route::get('carrier/create', 'CarrierController@getCreateCarrier');
-    Route::get('carrier/edit/{id}', 'CarrierController@getEditCarrier');
-    Route::get('carrier/delete/{id}', 'CarrierController@getDeleteCarrier');
-    Route::post('carrier/create', 'CarrierController@postCreateEditCarrier');
-    Route::post('carrier/edit/{id}', 'CarrierController@postCreateEditCarrier');
-    Route::post('carrier/delete/{id}', 'CarrierController@postDeleteCarrier');
+    Route::get('carriers/create', 'CarrierController@getCreateCarrier');
+    Route::get('carriers/edit/{id}', 'CarrierController@getEditCarrier');
+    Route::get('carriers/delete/{id}', 'CarrierController@getDeleteCarrier');
+    Route::post('carriers/create', 'CarrierController@postCreateEditCarrier');
+    Route::post('carriers/edit/{id}', 'CarrierController@postCreateEditCarrier');
+    Route::post('carriers/delete/{id}', 'CarrierController@postDeleteCarrier');
 
     // CHARACTER CATEGORIES
     Route::get('character-categories', 'CharacterCategoryController@getIndex');

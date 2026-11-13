@@ -96,7 +96,7 @@ class CarrierController extends Controller {
         } elseif (!$id && $carrier = $service->createCarrier($data, Auth::user())) {
             flash('Carrier created successfully.')->success();
 
-            return redirect()->to('admin/data/carrier/edit/'.$carrier->id);
+            return redirect()->to('admin/data/carriers/edit/'.$carrier->id);
         } else {
             foreach ($service->errors()->getMessages()['error'] as $error) {
                 flash($error)->error();
