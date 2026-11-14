@@ -390,6 +390,9 @@ Route::group(['prefix' => 'character', 'namespace' => 'Characters', 'middleware'
     Route::post('{slug}/settings', 'CharacterController@postCharacterSettings');
 
     Route::post('{slug}/transfer', 'CharacterController@postTransfer');
+
+    Route::get('{slug}/genetics', 'CharacterController@getEditCharacterGenetics');
+    Route::post('{slug}/genetics', 'CharacterController@postEditCharacterGenetics');
 });
 // Might rewrite these parts eventually so there's less code duplication...
 Route::group(['prefix' => 'myo', 'namespace' => 'Characters', 'middleware' => 'power:manage_characters'], function () {
@@ -409,6 +412,9 @@ Route::group(['prefix' => 'myo', 'namespace' => 'Characters', 'middleware' => 'p
     Route::post('{id}/settings', 'CharacterController@postMyoSettings');
 
     Route::post('{id}/transfer', 'CharacterController@postMyoTransfer');
+    
+    Route::get('{id}/genetics', 'CharacterController@getEditMyoGenetics');
+    Route::post('{id}/genetics', 'CharacterController@postEditMyoGenetics');
 });
 
 // RAFFLES
