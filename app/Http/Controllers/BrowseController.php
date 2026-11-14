@@ -212,7 +212,7 @@ class BrowseController extends Controller {
         if ($request->get('base')) {
             $base = $request->get('base');
             $query->where(function ($query) use ($base) {
-                $query->where('base', 'LIKE', '%'.$base.'%');
+                $query->where('base_id', 'LIKE', '%'.$base.'%');
             });
         }
         if ($request->get('marking_ids')) {
@@ -397,7 +397,7 @@ class BrowseController extends Controller {
         if ($request->get('base')) {
             $base = $request->get('base');
             $query->where(function ($query) use ($base) {
-                $query->where('base', 'LIKE', '%'.$base.'%');
+                $query->where('base_id', 'LIKE', '%'.$base.'%');
             });
         }
         if ($request->get('marking_ids')) {
@@ -589,7 +589,7 @@ class BrowseController extends Controller {
         if ($request->get('base')) {
             $base = $request->get('base');
             $query->where(function ($query) use ($base) {
-                $query->where('base', 'LIKE', '%'.$base.'%');
+                $query->where('base_id', 'LIKE', '%'.$base.'%');
             });
         }
         if ($request->get('marking_ids')) {

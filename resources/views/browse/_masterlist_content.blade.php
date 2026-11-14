@@ -84,11 +84,6 @@
             <div class="masterlist-search-field">
                 {!! Form::checkbox('is_giftable', 1, Request::get('is_giftable'), ['class' => 'form-check-input', 'data-toggle' => 'toggle', 'data-on' => 'Can Be Gifted', 'data-off' => 'Any Giftable Status', 'data-width' => '202', 'data-height' => '46']) !!}
             </div>
-            </hr />
-            <div class="masterlist-search-field">
-                {!! Form::label('base', 'Base: ') !!}
-                {!! Form::select('base', $bases, Request::get('base'), ['class' => 'form-control mr-2', 'style' => 'width: 250px']) !!}
-            </div>
             <hr />
             <a href="#" class="float-right btn btn-sm btn-outline-primary add-feature-button">Add Trait</a>
             {!! Form::label('Has Traits: ') !!} {!! add_help('This will narrow the search to characters that have ALL of the selected traits at the same time.') !!}
@@ -107,6 +102,10 @@
                 @endif
             </div>
             <hr />
+            <div class="masterlist-search-field">
+                {!! Form::label('base', 'Base: ') !!}
+                {!! Form::select('base', $bases, Request::get('base'), ['class' => 'form-control mr-2', 'style' => 'width: 250px']) !!}
+            </div>
             <div class="form-group">
                 {!! Form::label('Has Markings: ') !!} {!! add_help('This will narrow the search to characters that have ALL of the selected markings at the same time.') !!}
                 {!! Form::select('marking_ids[]', $markings, Request::get('marking_ids'), ['class' => 'form-control marking-select', 'placeholder' => 'Select Marking', 'multiple']) !!}
