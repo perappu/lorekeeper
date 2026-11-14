@@ -10,7 +10,7 @@ class MarkingController extends Controller {
         if (!$marking) {
             abort(404);
         }
-        
+
         return view('designhub.marking', ['marking' => $marking], ['carriers' => $marking->carriers]);
     }
 }

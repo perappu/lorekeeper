@@ -103,7 +103,7 @@ class CarrierService extends Service {
                     $data['attached_markings'] = [$data['attached_markings']];
                 }
                 foreach ($data['attached_markings'] as $marking_id) {
-                    if(!Marking::where('id', $marking_id)->exists()) {
+                    if (!Marking::where('id', $marking_id)->exists()) {
                         throw new \Exception('Invalid marking ID selected.');
                     }
                     $relation = CarrierMarking::create([

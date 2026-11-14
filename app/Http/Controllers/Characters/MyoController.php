@@ -63,7 +63,7 @@ class MyoController extends Controller {
         $genetics = $this->character->genetics;
 
         return view('character.myo.character', [
-            'character' => $this->character,
+            'character'             => $this->character,
             'markings'              => $genetics['markings'],
             'pheno'                 => $genetics['phenotype'],
             'geno'                  => $genetics['genotype'],

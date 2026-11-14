@@ -3,7 +3,6 @@
 namespace App\Models\Carrier;
 
 use App\Models\Marking\Marking;
-use App\Models\Carrier\CarrierMarking;
 use App\Models\Model;
 
 class Carrier extends Model {

@@ -2,7 +2,6 @@
 
 namespace App\Models\Carrier;
 
-use App\Models\Carrier\Carrier;
 use App\Models\Marking\Marking;
 use App\Models\Model;
 
@@ -41,7 +40,7 @@ class CarrierMarking extends Model {
         'marking_id'          => 'required',
         'carrier_id'          => 'required',
     ];
-    
+
     /**********************************************************************************************
 
         RELATIONS

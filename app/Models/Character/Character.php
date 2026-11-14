@@ -202,15 +202,15 @@ class Character extends Model {
     }
 
     /**
-     * Get the pivot model for a character's markings
+     * Get the pivot model for a character's markings.
      */
     public function markings() {
         return $this->hasMany(CharacterMarking::class, 'character_id')->with('marking', 'marking.carriers');
     }
 
     /**
-     * Get the base for a character
-     * 
+     * Get the base for a character.
+     *
      * this will return null if it s a chimera, which works well for our handling
      */
     public function base() {
@@ -678,11 +678,10 @@ class Character extends Model {
      * @return string
      */
     public function getMarkingLinkedArray($bases, $markings, $type = 'phenotype') {
-
         if ($markings === null || count($markings) < 1) {
             if (count($bases) > 1 && array_key_exists(1, $bases)) {
                 // If Chimera and no marks
-                switch($type) {
+                switch ($type) {
                     case 'genotype':
                         return $bases[0]['code'].'+//'.$bases[1]['code'].'+';
                     case 'phenotype': default:
@@ -691,14 +690,14 @@ class Character extends Model {
             } elseif (count($bases) > 1 && !array_key_exists(0, $bases)) {
                 // This shit is a mess, I know, I'm tired, no switchcase here :(
                 // it's ok I gotchu
-                switch($type) {
+                switch ($type) {
                     case 'genotype':
                         return $bases['code'].'+';
                     case 'phenotype': default:
                         return $bases['name'];
                 }
             } else {
-                switch($type) {
+                switch ($type) {
                     case 'genotype':
                         return count($bases) ? Arr::first($bases)['code'].'+' : $bases['code'].'+';
                     case 'phenotype': default:
@@ -739,7 +738,7 @@ class Character extends Model {
             }
 
             return $html_inner;
-        } 
+        }
 
         // none or no valid data
         return 'Unknown';
@@ -808,7 +807,7 @@ class Character extends Model {
                 unset($array[2]);
                 $html = $base['name'];
                 // if no markings, just the name
-                if(!count($array)) {
+                if (!count($array)) {
                     break;
                 }
                 foreach ($array as $order => $marking_group) {
@@ -860,7 +859,7 @@ class Character extends Model {
      * @return array
      */
     public function getBaseCoat() {
-        if($this->base) {
+        if ($this->base) {
             // if the relationship match is successful, return that
             return [0 => [
                 'name'  => $this->base->name,
@@ -891,7 +890,7 @@ class Character extends Model {
             ];
         }
     }
-    
+
     /**
      * Gets a character's genetics.
      *

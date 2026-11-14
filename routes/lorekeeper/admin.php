@@ -412,7 +412,7 @@ Route::group(['prefix' => 'myo', 'namespace' => 'Characters', 'middleware' => 'p
     Route::post('{id}/settings', 'CharacterController@postMyoSettings');
 
     Route::post('{id}/transfer', 'CharacterController@postMyoTransfer');
-    
+
     Route::get('{id}/genetics', 'CharacterController@getEditMyoGenetics');
     Route::post('{id}/genetics', 'CharacterController@postEditMyoGenetics');
 });
