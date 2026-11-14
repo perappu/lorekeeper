@@ -266,7 +266,7 @@
             'base' => null,
             'secondary_base' => null,
             'characterMarkings' => null,
-            'markings' => $markings
+            'markings' => $markings,
         ])
 
         <div class="text-right">

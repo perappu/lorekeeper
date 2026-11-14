@@ -71,7 +71,7 @@
                 <div class="card-header">Trait Guides</div>
                 <div class="p-2">
                     @if ($trait_lists)
-                    {!! $trait_lists->render() !!}
+                        {!! $trait_lists->render() !!}
                         <div class="row no-gutters flex-gap searchContent" data-id="traits">
                             @foreach ($trait_lists as $trait)
                                 @include('designhub._entry', [

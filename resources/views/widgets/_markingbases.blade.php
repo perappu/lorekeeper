@@ -23,7 +23,7 @@
     {!! add_help('Select markings applicable to character') !!}
     <div><a href="#" class="btn btn-primary mb-2" id="add-marking">Add Marking</a></div>
     <div id="markingList">
-        @if(isset($characterMarkings))
+        @if (isset($characterMarkings))
             @foreach ($characterMarkings as $marking)
                 <div class="marking d-flex mb-2">
                     {!! Form::select('marking_id[]', $markings, $marking->marking_id, ['class' => 'form-control mr-2 marking-select']) !!}
@@ -42,7 +42,7 @@
                         </select>
                     </div>
                     <div>
-                    <a href="#" class="remove-marking btn btn-danger mb-2">×</a>
+                        <a href="#" class="remove-marking btn btn-danger mb-2">×</a>
                     </div>
                 </div>
             @endforeach

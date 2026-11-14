@@ -15,6 +15,6 @@
         </select>
     </div>
     <div>
-    <a href="#" class="remove-marking btn btn-danger mb-2">×</a>
+        <a href="#" class="remove-marking btn btn-danger mb-2">×</a>
     </div>
 </div>

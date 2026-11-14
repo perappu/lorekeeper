@@ -28,7 +28,7 @@
         function removeMarkingRow($trigger) {
             $trigger.closest('.marking').remove();
         }
-        
+
         //If Chimera
         $('#is_chimera').on('change', function(e) {
             isChimera = $('#is_chimera').is(':checked');

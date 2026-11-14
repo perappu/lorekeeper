@@ -62,7 +62,7 @@
     @if ($base->id)
         <h3>Preview</h3>
         <div class="row no-gutters justify-content-center">
-                @include('designhub._base_entry', ['base' => $base])
+            @include('designhub._base_entry', ['base' => $base])
         </div>
     @endif
 @endsection
