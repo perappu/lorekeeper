@@ -26,6 +26,12 @@
 	object-fit: contain;
 }
 
+.marking-output a {
+	color: inherit;
+	text-decoration: dotted underline;
+	transition: 250ms all;
+}
+
 /* LK's version of bootstrap lacks these classes, so adding them where needed */
 @media (min-width: 768px) {
 	.dh-section .pr-md-2 {

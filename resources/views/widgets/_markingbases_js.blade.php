@@ -22,11 +22,23 @@
                 e.preventDefault();
                 removeMarkingRow($(this));
             })
-            $clone.find('.marking-select').selectize();
+            @if (config('lorekeeper.extensions.organised_traits_dropdown'))
+                $clone.find('.marking-select').selectize({
+                    render: {
+                        item: featureSelectedRender
+                    }
+                });
+            @else
+                $clone.find('.marking-select').selectize();
+            @endif
         }
 
         function removeMarkingRow($trigger) {
             $trigger.closest('.marking').remove();
+        }
+
+        function markingSelectedRender(item, escape) {
+            return '<div><span>' + escape(item["text"].trim()) + ' (' + escape(item["optgroup"].trim()) + ')' + '</span></div>';
         }
 
         //If Chimera
