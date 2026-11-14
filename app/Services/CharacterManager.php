@@ -1904,6 +1904,89 @@ class CharacterManager extends Service {
     }
 
     /**
+     * Handles character marking data.
+     *
+     * @param array $data
+     * @param mixed $character
+     * @param bool  $log       whether or not to send this to the character/admin log
+     * @param mixed $user
+     *
+     * @return \App\Models\Character\Character              $character
+     * @return \App\Models\Character\CharacterMarkings|bool
+     */
+    public function updateCharacterGenetics($data, $character, $user, $log = false) {
+        DB::beginTransaction();
+
+        try {
+            $characterData = Arr::only($data, [
+                'marking_id', 'is_dominant', 'side_id',
+                'base', 'secondary_base', 'is_chimera',
+            ]);
+            $characterData['base_id'] = (isset($data['is_chimera']) ? $data['base'].'|'.$data['secondary_base'] : $data['base']);
+
+            $result = [];
+            $old = [];
+            $new = [];
+
+            if ($characterData['base_id'] != $character->base_id) {
+                $result[] = 'base';
+                $old['base'] = $character->base_id;
+                $new['base'] = $characterData['base_id'];
+            }
+
+            // Clear old markings
+            CharacterMarking::where('character_id', $character->id)->delete();
+
+            // Attach markings
+            foreach ($data['marking_id'] as $i => $markingId) {
+                if ($markingId) {
+                    $temp = Marking::where('id', $markingId)->first();
+
+                    $is_dominant = $data['is_dominant'][$i] ?? 0;
+
+                    /*\Log::info('Processing marking', [
+                        'loop'          => $i,
+                        'markingId'     => $markingId,
+                        'code'          => ($is_dominant ? $temp->dominant : $temp->recessive),
+                        'order'         => $temp->order_in_genome ?? 0,
+                        'is_dominant'   => $is_dominant,
+                        'data'          => $data['side_id'][$i] ?? 0,
+                    ]);*/
+
+                    $marking = CharacterMarking::create([
+                        'character_id'  => $character->id,
+                        'marking_id'    => $markingId,
+                        'code'          => ($is_dominant ? $temp->dominant : $temp->recessive),
+                        'order'         => $temp->order_in_genome ?? 0,
+                        'is_dominant'   => $is_dominant,
+                        'data'          => $data['side_id'][$i] ?? 0,
+                    ]);
+                    $marking->save();
+                }
+            }
+
+            if (count($result)) {
+                $character->update($characterData);
+
+                if ($log) {
+                    $this->createLog($user->id, null, null, null, $character->id, 'Character Genetics Updated', ucfirst(implode(', ', $result)).' edited', 'character', true, $old, $new);
+                    if (!$this->logAdminAction($user, 'Update Genetics', 'Updated genetics for '.$character->displayName)) {
+                        throw new \Exception('Failed to log admin action.');
+                    }
+                }
+            }
+
+            $character->save();
+
+            return $this->commitReturn($character);
+        } catch (\Exception $e) {
+            $this->setError('error', $e->getMessage());
+        }
+
+        return $this->rollbackReturn(false);
+    }
+
+    /**
      * Handles character data.
      *
      * @param array $data
@@ -2123,87 +2206,5 @@ class CharacterManager extends Service {
         }
 
         return $result;
-    }
-
-    /**
-     * Handles character marking data.
-     *
-     * @param array $data
-     * @param mixed $character
-     * @param bool $log whether or not to send this to the character/admin log
-     *
-     * @return \App\Models\Character\Character              $character
-     * @return \App\Models\Character\CharacterMarkings|bool
-     */
-    public function updateCharacterGenetics($data, $character, $user, $log = false) {
-        DB::beginTransaction();
-
-        try {
-            $characterData = Arr::only($data, [
-                'marking_id', 'is_dominant', 'side_id',
-                'base', 'secondary_base', 'is_chimera',
-            ]);
-            $characterData['base_id'] = (isset($data['is_chimera']) ? $data['base'].'|'.$data['secondary_base'] : $data['base']);
-
-            $result = [];
-            $old = [];
-            $new = [];
-
-            if ($characterData['base_id'] != $character->base_id) {
-                $result[] = 'base';
-                $old['base'] = $character->base_id;
-                $new['base'] = $characterData['base_id'];
-            }
-
-            // Clear old markings
-            CharacterMarking::where('character_id', $character->id)->delete();
-
-            // Attach markings
-            foreach ($data['marking_id'] as $i => $markingId) {
-                if ($markingId) {
-                    $temp = Marking::where('id', $markingId)->first();
-
-                    $is_dominant = $data['is_dominant'][$i] ?? 0;
-
-                    /*\Log::info('Processing marking', [
-                        'loop'          => $i,
-                        'markingId'     => $markingId,
-                        'code'          => ($is_dominant ? $temp->dominant : $temp->recessive),
-                        'order'         => $temp->order_in_genome ?? 0,
-                        'is_dominant'   => $is_dominant,
-                        'data'          => $data['side_id'][$i] ?? 0,
-                    ]);*/
-
-                    $marking = CharacterMarking::create([
-                        'character_id'  => $character->id,
-                        'marking_id'    => $markingId,
-                        'code'          => ($is_dominant ? $temp->dominant : $temp->recessive),
-                        'order'         => $temp->order_in_genome ?? 0,
-                        'is_dominant'   => $is_dominant,
-                        'data'          => $data['side_id'][$i] ?? 0,
-                    ]);
-                    $marking->save();
-                }
-            }
-
-            if (count($result)) {
-                $character->update($characterData);
-
-                if($log) {
-                    $this->createLog($user->id, null, null, null, $character->id, 'Character Genetics Updated', ucfirst(implode(', ', $result)).' edited', 'character', true, $old, $new);
-                    if (!$this->logAdminAction($user, 'Update Genetics', 'Updated genetics for '.$character->displayName)) {
-                        throw new \Exception('Failed to log admin action.');
-                    }
-                }
-            }
-
-            $character->save();
-
-            return $this->commitReturn($character);
-        } catch (\Exception $e) {
-            $this->setError('error', $e->getMessage());
-        }
-
-        return $this->rollbackReturn(false);
     }
 }

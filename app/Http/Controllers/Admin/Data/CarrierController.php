@@ -51,9 +51,9 @@ class CarrierController extends Controller {
      */
     public function getCreateCarrier() {
         return view('admin.carriers.create_edit_carrier', [
-            'carrier'    => new Carrier,
+            'carrier'         => new Carrier,
             'active_markings' => null,
-            'markings'   => Marking::orderBy('name', 'DESC')->pluck('name', 'id')->toArray(),
+            'markings'        => Marking::orderBy('name', 'DESC')->pluck('name', 'id')->toArray(),
         ]);
     }
 
@@ -69,7 +69,7 @@ class CarrierController extends Controller {
         if (!$carrier) {
             abort(404);
         }
-        
+
         return view('admin.carriers.create_edit_carrier', [
             'carrier'         => $carrier,
             'active_markings' => $carrier->markings->pluck('id')->toArray(),

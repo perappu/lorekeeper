@@ -42,7 +42,7 @@ class DesignHubController extends Controller {
 
     private function paginateDesignHubTraitByCategory(Request $request, $category_ids) {
         $query = Feature::visible(Auth::check() ? Auth::user() : null)->with('category')->with('rarity')->with('species');
-        
+
         return $query->orderBy('id')->whereIn('feature_category_id', $category_ids)->paginate(20)->appends($request->query());
     }
 }

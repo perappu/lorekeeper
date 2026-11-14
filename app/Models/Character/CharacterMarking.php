@@ -12,7 +12,7 @@ class CharacterMarking extends Model {
      * @var array
      */
     protected $fillable = [
-        'character_id', 'marking_id', 'code', 'order', 'is_dominant', 'data', 
+        'character_id', 'marking_id', 'code', 'order', 'is_dominant', 'data',
         'base_id', // use for implementation of carriers if desired
     ];
 

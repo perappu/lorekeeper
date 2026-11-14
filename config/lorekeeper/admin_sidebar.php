@@ -199,18 +199,18 @@ return [
     'Design Hub' => [
         'power' => 'edit_data',
         'links' => [
-                [
-                    'name' => 'Markings',
-                    'url'  => 'admin/data/markings',
-                ],
-                [
-                    'name' => 'Carriers',
-                    'url'  => 'admin/data/carriers',
-                ],
-                [
-                    'name' => 'Bases',
-                    'url'  => 'admin/data/bases',
-                ],
+            [
+                'name' => 'Markings',
+                'url'  => 'admin/data/markings',
+            ],
+            [
+                'name' => 'Carriers',
+                'url'  => 'admin/data/carriers',
+            ],
+            [
+                'name' => 'Bases',
+                'url'  => 'admin/data/bases',
+            ],
         ],
     ],
     'Raffles'    => [

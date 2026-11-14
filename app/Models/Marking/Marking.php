@@ -84,7 +84,7 @@ class Marking extends Model {
     }
 
     /**
-     * Get the carriers with this marking attached
+     * Get the carriers with this marking attached.
      */
     public function carriers() {
         return $this->belongsToMany(Carrier::class, 'carrier_markings');
